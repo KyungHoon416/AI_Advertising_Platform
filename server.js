@@ -811,7 +811,9 @@ app.post('/api/ai/proposal/download', async (req, res) => {
 
   pres.layout = 'LAYOUT_16x9';
 
-  // Slide 1: Cover Slide (놀이의발견 공식 레드 테마)
+  // ----------------------------------------------------
+  // Slide 1: 표지 (Cover)
+  // ----------------------------------------------------
   const slide1 = pres.addSlide();
   slide1.background = { color: 'FF3B30' }; // 놀이의발견 강렬한 레드 브랜딩 톤
   
@@ -839,22 +841,56 @@ app.post('/api/ai/proposal/download', async (req, res) => {
     fontSize: 12, color: 'E2E8F0', fontFace: 'Noto Sans KR' 
   });
 
-  // Slide 2: Platform Overview (Introduce)
+  // ----------------------------------------------------
+  // Slide 2: 회사 소개 (Company History)
+  // ----------------------------------------------------
   const slide2 = pres.addSlide();
   slide2.background = { color: '0B0D19' };
-  
-  slide2.addText('1. 대한민국 1위 가족 여가 라이프스타일 플랫폼', { 
+  slide2.addText('1. 웅진컴퍼스 자회사, 놀이의발견 히스토리', { 
     x: 0.5, y: 0.4, w: 11, h: 0.6, 
     fontSize: 24, bold: true, color: 'FF3B30', fontFace: 'Noto Sans KR' 
   });
   slide2.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.1, w: 11.0, h: 0.02, fill: { color: '202738' } });
-
-  slide2.addText('놀이의발견은 키즈 놀이 콘텐츠를 한곳에 모두 모아 쉽고 빠르게 검색하고 구매할 수 있는 서비스입니다. 3040 부모 회원 중심의 결제 행동 기반 핵심 타겟팅 인프라를 지원합니다.', { 
-    x: 0.6, y: 1.4, w: 11, h: 1.0, 
-    fontSize: 14, color: 'CBD5E1', fontFace: 'Noto Sans KR', lineSpacing: 22 
+  
+  const historyText = 
+    "• 2018.04: 웅진씽크빅 키즈플랫폼 사업부 신설 및 구글플레이 '올해의 앱' 선정\n" +
+    "• 2020.05: 웅진씽크빅 100% 자회사 분사 및 시리즈B 200억 규모 투자 유치\n" +
+    "• 2021.02: 가입 유저 100만 명 달성 및 숙박 예약 서비스 공식 론칭\n" +
+    "• 2024.12: 웅진컴퍼스 X 놀이의발견 합병을 통한 라이프스타일 거대 연합 플랫폼 도약";
+  slide2.addText(historyText, { 
+    x: 0.8, y: 1.8, w: 11, h: 3.5, 
+    fontSize: 15, color: 'CBD5E1', fontFace: 'Noto Sans KR', lineSpacing: 26 
   });
 
-  // Platform Metrics Table (PDF 속 핵심 수치 반영)
+  // ----------------------------------------------------
+  // Slide 3: 서비스 소개 (Service Introduce)
+  // ----------------------------------------------------
+  const slide3 = pres.addSlide();
+  slide3.background = { color: '0B0D19' };
+  slide3.addText('2. 대한민국 1위 가족 여가 라이프스타일 플랫폼', { 
+    x: 0.5, y: 0.4, w: 11, h: 0.6, 
+    fontSize: 24, bold: true, color: 'FF3B30', fontFace: 'Noto Sans KR' 
+  });
+  slide3.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.1, w: 11.0, h: 0.02, fill: { color: '202738' } });
+  
+  slide3.addText('• 서비스 개요: 키즈 놀이 콘텐츠, 전국 숙박시설, 체험학습 등을 한곳에 담은 큐레이션 예약 앱\n' +
+                 '• 사용자 특징: 실구매력이 검증된 3040 부모 세대가 100% 밀집된 핵심 마케팅 지면\n' +
+                 '• 핵심 차별점: 예약 결제부터 오프라인 현장 인증까지 유기적으로 연계된 전환 최적화 시스템', { 
+    x: 0.8, y: 1.8, w: 11, h: 3.5, 
+    fontSize: 15, color: 'CBD5E1', fontFace: 'Noto Sans KR', lineSpacing: 26 
+  });
+
+  // ----------------------------------------------------
+  // Slide 4: 서비스 규모 인포그래픽 (Platform Scale)
+  // ----------------------------------------------------
+  const slide4 = pres.addSlide();
+  slide4.background = { color: '0B0D19' };
+  slide4.addText('3. 놀이의발견 플랫폼 트래픽 규모', { 
+    x: 0.5, y: 0.4, w: 11, h: 0.6, 
+    fontSize: 24, bold: true, color: 'FF3B30', fontFace: 'Noto Sans KR' 
+  });
+  slide4.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.1, w: 11.0, h: 0.02, fill: { color: '202738' } });
+
   const metricRows = [
     [
       { text: '회원수', options: { fill: '1A1F35', color: 'FFFFFF', bold: true, align: 'center' } },
@@ -869,116 +905,139 @@ app.post('/api/ai/proposal/download', async (req, res) => {
       { text: '약 3만 개', options: { fill: '0F1322', color: 'FFFFFF', bold: true, fontSize: 18, align: 'center' } }
     ]
   ];
-  slide2.addTable(metricRows, { x: 0.6, y: 2.6, w: 10.8, colW: [2.7, 2.7, 2.7, 2.7], fontSize: 13, border: { pt: 1, color: '202738' } });
+  slide4.addTable(metricRows, { x: 0.6, y: 2.2, w: 10.8, colW: [2.7, 2.7, 2.7, 2.7], fontSize: 13, border: { pt: 1, color: '202738' } });
 
-  slide2.addText('• 3040 부모 회원 100% 매칭으로 마케팅 효율 극대화\n• 자녀 동반 숙박, 액티비티, 체험 학습 등 즉시 예약 중심 실거래 액션 유도', {
-    x: 0.6, y: 4.8, w: 10.8, h: 1.0,
+  slide4.addText('• 3040 육아 패밀리 유저 중심의 타겟 도달율 98% 보장\n• 자녀 동반 레저, 숙박 예약 거래액 연간 최고 성장세 기록', {
+    x: 0.6, y: 4.5, w: 10.8, h: 1.2,
     fontSize: 13, color: '8F9CAE', fontFace: 'Noto Sans KR', lineSpacing: 20
   });
 
-  // Slide 3: AI Proposal Text Summary
-  const slide3 = pres.addSlide();
-  slide3.background = { color: '0B0D19' };
-  
-  slide3.addText('2. AI 광고 상품 처방 및 제언', { 
-    x: 0.5, y: 0.4, w: 11, h: 0.6, 
-    fontSize: 24, bold: true, color: 'FF3B30', fontFace: 'Noto Sans KR' 
-  });
-  slide3.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.1, w: 11.0, h: 0.02, fill: { color: '202738' } });
-
-  const cleanedText = proposalText ? proposalText.replace(/[#*`\-_]/g, '').trim() : '상세 제안서 내역은 대시보드 뷰어에서 마크다운 리포트로 조회해 주세요.';
-  const summaryText = cleanedText.length > 500 ? cleanedText.substring(0, 500) + '...' : cleanedText;
-
-  slide3.addText(summaryText, { 
-    x: 0.6, y: 1.5, w: 10.8, h: 4.2, 
-    fontSize: 13, color: 'CBD5E1', fontFace: 'Noto Sans KR', lineSpacing: 20 
-  });
-
-  // Slide 4: Expectation & Official Pricing Table (공식 광고 단가표 탑재)
-  const slide4 = pres.addSlide();
-  slide4.background = { color: '0B0D19' };
-  
-  slide4.addText('3. 놀이의발견 공식 광고 지면 및 가격 정책', { 
-    x: 0.5, y: 0.4, w: 11, h: 0.6, 
-    fontSize: 24, bold: true, color: 'FF3B30', fontFace: 'Noto Sans KR' 
-  });
-  slide4.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.1, w: 11.0, h: 0.02, fill: { color: '202738' } });
-
-  const rows = [
-    [
-      { text: '광고 상품 (구좌)', options: { fill: '1A1F35', color: 'FF3B30', bold: true, align: 'center' } },
-      { text: '광고 위치', options: { fill: '1A1F35', color: 'FFFFFF', bold: true, align: 'center' } },
-      { text: '월 광고비 (정가)', options: { fill: '1A1F35', color: 'FFFFFF', bold: true, align: 'center' } },
-      { text: '프로모션 할인가', options: { fill: '1A1F35', color: 'FFFFFF', bold: true, align: 'center' } },
-      { text: '평균 전환율 (CVR)', options: { fill: '1A1F35', color: '39FF14', bold: true, align: 'center' } }
-    ],
-    [
-      { text: '스플래쉬 광고', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
-      { text: '앱 로딩 화면 독점', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
-      { text: '주 700만원', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
-      { text: '주 490만원', options: { fill: '0F1322', color: 'FF3B30', bold: true, align: 'center' } },
-      { text: '12% ~ 25%', options: { fill: '0F1322', color: '39FF14', align: 'center' } }
-    ],
-    [
-      { text: '메인 팝업 배너', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
-      { text: 'MAIN 진입 팝업', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
-      { text: '월 350만원', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
-      { text: '월 200만원', options: { fill: '1A1F35', color: 'FF3B30', bold: true, align: 'center' } },
-      { text: '12% ~ 15%', options: { fill: '1A1F35', color: '39FF14', align: 'center' } }
-    ],
-    [
-      { text: '메인 배너 광고', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
-      { text: 'MAIN 상단 메인 배너', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
-      { text: '월 500만원', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
-      { text: '월 350만원', options: { fill: '0F1322', color: 'FF3B30', bold: true, align: 'center' } },
-      { text: '10% ~ 12%', options: { fill: '0F1322', color: '39FF14', align: 'center' } }
-    ],
-    [
-      { text: '카테고리 GNB 광고', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
-      { text: 'GNB 아이콘 영역', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
-      { text: '월 250만원', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
-      { text: '월 175만원', options: { fill: '1A1F35', color: 'FF3B30', bold: true, align: 'center' } },
-      { text: '9% ~ 10%', options: { fill: '1A1F35', color: '39FF14', align: 'center' } }
-    ],
-    [
-      { text: '메인 서브 배너', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
-      { text: 'MAIN 중단/하단 배너', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
-      { text: '월 150만원', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
-      { text: '월 105만원', options: { fill: '0F1322', color: 'FF3B30', bold: true, align: 'center' } },
-      { text: '4% ~ 5%', options: { fill: '0F1322', color: '39FF14', align: 'center' } }
-    ],
-    [
-      { text: '카테고리 상세 배너', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
-      { text: '카테고리 > 상세 페이지', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
-      { text: '월 100만원', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
-      { text: '월 70만원', options: { fill: '1A1F35', color: 'FF3B30', bold: true, align: 'center' } },
-      { text: '2.5% ~ 3.5%', options: { fill: '1A1F35', color: '39FF14', align: 'center' } }
-    ]
-  ];
-
-  slide4.addTable(rows, { x: 0.6, y: 1.5, w: 10.8, colW: [2.5, 2.5, 2.0, 2.0, 1.8], fontSize: 11, border: { pt: 1, color: '202738' } });
-
-  slide4.addText('* 위 금액은 프로모션 할인율이 적용된 가격(VAT 별도)이며, 플랫폼 트래픽 및 제휴 형태에 따라 변동될 수 있습니다.', { 
-    x: 0.6, y: 5.6, w: 10.8, h: 0.4, 
-    fontSize: 10, color: '8F9CAE', fontFace: 'Noto Sans KR' 
-  });
-
-  // Slide 5: Partner Closing Slide (피날레 슬라이드)
+  // ----------------------------------------------------
+  // Slide 5: 고객 생생 후기 (User Reviews)
+  // ----------------------------------------------------
   const slide5 = pres.addSlide();
-  slide5.background = { color: 'FF3B30' }; // 레드 브랜딩 피날레
+  slide5.background = { color: '0B0D19' };
+  slide5.addText('4. 고객 만족도가 증명하는 육아 필수 앱', { 
+    x: 0.5, y: 0.4, w: 11, h: 0.6, 
+    fontSize: 24, bold: true, color: 'FF3B30', fontFace: 'Noto Sans KR' 
+  });
+  slide5.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.1, w: 11.0, h: 0.02, fill: { color: '202738' } });
   
-  slide5.addText('놀이의발견과 함께하실 파트너를 기다립니다.', { 
+  slide5.addText('■ 대표 회원 후기 피드백\n\n' +
+                 '• "애들과 주말에 뭐할까 고민될 때 놀발 하나면 숙소 예약부터 체험학습 신청까지 한번에 해결되어 편리해요." (Ymhymk 회원)\n' +
+                 '• "주변 키즈카페 딜이나 숙박 특가 알림 푸시가 정교해서 실제로 결제를 제일 많이 유도하는 앱입니다." (세린채린맘 회원)', { 
+    x: 0.8, y: 1.8, w: 11, h: 3.8, 
+    fontSize: 14, color: 'CBD5E1', fontFace: 'Noto Sans KR', lineSpacing: 24 
+  });
+
+  // ----------------------------------------------------
+  // Slide 6: 광고 기대 효과 (Expected Campaign ROI)
+  // ----------------------------------------------------
+  const slide6 = pres.addSlide();
+  slide6.background = { color: '0B0D19' };
+  slide6.addText('5. 놀이의발견 광고 제휴 기대 효과', { 
+    x: 0.5, y: 0.4, w: 11, h: 0.6, 
+    fontSize: 24, bold: true, color: 'FF3B30', fontFace: 'Noto Sans KR' 
+  });
+  slide6.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.1, w: 11.0, h: 0.02, fill: { color: '202738' } });
+
+  slide6.addText('• 브랜드 인지도: 3040 육아 패밀리 타겟 인지도 대비 180% 성장 효과 기대\n' +
+                 '• 클릭 유입량: 인덱스 세그먼트 발송 시 일반 배너 대비 CTR 최대 1.5배 증가\n' +
+                 '• 구매 전환율: 장바구니 방치 유저 핀포인트 매칭 시 평균 CVR 12% 보장', { 
+    x: 0.8, y: 1.8, w: 11, h: 3.5, 
+    fontSize: 15, color: 'CBD5E1', fontFace: 'Noto Sans KR', lineSpacing: 26 
+  });
+
+  // ----------------------------------------------------
+  // Slide 7: 광고상품 ① - 스플래쉬 광고 (Splash AD)
+  // ----------------------------------------------------
+  const slide7 = pres.addSlide();
+  slide7.background = { color: '0B0D19' };
+  slide7.addText('6. 광고상품 ①: 스플래쉬 광고 (Splash AD)', { x: 0.5, y: 0.4, w: 11, h: 0.6, fontSize: 24, bold: true, color: 'FF3B30', fontFace: 'Noto Sans KR' });
+  slide7.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.1, w: 11.0, h: 0.02, fill: { color: '202738' } });
+  
+  slide7.addText('• 광고 위치: 앱 구동 인트로 화면 전체\n• 노출 방식: 앱 실행 시 3초간 풀스크린 강제 노출\n• 운영 방식: 주단위 단독 점유 구좌\n• 예상 효율: 예상 CTR 15% ~ 25% | 예상 CVR 12% ~ 25%\n• 추천 업종: 대형 숙박·레저 브랜드, 신규 캠페인 런칭 광고주\n• 광고 가격: 주 490만 원 (정가 700만원)', {
+    x: 0.8, y: 1.8, w: 11, h: 4.0, fontSize: 14, color: 'CBD5E1', fontFace: 'Noto Sans KR', lineSpacing: 24
+  });
+
+  // ----------------------------------------------------
+  // Slide 8: 광고상품 ② - 메인 팝업 배너 (Main Popup)
+  // ----------------------------------------------------
+  const slide8 = pres.addSlide();
+  slide8.background = { color: '0B0D19' };
+  slide8.addText('7. 광고상품 ②: 메인 팝업 배너 (Main Popup)', { x: 0.5, y: 0.4, w: 11, h: 0.6, fontSize: 24, bold: true, color: 'FF3B30', fontFace: 'Noto Sans KR' });
+  slide8.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.1, w: 11.0, h: 0.02, fill: { color: '202738' } });
+
+  slide8.addText('• 광고 위치: 홈 화면 진입 시 중앙 오버레이\n• 노출 방식: 팝업 레이어 형태로 최우선 노출\n• 운영 방식: 월단위 고정 노출\n• 예상 효율: 예상 CTR 10% ~ 15% | 예상 CVR 12% ~ 15%\n• 추천 업종: 뷰티, 외식, 쿠폰/할인 프로모션 타겟 브랜드\n• 광고 가격: 월 200만 원 (정가 350만원)', {
+    x: 0.8, y: 1.8, w: 11, h: 4.0, fontSize: 14, color: 'CBD5E1', fontFace: 'Noto Sans KR', lineSpacing: 24
+  });
+
+  // ----------------------------------------------------
+  // Slide 9: 광고상품 ③ - 메인 배너 광고 (Main Rolling Banner)
+  // ----------------------------------------------------
+  const slide9 = pres.addSlide();
+  slide9.background = { color: '0B0D19' };
+  slide9.addText('8. 광고상품 ③: 메인 배너 광고 (Main Banner)', { x: 0.5, y: 0.4, w: 11, h: 0.6, fontSize: 24, bold: true, color: 'FF3B30', fontFace: 'Noto Sans KR' });
+  slide9.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.1, w: 11.0, h: 0.02, fill: { color: '202738' } });
+
+  slide9.addText('• 광고 위치: 홈 화면 최상단 메인 롤링\n• 노출 방식: 롤링 슬라이드 형태 배너 노출\n• 운영 방식: 월단위 정액 구좌\n• 예상 효율: 예상 CTR 3.5% ~ 5% | 예상 CVR 10% ~ 12%\n• 추천 업종: 패밀리 카테고리 전체, 시즌별 메이저 기획전 광고주\n• 광고 가격: 월 350만 원 (정가 500만원)', {
+    x: 0.8, y: 1.8, w: 11, h: 4.0, fontSize: 14, color: 'CBD5E1', fontFace: 'Noto Sans KR', lineSpacing: 24
+  });
+
+  // ----------------------------------------------------
+  // Slide 10: 광고상품 ④ - 카테고리 GNB 광고 (Category GNB)
+  // ----------------------------------------------------
+  const slide10 = pres.addSlide();
+  slide10.background = { color: '0B0D19' };
+  slide10.addText('9. 광고상품 ④: 카테고리 GNB 광고 (Category GNB)', { x: 0.5, y: 0.4, w: 11, h: 0.6, fontSize: 24, bold: true, color: 'FF3B30', fontFace: 'Noto Sans KR' });
+  slide10.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.1, w: 11.0, h: 0.02, fill: { color: '202738' } });
+
+  slide10.addText('• 광고 위치: 홈화면 GNB 퀵 카테고리 아이콘 영역\n• 노출 방식: 퀵 엠블럼 아이콘 로고 삽입 및 기획 링크 연결\n• 운영 방식: 월단위 고정 배치\n• 예상 효율: 예상 CTR 2.8% ~ 4% | 예상 CVR 9% ~ 10%\n• 추천 업종: 체험학습, 어린이집/아동 도서, 유아 교육 브랜드\n• 광고 가격: 월 175만 원 (정가 250만원)', {
+    x: 0.8, y: 1.8, w: 11, h: 4.0, fontSize: 14, color: 'CBD5E1', fontFace: 'Noto Sans KR', lineSpacing: 24
+  });
+
+  // ----------------------------------------------------
+  // Slide 11: 광고상품 ⑤ - 메인 서브 배너 (Sub Banner)
+  // ----------------------------------------------------
+  const slide11 = pres.addSlide();
+  slide11.background = { color: '0B0D19' };
+  slide11.addText('10. 광고상품 ⑤: 메인 서브 배너 (Sub Banner)', { x: 0.5, y: 0.4, w: 11, h: 0.6, fontSize: 24, bold: true, color: 'FF3B30', fontFace: 'Noto Sans KR' });
+  slide11.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.1, w: 11.0, h: 0.02, fill: { color: '202738' } });
+
+  slide11.addText('• 광고 위치: 홈 화면 중간 및 하단 스크롤 영역 피드 사이\n• 노출 방식: 가로형 슬림 띠배너 고정 노출\n• 운영 방식: 월단위 고정 배치\n• 예상 효율: 예상 CTR 1.8% ~ 3% | 예상 CVR 4% ~ 5%\n• 추천 업종: 패션·쇼핑, 금융 상품, 라이프스타일 생활 브랜드\n• 광고 가격: 월 105만 원 (정가 150만원)', {
+    x: 0.8, y: 1.8, w: 11, h: 4.0, fontSize: 14, color: 'CBD5E1', fontFace: 'Noto Sans KR', lineSpacing: 24
+  });
+
+  // ----------------------------------------------------
+  // Slide 12: 광고상품 ⑥ - 카테고리 상세 배너 (Category Detail Banner)
+  // ----------------------------------------------------
+  const slide12 = pres.addSlide();
+  slide12.background = { color: '0B0D19' };
+  slide12.addText('11. 광고상품 ⑥: 카테고리 상세 배너 (Detail Banner)', { x: 0.5, y: 0.4, w: 11, h: 0.6, fontSize: 24, bold: true, color: 'FF3B30', fontFace: 'Noto Sans KR' });
+  slide12.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.1, w: 11.0, h: 0.02, fill: { color: '202738' } });
+
+  slide12.addText('• 광고 위치: 개별 상품 상세 정보 페이지 하단\n• 노출 방식: 상세페이지 본문 연동 고정 배너\n• 운영 방식: 월단위 고정 노출\n• 예상 효율: 예상 CTR 1.2% ~ 2.5% | 예상 CVR 2.5% ~ 3.5%\n• 추천 업종: 리조트·호텔, 아웃도어·캠핑, 유통 브랜드\n• 광고 가격: 월 70만 원 (정가 100만원)', {
+    x: 0.8, y: 1.8, w: 11, h: 4.0, fontSize: 14, color: 'CBD5E1', fontFace: 'Noto Sans KR', lineSpacing: 24
+  });
+
+  // ----------------------------------------------------
+  // Slide 13: 제휴 문의 및 파트너십 안내 (Ending / CTA)
+  // ----------------------------------------------------
+  const slide13 = pres.addSlide();
+  slide13.background = { color: 'FF3B30' }; // 레드 브랜딩 피날레
+  
+  slide13.addText('놀이의발견과 함께하실 파트너를 기다립니다.', { 
     x: 0.5, y: 1.5, w: 11, h: 1.0, 
     fontSize: 30, bold: true, color: 'FFFFFF', fontFace: 'Noto Sans KR' 
   });
 
-  slide5.addText('■ 제휴 및 광고 집행 문의', { x: 0.6, y: 2.8, w: 10, h: 0.4, fontSize: 18, bold: true, color: 'FFFFFF', fontFace: 'Noto Sans KR' });
-  slide5.addText('• 담당자: 플랫폼통합기획팀 최진호 과장\n• 이메일: luckychoe22@wjcompass.com\n• 연락처: 010-7166-3147\n• 주 소: 서울특별시 서초구 강남대로39길 15-10 웅진컴퍼스 3층', { 
+  slide13.addText('■ 제휴 및 광고 집행 문의', { x: 0.6, y: 2.8, w: 10, h: 0.4, fontSize: 18, bold: true, color: 'FFFFFF', fontFace: 'Noto Sans KR' });
+  slide13.addText('• 담당자: 플랫폼통합기획팀 최진호 과장\n• 이메일: luckychoe22@wjcompass.com\n• 연락처: 010-7166-3147\n• 주 소: 서울특별시 서초구 강남대로39길 15-10 웅진컴퍼스 3층', { 
     x: 0.8, y: 3.3, w: 10, h: 1.8, 
     fontSize: 14, color: 'FFFFFF', fontFace: 'Noto Sans KR', lineSpacing: 24 
   });
 
-  slide5.addText('웅진컴퍼스 | 놀이의발견', { 
+  slide13.addText('웅진컴퍼스 | 놀이의발견', { 
     x: 0.8, y: 5.3, w: 8, h: 0.4, 
     fontSize: 12, color: 'E2E8F0', fontFace: 'Noto Sans KR' 
   });
