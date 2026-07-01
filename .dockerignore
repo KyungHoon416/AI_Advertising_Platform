@@ -1,0 +1,8 @@
+node_modules/
+npm-debug.log
+.env
+.git
+.DS_Store
+Dockerfile
+.dockerignore
+TalkFile_AX 과제 사전 준비 산출물.docx

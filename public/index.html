@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>놀이의발견 AI 광고 플랫폼 대시보드</title>
+  <!-- Google Fonts (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+  <!-- 배경 애니메이션 효과용 그라디언트 구체 -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="bg-glow bg-glow-3"></div>
+
+  <div class="app-container">
+    <!-- 1. 사이드바 네비게이션 -->
+    <aside class="sidebar">
+      <button class="mobile-menu-close" id="btn-mobile-close" aria-label="메뉴 닫기">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="logo-area">
+        <i class="fa-solid fa-wand-magic-sparkles logo-icon"></i>
+        <div class="logo-text">
+          <h2>놀이의발견</h2>
+          <span>AI Advertising Platform</span>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <ul>
+          <li class="nav-item active" data-tab="dashboard-overview" id="nav-dashboard">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>대시보드 개요</span>
+          </li>
+          <li class="nav-item" data-tab="target-segment" id="nav-segment">
+            <i class="fa-solid fa-users-gear"></i>
+            <span>고객 세그먼트 & 추천</span>
+          </li>
+          <li class="nav-item" data-tab="market-research" id="nav-research">
+            <i class="fa-solid fa-magnifying-glass-chart"></i>
+            <span>시장조사 & 경쟁사 분석</span>
+          </li>
+          <li class="nav-item" data-tab="proposal-generator" id="nav-proposal">
+            <i class="fa-solid fa-file-signature"></i>
+            <span>맞춤 제안서 생성</span>
+          </li>
+          <li class="nav-item" data-tab="roi-analyzer" id="nav-roi">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span>성과 분석 & ROI 리포트</span>
+          </li>
+          <li class="nav-item" data-tab="prompt-library" id="nav-prompts">
+            <i class="fa-solid fa-book-bookmark"></i>
+            <span>프롬프트 라이브러리</span>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="api-status">
+          <span class="status-indicator online"></span>
+          <span>API Server: Online</span>
+        </div>
+        <div class="api-key-indicator" id="key-indicator-box">
+          <i class="fa-solid fa-key"></i>
+          <span id="api-key-status">Mock Demo Mode</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 2. 메인 컨텐츠 영역 -->
+    <main class="main-content">
+      <!-- 헤더 -->
+      <header class="main-header">
+        <button class="mobile-menu-toggle" id="btn-mobile-menu" aria-label="메뉴 열기">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="header-left">
+          <h1 id="page-title">대시보드 개요</h1>
+          <p id="page-subtitle">AI 기반 광고 유치 및 광고 운영 자동화 시스템 관리</p>
+        </div>
+        <div class="header-right">
+          <div class="user-profile">
+            <div class="profile-avatar">
+              <i class="fa-solid fa-user-tie"></i>
+            </div>
+            <div class="profile-info">
+              <span class="user-name">운영 담당자</span>
+              <span class="user-role">Administrator</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- 탭 컨텐츠 컨테이너 -->
+      <div class="tab-content-container">
+        
+        <!-- Tab 1: Dashboard Overview -->
+        <section id="dashboard-overview" class="tab-pane active">
+          
+          <!-- AI 원클릭 통합 마스터 발전기 -->
+          <div class="glass-card mt-10" style="background: linear-gradient(135deg, rgba(20, 22, 37, 0.7) 0%, rgba(15, 12, 30, 0.9) 100%); border-color: rgba(0, 242, 254, 0.25);">
+            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+              <div class="card-icon blue" style="width: 48px; height: 48px; font-size: 22px; filter: drop-shadow(0 0 10px rgba(0,242,254,0.3));"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+              <div>
+                <h2 style="font-size: 16px; font-weight: 800; color: #fff;">AI 원클릭 통합 마스터 엔진 (AI Single-Prompt Master Engine)</h2>
+                <p style="color: var(--text-secondary); font-size: 11px; margin-top: 2px;">원하는 마케팅 질문이나 예시 프롬프트를 입력하면 10대 최종 AI 산출물(시장조사, 제안서, ROI, 상품추천 등)을 일괄 자동 생성합니다.</p>
+              </div>
+            </div>
+            
+            <!-- 통합 입력창 -->
+            <div class="form-group">
+              <div style="display: flex; gap: 10px;">
+                <input type="text" id="unified-prompt-input" style="flex:1; background:rgba(0,0,0,0.3); border-color:rgba(255,255,255,0.1);" placeholder="여기에 광고 영업에 관한 질문이나 제안서 요청을 입력하거나 아래의 예시 프롬프트를 클릭하세요." value="풀무원을 대상으로 놀이의발견 광고 제안서를 작성해줘.">
+                <button class="btn btn-primary" id="btn-run-unified-engine" style="padding: 10px 24px;">
+                  <i class="fa-solid fa-arrows-spin"></i> 통합 AI 엔진 가동
+                </button>
+              </div>
+            </div>
+
+            <!-- 예시 프롬프트 퀵 단추 -->
+            <div class="prompt-quick-tags" style="margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px;">
+              <span class="label" style="align-self: center; font-size: 11px; color: var(--text-muted); font-weight: 600; margin-right: 4px;">예시 프롬프트:</span>
+              <button class="btn btn-secondary btn-sm quick-prompt-btn" data-prompt="국내 가족여가 플랫폼 광고 시장 규모와 성장 전망을 분석해줘.">
+                <i class="fa-solid fa-chart-line text-blue"></i> 광고 시장 규모 분석
+              </button>
+              <button class="btn btn-secondary btn-sm quick-prompt-btn" data-prompt="한화리조트, 에버랜드, 네이버 플레이스의 광고 상품과 가격 정책을 비교 분석해줘.">
+                <i class="fa-solid fa-compress text-purple"></i> 경쟁 플랫폼 비교
+              </button>
+              <button class="btn btn-secondary btn-sm quick-prompt-btn" data-prompt="30~40대 자녀를 둔 가족 고객에게 적합한 광고주를 100개 추천하고 추천 이유를 작성해줘.">
+                <i class="fa-solid fa-users text-teal"></i> 가족 타겟 광고주 추천
+              </button>
+              <button class="btn btn-secondary btn-sm quick-prompt-btn active" data-prompt="풀무원을 대상으로 놀이의발견 광고 제안서를 작성해줘.">
+                <i class="fa-solid fa-file-signature text-teal"></i> 풀무원 제안서 작성
+              </button>
+              <button class="btn btn-secondary btn-sm quick-prompt-btn" data-prompt="광고 성과 데이터를 기반으로 개선 방안을 제안해줘.">
+                <i class="fa-solid fa-calculator text-orange"></i> 성과 기반 개선 분석
+              </button>
+            </div>
+          </div>
+
+          <!-- 10대 최종 산출물 통합 결과 대시보드 뷰 -->
+          <div class="grid-layout mt-20" id="unified-output-area">
+            
+            <!-- 좌측: 10대 AI 기능 결과 리스트 (아코디언 형태) -->
+            <div class="glass-card flex-2">
+              <div class="card-header justify-between" style="margin-bottom: 12px;">
+                <h3><i class="fa-solid fa-square-poll-horizontal text-teal"></i> AI 10대 최종 산출물 일괄 로드 결과지</h3>
+                <span class="header-badge" id="unified-status-badge">대기 중</span>
+              </div>
+              
+              <div class="deliverables-accordion" id="deliverables-accordion-container">
+                <!-- 1. AI 광고주 추천 -->
+                <div class="accordion-item" id="deliv-1">
+                  <div class="accordion-header">
+                    <span class="icon"><i class="fa-solid fa-circle-check"></i></span>
+                    <span class="title">1. AI 광고주 추천</span>
+                    <span class="badge">AI 분석</span>
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                  </div>
+                  <div class="accordion-content markdown-body">
+                    <p class="text-muted">통합 AI 엔진을 가동하면 실시간 광고주 추천 정보가 이곳에 렌더링됩니다.</p>
+                  </div>
+                </div>
+
+                <!-- 2. AI 시장조사 -->
+                <div class="accordion-item" id="deliv-2">
+                  <div class="accordion-header">
+                    <span class="icon"><i class="fa-solid fa-circle-check"></i></span>
+                    <span class="title">2. AI 시장조사</span>
+                    <span class="badge">Gemini</span>
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                  </div>
+                  <div class="accordion-content markdown-body">
+                    <p class="text-muted">시장 규모 및 동향 보고서 대기 중...</p>
+                  </div>
+                </div>
+
+                <!-- 3. AI 경쟁사 분석 -->
+                <div class="accordion-item" id="deliv-3">
+                  <div class="accordion-header">
+                    <span class="icon"><i class="fa-solid fa-circle-check"></i></span>
+                    <span class="title">3. AI 경쟁사 분석</span>
+                    <span class="badge">Gemini</span>
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                  </div>
+                  <div class="accordion-content markdown-body">
+                    <p class="text-muted">경쟁 플랫폼 비교표 대기 중...</p>
+                  </div>
+                </div>
+
+                <!-- 4. AI 맞춤형 광고 제안서 생성 -->
+                 <div class="accordion-item" id="deliv-4">
+                  <div class="accordion-header">
+                    <span class="icon"><i class="fa-solid fa-circle-check"></i></span>
+                    <span class="title">4. AI 맞춤형 광고 제안서 생성</span>
+                    <span class="badge">핵심 산출물</span>
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                  </div>
+                  <div class="accordion-content markdown-body">
+                    <div class="proposal-markdown-target">
+                      <p class="text-muted">광고 제안서 마크다운 대기 중...</p>
+                    </div>
+                    <div class="pptx-download-wrapper" id="acc-pptx-wrapper" style="margin-top: 15px; display: none; border-top: 1px dashed var(--card-border); padding-top: 15px;">
+                      <button class="btn btn-secondary btn-sm" id="btn-acc-download-pptx"><i class="fa-solid fa-file-powerpoint text-orange"></i> PPTX 제안서 다운로드</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 5. AI 광고 상품 추천 -->
+                <div class="accordion-item" id="deliv-5">
+                  <div class="accordion-header">
+                    <span class="icon"><i class="fa-solid fa-circle-check"></i></span>
+                    <span class="title">5. AI 광고 상품 추천</span>
+                    <span class="badge">AI 분석</span>
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                  </div>
+                  <div class="accordion-content markdown-body">
+                    <p class="text-muted">세그먼트 맞춤 광고 지면 제안 대기 중...</p>
+                  </div>
+                </div>
+
+                <!-- 6. AI 광고 성과 분석 -->
+                <div class="accordion-item" id="deliv-6">
+                  <div class="accordion-header">
+                    <span class="icon"><i class="fa-solid fa-circle-check"></i></span>
+                    <span class="title">6. AI 광고 성과 분석</span>
+                    <span class="badge">자동 계산</span>
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                  </div>
+                  <div class="accordion-content markdown-body">
+                    <p class="text-muted">CTR 및 CVR 광고 효율 통계 분석 대기 중...</p>
+                  </div>
+                </div>
+
+                <!-- 7. AI ROI 리포트 -->
+                <div class="accordion-item" id="deliv-7">
+                  <div class="accordion-header">
+                    <span class="icon"><i class="fa-solid fa-circle-check"></i></span>
+                    <span class="title">7. AI ROI 리포트</span>
+                    <span class="badge">Gemini</span>
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                  </div>
+                  <div class="accordion-content markdown-body">
+                    <p class="text-muted">광고수익률(ROAS) 종합 피드백 대기 중...</p>
+                  </div>
+                </div>
+
+                <!-- 8. AI 재계약 및 업셀링 추천 -->
+                <div class="accordion-item" id="deliv-8">
+                  <div class="accordion-header">
+                    <span class="icon"><i class="fa-solid fa-circle-check"></i></span>
+                    <span class="title">8. AI 재계약 및 업셀링 추천</span>
+                    <span class="badge">액션 플랜</span>
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                  </div>
+                  <div class="accordion-content markdown-body">
+                    <p class="text-muted">재계약/업셀링 3대 권장방안 대기 중...</p>
+                  </div>
+                </div>
+
+                <!-- 9. AI Prompt Library 구축 -->
+                <div class="accordion-item" id="deliv-9">
+                  <div class="accordion-header">
+                    <span class="icon"><i class="fa-solid fa-circle-check"></i></span>
+                    <span class="title">9. AI Prompt Library 구축</span>
+                    <span class="badge">표준화</span>
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                  </div>
+                  <div class="accordion-content markdown-body">
+                    <p class="text-muted">템플릿 확인 대기 중...</p>
+                  </div>
+                </div>
+
+                <!-- 10. AI Agent 기반 광고 운영 지원 -->
+                <div class="accordion-item" id="deliv-10">
+                  <div class="accordion-header">
+                    <span class="icon"><i class="fa-solid fa-circle-check"></i></span>
+                    <span class="title">10. AI Agent 기반 광고 운영 지원</span>
+                    <span class="badge">상시 에이전트</span>
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                  </div>
+                  <div class="accordion-content markdown-body">
+                    <p class="text-muted">에이전트 권장 가이드 대기 중...</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 우측: 7대 비즈니스 운영 효과 (달성 상태 현황판) -->
+            <div class="glass-card flex-1" style="display: flex; flex-direction: column;">
+              <div class="card-header" style="margin-bottom: 12px;">
+                <h3><i class="fa-solid fa-chart-line text-purple"></i> 7대 비즈니스 운영 효과 (Outcomes)</h3>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 8px; flex: 1; justify-content: center;">
+                <div class="roadmap-item outcome-item" id="out-1" style="border-color: rgba(255,255,255,0.06); padding: 8px 12px; gap: 10px; opacity: 0.5; transition: var(--transition-smooth);">
+                  <div class="roadmap-status" style="color: var(--text-muted);"><i class="fa-solid fa-circle-notch"></i></div>
+                  <div class="roadmap-info">
+                    <h4 style="color: #fff; font-size:12px; font-weight:600;">1. 영업 담당자 의존도 최소화</h4>
+                    <p style="font-size:10px; margin-top:0;">시장분석 및 제안 자동화로 개별 인적 역량 극복</p>
+                  </div>
+                </div>
+                <div class="roadmap-item outcome-item" id="out-2" style="border-color: rgba(255,255,255,0.06); padding: 8px 12px; gap: 10px; opacity: 0.5; transition: var(--transition-smooth);">
+                  <div class="roadmap-status" style="color: var(--text-muted);"><i class="fa-solid fa-circle-notch"></i></div>
+                  <div class="roadmap-info">
+                    <h4 style="color: #fff; font-size:12px; font-weight:600;">2. 일반 운영 담당자도 운영 가능</h4>
+                    <p style="font-size:10px; margin-top:0;">표준화된 프롬프트 라이브러리를 활용한 원스톱 운영</p>
+                  </div>
+                </div>
+                <div class="roadmap-item outcome-item" id="out-3" style="border-color: rgba(255,255,255,0.06); padding: 8px 12px; gap: 10px; opacity: 0.5; transition: var(--transition-smooth);">
+                  <div class="roadmap-status" style="color: var(--text-muted);"><i class="fa-solid fa-circle-notch"></i></div>
+                  <div class="roadmap-info">
+                    <h4 style="color: #fff; font-size:12px; font-weight:600;">3. 시장조사/경쟁사 분석 자동화</h4>
+                    <p style="font-size:10px; margin-top:0;">수작업 조사 방식을 탈피하여 5초 만에 동향 수집</p>
+                  </div>
+                </div>
+                <div class="roadmap-item outcome-item" id="out-4" style="border-color: rgba(255,255,255,0.06); padding: 8px 12px; gap: 10px; opacity: 0.5; transition: var(--transition-smooth);">
+                  <div class="roadmap-status" style="color: var(--text-muted);"><i class="fa-solid fa-circle-notch"></i></div>
+                  <div class="roadmap-info">
+                    <h4 style="color: #fff; font-size:12px; font-weight:600;">4. 광고 운영 표준화</h4>
+                    <p style="font-size:10px; margin-top:0;">동일한 데이터 기준에 따른 객관적인 매칭 품질</p>
+                  </div>
+                </div>
+                <div class="roadmap-item outcome-item" id="out-5" style="border-color: rgba(255,255,255,0.06); padding: 8px 12px; gap: 10px; opacity: 0.5; transition: var(--transition-smooth);">
+                  <div class="roadmap-status" style="color: var(--text-muted);"><i class="fa-solid fa-circle-notch"></i></div>
+                  <div class="roadmap-info">
+                    <h4 style="color: #fff; font-size:12px; font-weight:600;">5. 운영 비용 절감</h4>
+                    <p style="font-size:10px; margin-top:0;">제안서 기획/조사/리포트 업무 공수 최대 85% 감축</p>
+                  </div>
+                </div>
+                <div class="roadmap-item outcome-item" id="out-6" style="border-color: rgba(255,255,255,0.06); padding: 8px 12px; gap: 10px; opacity: 0.5; transition: var(--transition-smooth);">
+                  <div class="roadmap-status" style="color: var(--text-muted);"><i class="fa-solid fa-circle-notch"></i></div>
+                  <div class="roadmap-info">
+                    <h4 style="color: #fff; font-size:12px; font-weight:600;">6. 광고 매출 확대</h4>
+                    <p style="font-size:10px; margin-top:0;">정밀 데이터를 바탕으로 신뢰성 높은 제안 및 업셀링</p>
+                  </div>
+                </div>
+                <div class="roadmap-item outcome-item" id="out-7" style="border-color: rgba(255,255,255,0.06); padding: 8px 12px; gap: 10px; opacity: 0.5; transition: var(--transition-smooth);">
+                  <div class="roadmap-status" style="color: var(--text-muted);"><i class="fa-solid fa-circle-notch"></i></div>
+                  <div class="roadmap-info">
+                    <h4 style="color: #fff; font-size:12px; font-weight:600;">7. 데이터 기반 의사결정 체계 구축</h4>
+                    <p style="font-size:10px; margin-top:0;">행동 스코어링 및 ROI 자동 계산으로 마케팅 고도화</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 2: Target Segment & Recommendation -->
+        <section id="target-segment" class="tab-pane">
+          <div class="grid-layout">
+            <!-- 필터 패널 -->
+            <div class="glass-card flex-1">
+              <div class="card-header">
+                <h3><i class="fa-solid fa-filter"></i> 내부 회원 행동 데이터 필터</h3>
+              </div>
+              <form id="segment-filter-form" class="filter-form">
+                <div class="form-group">
+                  <label for="filter-gender">성별</label>
+                  <select id="filter-gender">
+                    <option value="전체">전체</option>
+                    <option value="남성">남성</option>
+                    <option value="여성">여성</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="filter-age">연령대</label>
+                  <select id="filter-age">
+                    <option value="전체">전체</option>
+                    <option value="20대">20대</option>
+                    <option value="30대" selected>30대</option>
+                    <option value="40대">40대</option>
+                    <option value="50대이상">50대이상</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="filter-location">활동 지역</label>
+                  <select id="filter-location">
+                    <option value="전체">전체</option>
+                    <option value="서울">서울</option>
+                    <option value="경기" selected>경기</option>
+                    <option value="부산">부산</option>
+                    <option value="대구">대구</option>
+                    <option value="광주">광주</option>
+                    <option value="인천">인천</option>
+                    <option value="기타">기타 (제주 등)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="filter-period">가입 기간</label>
+                  <select id="filter-period">
+                    <option value="전체">전체</option>
+                    <option value="1개월미만">1개월 미만</option>
+                    <option value="1-6개월">1~6개월</option>
+                    <option value="6개월-1년">6개월~1년</option>
+                    <option value="1년이상" selected>1년 이상</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="filter-favorite">선호 카테고리</label>
+                  <select id="filter-favorite">
+                    <option value="전체">전체</option>
+                    <option value="여행·숙박">🏨 여행·숙박</option>
+                    <option value="레저·테마파크">🎡 레저·테마파크</option>
+                    <option value="외식">🍽️ 외식</option>
+                    <option value="패스트푸드">🍔 패스트푸드</option>
+                    <option value="치킨">🍗 치킨</option>
+                    <option value="카페">☕ 카페</option>
+                    <option value="식품">🥗 식품</option>
+                    <option value="패션">👕 패션</option>
+                    <option value="뷰티">💄 뷰티</option>
+                    <option value="쇼핑·커머스">🛒 쇼핑·커머스</option>
+                    <option value="금융">💳 금융</option>
+                    <option value="자동차">🚗 자동차</option>
+                    <option value="IT·전자">📱 IT·전자</option>
+                    <option value="게임">🎮 게임</option>
+                    <option value="교육">📚 교육</option>
+                    <option value="육아">👶 육아</option>
+                    <option value="헬스케어">🏥 헬스케어</option>
+                    <option value="캠핑·아웃도어">🏕️ 캠핑·아웃도어</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full mt-10" id="btn-apply-filter">
+                  <i class="fa-solid fa-calculator"></i> 세그먼트 집계 및 분석
+                </button>
+              </form>
+            </div>
+
+            <!-- 세그먼트 집계 지표 -->
+            <div class="glass-card flex-2">
+              <div class="card-header">
+                <h3><i class="fa-solid fa-chart-simple"></i> 세그먼트 집계 지표</h3>
+              </div>
+              <div class="segment-metrics-view">
+                <div class="segment-size-box">
+                  <span class="label">대상 고객 규모 (모수)</span>
+                  <h2 id="view-segment-count">0명</h2>
+                  <p class="desc">전체 모수 5,000명 중 필터링된 진성 회원 수</p>
+                </div>
+                <div class="segment-detail-stats">
+                  <div class="stat-row">
+                    <span class="stat-label">평균 찜 수 (최근 30일)</span>
+                    <span class="stat-val" id="view-avg-wish">0회</span>
+                  </div>
+                  <div class="stat-row">
+                    <span class="stat-label">평균 장바구니 등록 수</span>
+                    <span class="stat-val" id="view-avg-cart">0회</span>
+                  </div>
+                  <div class="stat-row">
+                    <span class="stat-label">평균 예약/구매 횟수</span>
+                    <span class="stat-val" id="view-avg-purchase">0회</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- AI 광고주 정밀 추천 리스트 -->
+              <div class="mt-20">
+                <h4 class="sub-section-title"><i class="fa-solid fa-star text-yellow"></i> 내부 데이터 기반 광고 적합도 매칭 브랜드</h4>
+                <div class="table-container">
+                  <table class="data-table" id="table-matched-advertisers">
+                    <thead>
+                      <tr>
+                        <th>브랜드명</th>
+                        <th>카테고리</th>
+                        <th>지역</th>
+                        <th>과거 광고 이력</th>
+                        <th>적합 스코어</th>
+                        <th>액션</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- JS 동적 주입 -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI 추천 리포트 결과 영역 -->
+          <div class="grid-layout mt-20 hidden" id="segment-report-area">
+            <div class="glass-card flex-1">
+              <div class="card-header justify-between">
+                <h3><i class="fa-solid fa-robot text-purple"></i> AI 심층 추천 분석 의견</h3>
+                <button class="btn btn-secondary btn-sm" id="btn-copy-segment-report"><i class="fa-solid fa-copy"></i> 복사</button>
+              </div>
+              <div class="report-content markdown-body" id="segment-report-body">
+                <!-- AI 추천 리포트 결과물 -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 3: Market Research & Competitor Analysis -->
+        <section id="market-research" class="tab-pane">
+          <div class="grid-layout">
+            <!-- 시장조사 입력창 -->
+            <div class="glass-card flex-1">
+              <div class="card-header">
+                <h3><i class="fa-solid fa-chart-line"></i> AI 시장조사 (Phase 2)</h3>
+              </div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="research-industry">조사 대상 산업/업종</label>
+                  <input type="text" id="research-industry" placeholder="예: 키즈카페, 가족 글램핑, 어린이 미술체험" value="가족 여가 키즈카페">
+                </div>
+                <button class="btn btn-primary btn-full mt-10" id="btn-run-research">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> AI 시장 트렌드 조사 실행
+                </button>
+              </div>
+            </div>
+
+            <!-- 경쟁사 분석 입력창 -->
+            <div class="glass-card flex-1">
+              <div class="card-header">
+                <h3><i class="fa-solid fa-building-columns"></i> 경쟁사 비교 분석 (Phase 2)</h3>
+              </div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="competitor-list">비교 대상 경쟁 서비스들 (쉼표 구분)</label>
+                  <input type="text" id="competitor-list" placeholder="예: 야놀자, 여기어때, 네이버플레이스" value="야놀자, 여기어때, 네이버 플레이스">
+                </div>
+                <button class="btn btn-secondary-neon btn-full mt-10" id="btn-run-competitor">
+                  <i class="fa-solid fa-compress"></i> AI 경쟁사 비교표 생성
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI 리포트 결과 창 -->
+          <div class="grid-layout mt-20 hidden" id="research-result-area">
+            <div class="glass-card flex-1">
+              <div class="card-header justify-between">
+                <h3 id="research-result-title"><i class="fa-solid fa-square-poll-horizontal"></i> AI 시장 분석 결과물</h3>
+                <button class="btn btn-secondary btn-sm" id="btn-copy-research-report"><i class="fa-solid fa-copy"></i> 복사</button>
+              </div>
+              <div class="report-content markdown-body" id="research-result-body">
+                <!-- 결과 렌더링 -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 4: AI 맞춤 제안서 생성 -->
+        <section id="proposal-generator" class="tab-pane">
+          <div class="grid-layout">
+            <div class="glass-card flex-1">
+              <div class="card-header">
+                <h3><i class="fa-solid fa-file-invoice"></i> 제안서 대상 파트너 및 상세 설정</h3>
+              </div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="proposal-client-name">제안 대상 업체명 (Client)</label>
+                  <input type="text" id="proposal-client-name" placeholder="예: 뽀로로 파크, 풀무원 키즈관" value="풀무원">
+                </div>
+                <div class="form-group">
+                  <label for="proposal-target-segment">타겟 고객 세그먼트 (참조)</label>
+                  <input type="text" id="proposal-target-segment" value="3040 경기 거주 가족 고객 (선호: 테마파크, 찜수 상위)" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="proposal-ad-type">추천 광고 지면 패키지</label>
+                  <select id="proposal-ad-type">
+                    <option value="all">풀패키지 (홈 배너 + 타겟팅 푸시 + 전용 기획전)</option>
+                    <option value="push">정밀 푸시 알림 패키지</option>
+                    <option value="banner">프리미엄 메인 홈 배너 패키지</option>
+                  </select>
+                </div>
+                <button class="btn btn-primary btn-full mt-10" id="btn-generate-proposal">
+                  <i class="fa-solid fa-file-powerpoint"></i> AI 맞춤 광고 제안서 생성 (Phase 3)
+                </button>
+              </div>
+            </div>
+
+            <!-- 제안서 출력 영역 -->
+            <div class="glass-card flex-2">
+              <div class="card-header justify-between">
+                <h3><i class="fa-solid fa-scroll text-teal"></i> 제안서 미리보기 및 편집</h3>
+                <div class="btn-group">
+                  <button class="btn btn-secondary btn-sm" id="btn-copy-proposal"><i class="fa-solid fa-copy"></i> 복사</button>
+                  <button class="btn btn-secondary btn-sm" id="btn-download-pptx" style="display: none;"><i class="fa-solid fa-file-powerpoint text-orange"></i> PPTX 다운로드</button>
+                  <button class="btn btn-primary btn-sm" id="btn-print-proposal"><i class="fa-solid fa-print"></i> PDF/인쇄</button>
+                </div>
+              </div>
+              <div class="report-content markdown-body" id="proposal-result-body">
+                <div class="placeholder-text">
+                  <i class="fa-solid fa-file-lines"></i>
+                  <p>좌측의 설정을 입력하고 <strong>AI 맞춤 광고 제안서 생성</strong> 버튼을 클릭하면 제안서 초안이 생성됩니다.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 5: AI ROI & 성과 분석 -->
+        <section id="roi-analyzer" class="tab-pane">
+          <div class="grid-layout">
+            <!-- 캠페인 이력 & 데이터 입력 -->
+            <div class="glass-card flex-1">
+              <div class="card-header">
+                <h3><i class="fa-solid fa-database"></i> 최근 집행 광고 데이터 입력</h3>
+              </div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="roi-partner-select">집행 파트너사 선택</label>
+                  <select id="roi-partner-select">
+                    <!-- JS 로드 -->
+                  </select>
+                </div>
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="roi-input-impressions">노출수 (Impressions)</label>
+                    <input type="number" id="roi-input-impressions" value="120000">
+                  </div>
+                  <div class="form-group">
+                    <label for="roi-input-clicks">클릭수 (Clicks)</label>
+                    <input type="number" id="roi-input-clicks" value="3600">
+                  </div>
+                </div>
+                <div class="form-group-row mt-10">
+                  <div class="form-group">
+                    <label for="roi-input-conversions">전환수 (Conversions)</label>
+                    <input type="number" id="roi-input-conversions" value="450">
+                  </div>
+                  <div class="form-group">
+                    <label for="roi-input-spend">광고 집행비 (Spend, 원)</label>
+                    <input type="number" id="roi-input-spend" value="1500000">
+                  </div>
+                </div>
+                <div class="form-group mt-10">
+                  <label for="roi-input-revenue">발생 예약 매출 (Revenue, 원)</label>
+                  <input type="number" id="roi-input-revenue" value="4500000">
+                </div>
+                <button class="btn btn-primary btn-full mt-20" id="btn-run-roi-analysis">
+                  <i class="fa-solid fa-calculator"></i> AI ROI & 성과 진단 실행 (Phase 4)
+                </button>
+              </div>
+            </div>
+
+            <!-- 성과 지표 대시보드 & 리포트 -->
+            <div class="glass-card flex-2">
+              <div class="card-header justify-between">
+                <h3><i class="fa-solid fa-chart-line text-blue"></i> 성과 지표 진단 및 피드백</h3>
+                <button class="btn btn-secondary btn-sm" id="btn-copy-roi-report"><i class="fa-solid fa-copy"></i> 복사</button>
+              </div>
+              <div class="card-body">
+                <!-- 계산된 핵심 효율 성적 표시 -->
+                <div class="stats-summary-bar">
+                  <div class="summary-item">
+                    <span class="label">클릭률 (CTR)</span>
+                    <span class="val text-blue" id="roi-calc-ctr">0.00%</span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="label">전환율 (CVR)</span>
+                    <span class="val text-purple" id="roi-calc-cvr">0.00%</span>
+                  </div>
+                  <div class="summary-item">
+                    <span class="label">ROAS (광고비 대비 매출)</span>
+                    <span class="val text-green" id="roi-calc-roas">0%</span>
+                  </div>
+                </div>
+
+                <div class="report-content markdown-body mt-20" id="roi-result-body">
+                  <div class="placeholder-text">
+                    <i class="fa-solid fa-chart-bar"></i>
+                    <p>광고 데이터를 선택하거나 수동 입력한 뒤, <strong>AI ROI & 성과 진단 실행</strong> 버튼을 눌러 피드백 리포트를 생성해 주세요.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 6: Prompt Library -->
+        <section id="prompt-library" class="tab-pane">
+          <div class="glass-card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-book"></i> Prompt Library (운영 표준화 관리자)</h3>
+              <span class="header-badge">AI Prompt Templates</span>
+            </div>
+            <div class="prompt-grid mt-20" id="prompt-templates-container">
+              <!-- JS 동적 렌더링 -->
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="loading-overlay hidden">
+    <div class="loader-container">
+      <div class="loader-spinner"></div>
+      <p id="loading-message">AI가 보고서를 정교하게 조율 중입니다...</p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
