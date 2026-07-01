@@ -897,6 +897,60 @@ select:focus {
   color: var(--text-primary);
 }
 
+.proposal-hero-card {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.4fr) minmax(220px, 1fr);
+  gap: 18px;
+  align-items: stretch;
+  margin: 18px 0 22px;
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 18px;
+  background: rgba(255,255,255,0.045);
+  page-break-inside: avoid;
+}
+
+.proposal-hero-card img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: #101422;
+}
+
+.proposal-hero-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.proposal-hero-meta strong {
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.proposal-hero-meta span {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.proposal-hero-meta small {
+  color: var(--text-muted);
+  font-size: 11px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 768px) {
+  .proposal-hero-card {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* 12. 성과 분석 요약 바 */
 .stats-summary-bar {
   display: flex;
@@ -1290,5 +1344,4 @@ select:focus {
     max-height: 400px;
   }
 }
-
 

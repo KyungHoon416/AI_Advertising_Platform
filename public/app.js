@@ -209,6 +209,96 @@ document.addEventListener('DOMContentLoaded', () => {
     return html;
   }
 
+  function createHeroSvgDataUrl(pageNo) {
+    const accents = ['FF3B30', 'FF9500', '10B981', '86EFAC', 'FACC15', 'FF3B30', '00F2FE', '4F46E5', 'D97706', '6366F1', 'A7F3D0', 'FBBF24', 'FF3B30'];
+    const accent = accents[(pageNo - 1) % accents.length];
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+        <defs>
+          <radialGradient id="glow" cx="70%" cy="30%" r="65%">
+            <stop offset="0%" stop-color="#${accent}" stop-opacity="0.5"/>
+            <stop offset="52%" stop-color="#ffffff" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="#0B0D19" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="glass" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.62"/>
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0.12"/>
+          </linearGradient>
+          <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="30" stdDeviation="36" flood-color="#000000" flood-opacity="0.24"/>
+          </filter>
+          <filter id="blur"><feGaussianBlur stdDeviation="18"/></filter>
+        </defs>
+        <rect width="1600" height="900" rx="64" fill="#101422"/>
+        <rect width="1600" height="900" rx="64" fill="url(#glow)"/>
+        <circle cx="1180" cy="210" r="180" fill="#${accent}" opacity="0.28" filter="url(#blur)"/>
+        <circle cx="1320" cy="650" r="260" fill="#ffffff" opacity="0.10" filter="url(#blur)"/>
+        <g filter="url(#shadow)">
+          <rect x="205" y="154" width="970" height="560" rx="54" fill="url(#glass)" stroke="#ffffff" stroke-opacity="0.38" stroke-width="2"/>
+          <rect x="280" y="230" width="410" height="52" rx="26" fill="#ffffff" opacity="0.28"/>
+          <rect x="280" y="322" width="660" height="34" rx="17" fill="#ffffff" opacity="0.18"/>
+          <rect x="280" y="380" width="520" height="34" rx="17" fill="#ffffff" opacity="0.13"/>
+          <path d="M296 590 C 440 500, 555 612, 704 500 S 995 418, 1098 312" fill="none" stroke="#${accent}" stroke-width="18" stroke-linecap="round" opacity="0.88"/>
+          <circle cx="296" cy="590" r="24" fill="#ffffff"/>
+          <circle cx="704" cy="500" r="24" fill="#ffffff"/>
+          <circle cx="1098" cy="312" r="24" fill="#ffffff"/>
+        </g>
+        <g opacity="0.86">
+          <rect x="1056" y="480" width="260" height="260" rx="50" fill="#ffffff" opacity="0.18"/>
+          <rect x="1160" y="322" width="260" height="260" rx="50" fill="#${accent}" opacity="0.5"/>
+          <rect x="1222" y="404" width="172" height="172" rx="40" fill="#ffffff" opacity="0.24"/>
+        </g>
+      </svg>`;
+    return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
+  }
+
+  function extractField(section, label) {
+    const pattern = new RegExp(`\\* \\*\\*${label}\\*\\*:([^\\n]+)`);
+    const match = section.match(pattern);
+    return match ? match[1].trim() : '';
+  }
+
+  function buildProposalHeroMap(mdText) {
+    const map = {};
+    const sections = mdText.split(/\n(?=###\s*📄\s*Page\s*\d+)/);
+    sections.forEach(section => {
+      const pageMatch = section.match(/###\s*📄\s*Page\s*(\d+)/);
+      if (!pageMatch) return;
+      const pageNo = Number(pageMatch[1]);
+      map[pageNo] = {
+        description: extractField(section, '⑧ Hero Image 설명'),
+        prompt: extractField(section, '⑨ AI 이미지 생성 Prompt \\(영문\\)'),
+        negative: extractField(section, '⑩ Negative Prompt'),
+        concept: extractField(section, 'Image Concept'),
+        ratio: extractField(section, 'Aspect Ratio') || '16:9'
+      };
+    });
+    return map;
+  }
+
+  function injectProposalHeroCards(html, mdText) {
+    const heroMap = buildProposalHeroMap(mdText);
+    return html.replace(/<h3>(.*?)Page\s*(\d+):(.*?)<\/h3>/g, (match, prefix, pageNoText, suffix) => {
+      const pageNo = Number(pageNoText);
+      const hero = heroMap[pageNo];
+      if (!hero) return match;
+      return `${match}
+        <div class="proposal-hero-card">
+          <img src="${createHeroSvgDataUrl(pageNo)}" alt="Page ${pageNo} premium hero visual">
+          <div class="proposal-hero-meta">
+            <strong>Premium Hero Image</strong>
+            <span>${hero.description || hero.concept || 'PPTX/PDF 삽입용 프리미엄 히어로 이미지'}</span>
+            <small>Prompt: ${hero.prompt || 'Image prompt will be generated from page context.'}</small>
+            <small>Negative: ${hero.negative || 'text, logo, watermark, low quality'} / ${hero.ratio}</small>
+          </div>
+        </div>`;
+    });
+  }
+
+  function renderProposalMarkdown(mdText) {
+    return injectProposalHeroCards(parseMarkdown(mdText), mdText);
+  }
+
   // ----------------------------------------------------
   // clipboard copy & print helper
   // ----------------------------------------------------
@@ -255,6 +345,12 @@ document.addEventListener('DOMContentLoaded', () => {
               table { width: 100%; border-collapse: collapse; margin: 20px 0; }
               th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
               th { background-color: #f5f5f5; }
+              .proposal-hero-card { display: grid; grid-template-columns: 1.4fr 1fr; gap: 18px; margin: 18px 0 24px; padding: 14px; border: 1px solid #e5e7eb; border-radius: 16px; background: #f8fafc; page-break-inside: avoid; }
+              .proposal-hero-card img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; background: #101422; }
+              .proposal-hero-meta { display: flex; flex-direction: column; justify-content: center; gap: 8px; min-width: 0; }
+              .proposal-hero-meta strong { font-size: 14px; color: #111827; }
+              .proposal-hero-meta span { font-size: 12px; color: #374151; }
+              .proposal-hero-meta small { font-size: 10px; color: #6b7280; overflow-wrap: anywhere; }
             </style>
           </head>
           <body>
@@ -514,7 +610,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await res.json();
         hideLoading();
         if (data.success) {
-          proposalBody.innerHTML = parseMarkdown(data.report);
+          proposalBody.innerHTML = renderProposalMarkdown(data.report);
           // PPTX 다운로드 버튼 노출 및 캐싱
           const pptBtn = document.getElementById('btn-download-pptx');
           if (pptBtn) pptBtn.style.display = 'inline-block';
@@ -833,7 +929,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const deliv4 = document.getElementById('deliv-4');
         if (deliv4) {
           const mdTarget = deliv4.querySelector('.proposal-markdown-target');
-          if (mdTarget) mdTarget.innerHTML = parseMarkdown(propData.report);
+          if (mdTarget) mdTarget.innerHTML = renderProposalMarkdown(propData.report);
           const wrapper = document.getElementById('acc-pptx-wrapper');
           if (wrapper) wrapper.style.display = 'block';
         }
@@ -987,4 +1083,3 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnAccDownloadPptx) btnAccDownloadPptx.addEventListener('click', downloadPPTX);
 
 });
-
