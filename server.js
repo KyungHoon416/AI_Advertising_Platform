@@ -478,7 +478,8 @@ ${recoRows}`;
     const aiText = await generateAIResponse(prompt, mockResponse);
     res.json({ success: true, report: aiText });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    console.warn("AI API limit/error. Fallback to mock:", error.message);
+    res.json({ success: true, report: mockResponse, isFallback: true });
   }
 });
 
@@ -503,7 +504,8 @@ app.post('/api/ai/market-research', async (req, res) => {
     const aiText = await generateAIResponse(prompt, mockResponse);
     res.json({ success: true, report: aiText });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    console.warn("AI API limit/error. Fallback to mock:", error.message);
+    res.json({ success: true, report: mockResponse, isFallback: true });
   }
 });
 
@@ -529,7 +531,8 @@ app.post('/api/ai/competitor-analysis', async (req, res) => {
     const aiText = await generateAIResponse(prompt, mockResponse);
     res.json({ success: true, report: aiText });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    console.warn("AI API limit/error. Fallback to mock:", error.message);
+    res.json({ success: true, report: mockResponse, isFallback: true });
   }
 });
 
@@ -569,7 +572,8 @@ app.post('/api/ai/proposal', async (req, res) => {
     const aiText = await generateAIResponse(prompt, mockResponse);
     res.json({ success: true, report: aiText });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    console.warn("AI API limit/error. Fallback to mock:", error.message);
+    res.json({ success: true, report: mockResponse, isFallback: true });
   }
 });
 
@@ -621,7 +625,8 @@ app.post('/api/ai/roi-report', async (req, res) => {
     const aiText = await generateAIResponse(prompt, mockResponse);
     res.json({ success: true, report: aiText, calculated: { ctr, cvr, roas } });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    console.warn("AI API limit/error. Fallback to mock:", error.message);
+    res.json({ success: true, report: mockResponse, calculated: { ctr, cvr, roas }, isFallback: true });
   }
 });
 
