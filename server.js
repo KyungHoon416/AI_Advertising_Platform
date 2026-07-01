@@ -642,50 +642,69 @@ app.post('/api/ai/proposal/download', async (req, res) => {
 
   pres.layout = 'LAYOUT_16x9';
 
-  // Slide 1: Cover Slide
+  // Slide 1: Cover Slide (놀이의발견 공식 레드 테마)
   const slide1 = pres.addSlide();
-  slide1.background = { color: '0A0E1A' };
+  slide1.background = { color: 'FF3B30' }; // 놀이의발견 강렬한 레드 브랜딩 톤
   
-  // Neon Blue Bar
-  slide1.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.5, w: 0.1, h: 4.0, fill: { color: '00F2FE' } });
+  // Decorative white line
+  slide1.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.5, w: 0.05, h: 4.0, fill: { color: 'FFFFFF' } });
 
-  slide1.addText('놀이의발견 AI 맞춤형 광고 제안서', { 
+  slide1.addText('놀이의발견 광고 마케팅 제안서', { 
     x: 0.8, y: 1.8, w: 10, h: 0.8, 
-    fontSize: 32, bold: true, color: '00F2FE', fontFace: 'Noto Sans KR' 
+    fontSize: 34, bold: true, color: 'FFFFFF', fontFace: 'Noto Sans KR' 
   });
-  slide1.addText(`대 상: ${clientName || '귀사'}`, { 
-    x: 0.8, y: 2.8, w: 8, h: 0.6, 
-    fontSize: 20, color: 'FFFFFF', fontFace: 'Noto Sans KR' 
+  slide1.addText('놀이의발견과 함께 비즈니스의 가치를 높여보세요', { 
+    x: 0.8, y: 2.7, w: 10, h: 0.5, 
+    fontSize: 18, color: 'FFFFFF', fontFace: 'Noto Sans KR' 
   });
-  slide1.addText('놀이의발견 AI Advertising System', { 
+  slide1.addText(`제안 대상: ${clientName || '귀사'}`, { 
+    x: 0.8, y: 3.4, w: 8, h: 0.6, 
+    fontSize: 22, bold: true, color: 'FFFFFF', fontFace: 'Noto Sans KR' 
+  });
+  slide1.addText('웅진컴퍼스 | 놀이의발견 (woongjin)', { 
     x: 0.8, y: 4.8, w: 8, h: 0.4, 
-    fontSize: 14, color: '39FF14', fontFace: 'Noto Sans KR' 
+    fontSize: 14, color: 'FFFFFF', fontFace: 'Noto Sans KR' 
   });
   slide1.addText(`작성일: ${new Date().toISOString().split('T')[0]}`, { 
     x: 0.8, y: 5.3, w: 8, h: 0.4, 
-    fontSize: 12, color: '8F9CAE', fontFace: 'Noto Sans KR' 
+    fontSize: 12, color: 'E2E8F0', fontFace: 'Noto Sans KR' 
   });
 
-  // Slide 2: Target Audience Analysis
+  // Slide 2: Platform Overview (Introduce)
   const slide2 = pres.addSlide();
   slide2.background = { color: '0B0D19' };
   
-  slide2.addText('1. 놀이의발견 핵심 타겟 분석', { 
+  slide2.addText('1. 대한민국 1위 가족 여가 라이프스타일 플랫폼', { 
     x: 0.5, y: 0.4, w: 11, h: 0.6, 
-    fontSize: 24, bold: true, color: '00F2FE', fontFace: 'Noto Sans KR' 
+    fontSize: 24, bold: true, color: 'FF3B30', fontFace: 'Noto Sans KR' 
   });
   slide2.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.1, w: 11.0, h: 0.02, fill: { color: '202738' } });
 
-  slide2.addText('■ 3040 육아/패밀리 고관여 타겟팅', { x: 0.6, y: 1.5, w: 11, h: 0.4, fontSize: 16, bold: true, color: '39FF14', fontFace: 'Noto Sans KR' });
-  slide2.addText('• 자녀 동반 레저, 외식, 쇼핑 및 교육에 특화된 실구매층 중심 회원 100% 매치\n• 단순 배너 노출이 아닌 최근 행동 분석(찜, 장바구니 방치) 연계 정밀 푸시 제공', { 
-    x: 0.8, y: 1.9, w: 11, h: 1.2, 
-    fontSize: 14, color: 'E2E8F0', fontFace: 'Noto Sans KR', lineSpacing: 22 
+  slide2.addText('놀이의발견은 키즈 놀이 콘텐츠를 한곳에 모두 모아 쉽고 빠르게 검색하고 구매할 수 있는 서비스입니다. 3040 부모 회원 중심의 결제 행동 기반 핵심 타겟팅 인프라를 지원합니다.', { 
+    x: 0.6, y: 1.4, w: 11, h: 1.0, 
+    fontSize: 14, color: 'CBD5E1', fontFace: 'Noto Sans KR', lineSpacing: 22 
   });
 
-  slide2.addText('■ 추천 광고 시나리오', { x: 0.6, y: 3.3, w: 11, h: 0.4, fontSize: 16, bold: true, color: '39FF14', fontFace: 'Noto Sans KR' });
-  slide2.addText('• 개인화 앱 푸시: 최근 관련 제품군 검색 이력 보유 고객 자동 타겟팅 발송\n• 홈배너 노출: 지역 및 연령 필터링 기반 스페셜 배너 연계\n• 테마 기획전: 시즌별/연휴별 공동 특가 이벤트 구성', { 
-    x: 0.8, y: 3.7, w: 11, h: 1.5, 
-    fontSize: 14, color: 'E2E8F0', fontFace: 'Noto Sans KR', lineSpacing: 22 
+  // Platform Metrics Table (PDF 속 핵심 수치 반영)
+  const metricRows = [
+    [
+      { text: '회원수', options: { fill: '1A1F35', color: 'FFFFFF', bold: true, align: 'center' } },
+      { text: '월간 순 이용자(MAU)', options: { fill: '1A1F35', color: 'FFFFFF', bold: true, align: 'center' } },
+      { text: '누적 다운로드수', options: { fill: '1A1F35', color: 'FFFFFF', bold: true, align: 'center' } },
+      { text: '등록 제휴점수', options: { fill: '1A1F35', color: 'FFFFFF', bold: true, align: 'center' } }
+    ],
+    [
+      { text: '179만 명', options: { fill: '0F1322', color: 'FF3B30', bold: true, fontSize: 18, align: 'center' } },
+      { text: '47만 명', options: { fill: '0F1322', color: 'FFFFFF', bold: true, fontSize: 18, align: 'center' } },
+      { text: '241만 건', options: { fill: '0F1322', color: 'FFFFFF', bold: true, fontSize: 18, align: 'center' } },
+      { text: '약 3만 개', options: { fill: '0F1322', color: 'FFFFFF', bold: true, fontSize: 18, align: 'center' } }
+    ]
+  ];
+  slide2.addTable(metricRows, { x: 0.6, y: 2.6, w: 10.8, colW: [2.7, 2.7, 2.7, 2.7], fontSize: 13, border: { pt: 1, color: '202738' } });
+
+  slide2.addText('• 3040 부모 회원 100% 매칭으로 마케팅 효율 극대화\n• 자녀 동반 숙박, 액티비티, 체험 학습 등 즉시 예약 중심 실거래 액션 유도', {
+    x: 0.6, y: 4.8, w: 10.8, h: 1.0,
+    fontSize: 13, color: '8F9CAE', fontFace: 'Noto Sans KR', lineSpacing: 20
   });
 
   // Slide 3: AI Proposal Text Summary
@@ -694,7 +713,7 @@ app.post('/api/ai/proposal/download', async (req, res) => {
   
   slide3.addText('2. AI 광고 상품 처방 및 제언', { 
     x: 0.5, y: 0.4, w: 11, h: 0.6, 
-    fontSize: 24, bold: true, color: '00F2FE', fontFace: 'Noto Sans KR' 
+    fontSize: 24, bold: true, color: 'FF3B30', fontFace: 'Noto Sans KR' 
   });
   slide3.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.1, w: 11.0, h: 0.02, fill: { color: '202738' } });
 
@@ -706,45 +725,93 @@ app.post('/api/ai/proposal/download', async (req, res) => {
     fontSize: 13, color: 'CBD5E1', fontFace: 'Noto Sans KR', lineSpacing: 20 
   });
 
-  // Slide 4: Expectation & ROAS Table
+  // Slide 4: Expectation & Official Pricing Table (공식 광고 단가표 탑재)
   const slide4 = pres.addSlide();
   slide4.background = { color: '0B0D19' };
   
-  slide4.addText('3. 캠페인 기대 효과 및 예상 성과', { 
+  slide4.addText('3. 놀이의발견 공식 광고 지면 및 가격 정책', { 
     x: 0.5, y: 0.4, w: 11, h: 0.6, 
-    fontSize: 24, bold: true, color: '00F2FE', fontFace: 'Noto Sans KR' 
+    fontSize: 24, bold: true, color: 'FF3B30', fontFace: 'Noto Sans KR' 
   });
   slide4.addShape(pres.ShapeType.rect, { x: 0.5, y: 1.1, w: 11.0, h: 0.02, fill: { color: '202738' } });
 
   const rows = [
     [
-      { text: '구분', options: { fill: '1A1F35', color: '00F2FE', bold: true, align: 'center' } },
-      { text: '예상 노출수', options: { fill: '1A1F35', color: 'FFFFFF', bold: true, align: 'center' } },
-      { text: '목표 클릭률 (CTR)', options: { fill: '1A1F35', color: 'FFFFFF', bold: true, align: 'center' } },
-      { text: '목표 구매전환율 (CVR)', options: { fill: '1A1F35', color: 'FFFFFF', bold: true, align: 'center' } },
-      { text: '목표 ROAS', options: { fill: '1A1F35', color: '39FF14', bold: true, align: 'center' } }
+      { text: '광고 상품 (구좌)', options: { fill: '1A1F35', color: 'FF3B30', bold: true, align: 'center' } },
+      { text: '광고 위치', options: { fill: '1A1F35', color: 'FFFFFF', bold: true, align: 'center' } },
+      { text: '월 광고비 (정가)', options: { fill: '1A1F35', color: 'FFFFFF', bold: true, align: 'center' } },
+      { text: '프로모션 할인가', options: { fill: '1A1F35', color: 'FFFFFF', bold: true, align: 'center' } },
+      { text: '평균 전환율 (CVR)', options: { fill: '1A1F35', color: '39FF14', bold: true, align: 'center' } }
     ],
     [
-      { text: 'Plan A (앱 푸시)', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
-      { text: '50,000 회', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
-      { text: '4.5%', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
-      { text: '6.2%', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
-      { text: '380%', options: { fill: '0F1322', color: '39FF14', bold: true, align: 'center' } }
+      { text: '스플래쉬 광고', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
+      { text: '앱 로딩 화면 독점', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
+      { text: '주 700만원', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
+      { text: '주 490만원', options: { fill: '0F1322', color: 'FF3B30', bold: true, align: 'center' } },
+      { text: '12% ~ 25%', options: { fill: '0F1322', color: '39FF14', align: 'center' } }
     ],
     [
-      { text: 'Plan B (홈 배너)', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
-      { text: '250,000 회', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
-      { text: '2.8%', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
-      { text: '4.0%', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
-      { text: '280%', options: { fill: '1A1F35', color: '39FF14', bold: true, align: 'center' } }
+      { text: '메인 팝업 배너', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
+      { text: 'MAIN 진입 팝업', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
+      { text: '월 350만원', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
+      { text: '월 200만원', options: { fill: '1A1F35', color: 'FF3B30', bold: true, align: 'center' } },
+      { text: '12% ~ 15%', options: { fill: '1A1F35', color: '39FF14', align: 'center' } }
+    ],
+    [
+      { text: '메인 배너 광고', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
+      { text: 'MAIN 상단 메인 배너', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
+      { text: '월 500만원', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
+      { text: '월 350만원', options: { fill: '0F1322', color: 'FF3B30', bold: true, align: 'center' } },
+      { text: '10% ~ 12%', options: { fill: '0F1322', color: '39FF14', align: 'center' } }
+    ],
+    [
+      { text: '카테고리 GNB 광고', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
+      { text: 'GNB 아이콘 영역', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
+      { text: '월 250만원', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
+      { text: '월 175만원', options: { fill: '1A1F35', color: 'FF3B30', bold: true, align: 'center' } },
+      { text: '9% ~ 10%', options: { fill: '1A1F35', color: '39FF14', align: 'center' } }
+    ],
+    [
+      { text: '메인 서브 배너', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
+      { text: 'MAIN 중단/하단 배너', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
+      { text: '월 150만원', options: { fill: '0F1322', color: 'FFFFFF', align: 'center' } },
+      { text: '월 105만원', options: { fill: '0F1322', color: 'FF3B30', bold: true, align: 'center' } },
+      { text: '4% ~ 5%', options: { fill: '0F1322', color: '39FF14', align: 'center' } }
+    ],
+    [
+      { text: '카테고리 상세 배너', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
+      { text: '카테고리 > 상세 페이지', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
+      { text: '월 100만원', options: { fill: '1A1F35', color: 'FFFFFF', align: 'center' } },
+      { text: '월 70만원', options: { fill: '1A1F35', color: 'FF3B30', bold: true, align: 'center' } },
+      { text: '2.5% ~ 3.5%', options: { fill: '1A1F35', color: '39FF14', align: 'center' } }
     ]
   ];
 
-  slide4.addTable(rows, { x: 0.6, y: 1.8, w: 10.8, colW: [2.5, 2.0, 2.2, 2.2, 1.9], fontSize: 13, border: { pt: 1, color: '202738' } });
+  slide4.addTable(rows, { x: 0.6, y: 1.5, w: 10.8, colW: [2.5, 2.5, 2.0, 2.0, 1.8], fontSize: 11, border: { pt: 1, color: '202738' } });
 
-  slide4.addText('• 위 성과는 동종 카테고리의 2026년 상반기 실제 마케팅 집행 이력을 토대로 계산된 수치입니다.\n• 제안된 패키지 조합 시, 단일 배너 대비 최대 1.8배 높은 구매 도달율을 달성할 수 있습니다.', { 
-    x: 0.6, y: 4.8, w: 10.8, h: 1.2, 
-    fontSize: 12, color: '8F9CAE', fontFace: 'Noto Sans KR', lineSpacing: 18 
+  slide4.addText('* 위 금액은 프로모션 할인율이 적용된 가격(VAT 별도)이며, 플랫폼 트래픽 및 제휴 형태에 따라 변동될 수 있습니다.', { 
+    x: 0.6, y: 5.6, w: 10.8, h: 0.4, 
+    fontSize: 10, color: '8F9CAE', fontFace: 'Noto Sans KR' 
+  });
+
+  // Slide 5: Partner Closing Slide (피날레 슬라이드)
+  const slide5 = pres.addSlide();
+  slide5.background = { color: 'FF3B30' }; // 레드 브랜딩 피날레
+  
+  slide5.addText('놀이의발견과 함께하실 파트너를 기다립니다.', { 
+    x: 0.5, y: 1.5, w: 11, h: 1.0, 
+    fontSize: 30, bold: true, color: 'FFFFFF', fontFace: 'Noto Sans KR' 
+  });
+
+  slide5.addText('■ 제휴 및 광고 집행 문의', { x: 0.6, y: 2.8, w: 10, h: 0.4, fontSize: 18, bold: true, color: 'FFFFFF', fontFace: 'Noto Sans KR' });
+  slide5.addText('• 담당자: 플랫폼통합기획팀 최진호 과장\n• 이메일: luckychoe22@wjcompass.com\n• 연락처: 010-7166-3147\n• 주 소: 서울특별시 서초구 강남대로39길 15-10 웅진컴퍼스 3층', { 
+    x: 0.8, y: 3.3, w: 10, h: 1.8, 
+    fontSize: 14, color: 'FFFFFF', fontFace: 'Noto Sans KR', lineSpacing: 24 
+  });
+
+  slide5.addText('웅진컴퍼스 | 놀이의발견', { 
+    x: 0.8, y: 5.3, w: 8, h: 0.4, 
+    fontSize: 12, color: 'E2E8F0', fontFace: 'Noto Sans KR' 
   });
 
   try {
