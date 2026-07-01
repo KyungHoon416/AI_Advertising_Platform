@@ -612,9 +612,19 @@ select, input[type="text"], input[type="number"] {
   transition: var(--transition-smooth);
 }
 
+select option {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
 select:focus, input[type="text"]:focus, input[type="number"]:focus {
   border-color: var(--neon-blue);
   box-shadow: 0 0 8px rgba(0, 242, 254, 0.2);
+}
+
+select:focus {
+  background-color: #000000 !important;
+  color: #ffffff !important;
 }
 
 /* Buttons */
