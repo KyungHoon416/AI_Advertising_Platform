@@ -391,21 +391,21 @@ app.post('/api/mock/segments', (req, res) => {
     // 행동 패턴 기반 가중치
     if (parseFloat(avgPurchase) > 4) fitScore += 5;
     
-    // 업종별 맞춤 광고 구좌 자동 배정
+    // 업종별 맞춤 광고 구좌 자동 배정 (메인배너, 카테고리, 서브 배너, 팝업, 스플래쉬)
     let targetSlot = '';
     const normCat = p.category.normalize('NFC');
-    if (normCat === '레저·테마파크'.normalize('NFC')) {
-      targetSlot = '카테고리 최상단 테마특가 구좌 및 위치 기반 푸시';
-    } else if (normCat === '식품'.normalize('NFC')) {
-      targetSlot = '홈 롤링 배너 [가족 브랜드 기획전 구좌]';
-    } else if (normCat === '여행·숙박'.normalize('NFC')) {
-      targetSlot = '개인화 푸시 알림 [가족 리조트 단독 딜 구좌]';
-    } else if (normCat === '교육'.normalize('NFC')) {
-      targetSlot = '앱 내 체험학습 특별 지면 및 에듀케이션 배너 구좌';
-    } else if (normCat === '외식'.normalize('NFC')) {
-      targetSlot = '마이페이지 하단 외식 쿠폰 북 서비스 구좌';
+    const finalScore = Math.min(fitScore, 100);
+
+    if ((normCat === '레저·테마파크'.normalize('NFC') || normCat === '여행·숙박'.normalize('NFC')) && finalScore >= 92) {
+      targetSlot = '스플래쉬 (Splash)';
+    } else if (normCat === '식품'.normalize('NFC') || normCat === '쇼핑·커머스'.normalize('NFC') || normCat === '금융'.normalize('NFC')) {
+      targetSlot = '메인배너 (Main Banner)';
+    } else if (normCat === '교육'.normalize('NFC') || normCat === '육아'.normalize('NFC') || normCat === '레저·테마파크'.normalize('NFC') || normCat === '여행·숙박'.normalize('NFC')) {
+      targetSlot = '카테고리 (Category)';
+    } else if (normCat === '외식'.normalize('NFC') || normCat === '패스트푸드'.normalize('NFC') || normCat === '치킨'.normalize('NFC') || normCat === '카페'.normalize('NFC')) {
+      targetSlot = '팝업 (Popup)';
     } else {
-      targetSlot = '개인화 맞춤 App Push 및 홈 화면 연령별 롤링 배너 구좌';
+      targetSlot = '서브 배너 (Sub Banner)';
     }
 
     return {
