@@ -730,7 +730,7 @@ app.post('/api/ai/proposal', async (req, res) => {
 * **⑤ 아이콘 추천**: 메일 전송, 연락 전화, 본사 오피스 건물
 * **⑥ 사용할 이미지 예시**: 웅진컴퍼스 X 놀이의발견 통합 파트너십 엠블럼 로고 이미지
 * **⑦ 강조 색상**: Crimson Red (#FF3B30), Pure White (#FFFFFF)
-* **⑧ 레이아웃**: 좌우 분할 구조 (좌측 CTA 메세지, 우측 정형화 문의 박스)\`;
+* **⑧ 레이아웃**: 좌우 분할 구조 (좌측 CTA 메세지, 우측 정형화 문의 박스)`;
 
   try {
     const aiText = await generateAIResponse(prompt, mockResponse);
