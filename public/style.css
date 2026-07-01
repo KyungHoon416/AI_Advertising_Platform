@@ -612,9 +612,18 @@ select, input[type="text"], input[type="number"] {
   transition: var(--transition-smooth);
 }
 
+select {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  color-scheme: dark !important;
+  position: relative;
+  z-index: 50 !important;
+}
+
 select option {
   background-color: #000000 !important;
   color: #ffffff !important;
+  color-scheme: dark !important;
 }
 
 select:focus, input[type="text"]:focus, input[type="number"]:focus {
@@ -625,6 +634,8 @@ select:focus, input[type="text"]:focus, input[type="number"]:focus {
 select:focus {
   background-color: #000000 !important;
   color: #ffffff !important;
+  border-color: var(--neon-blue) !important;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.4) !important;
 }
 
 /* Buttons */
