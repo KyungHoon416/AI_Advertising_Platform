@@ -1256,4 +1256,45 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnDownloadPptx) btnDownloadPptx.addEventListener('click', downloadPPTX);
   if (btnAccDownloadPptx) btnAccDownloadPptx.addEventListener('click', downloadPPTX);
 
+  // ----------------------------------------------------
+  // Ver 1.0 / Ver 2.0 토글 (사이드바 로고 우측)
+  // ----------------------------------------------------
+  const versionToggle = document.getElementById('version-toggle');
+  const ver2Placeholder = document.getElementById('ver2-placeholder');
+  const tabContentContainer = document.querySelector('.tab-content-container');
+
+  function switchVersion(ver) {
+    if (!versionToggle || !ver2Placeholder || !tabContentContainer) return;
+    versionToggle.querySelectorAll('.ver-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.ver === ver);
+    });
+
+    const isV2 = ver === '2';
+    tabContentContainer.classList.toggle('hidden', isV2);
+    ver2Placeholder.classList.toggle('hidden', !isV2);
+
+    if (isV2) {
+      pageTitle.textContent = 'Ver 2.0 (준비 중)';
+      pageSubtitle.textContent = '차세대 AI 광고 플랫폼 업그레이드 버전을 준비하고 있습니다';
+    } else {
+      // 현재 활성 탭 기준으로 제목/화면 복원
+      const activeNav = document.querySelector('.nav-item.active');
+      if (activeNav) switchTab(activeNav.getAttribute('data-tab'));
+    }
+  }
+
+  if (versionToggle) {
+    versionToggle.querySelectorAll('.ver-btn').forEach(btn => {
+      btn.addEventListener('click', () => switchVersion(btn.dataset.ver));
+    });
+
+    // Ver 2.0 상태에서 사이드바 메뉴 클릭 시 자동으로 Ver 1.0 화면 복귀
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const v2Active = versionToggle.querySelector('.ver-btn[data-ver="2"]').classList.contains('active');
+        if (v2Active) switchVersion('1');
+      });
+    });
+  }
+
 });

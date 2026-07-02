@@ -1197,6 +1197,153 @@ select:focus {
   letter-spacing: 0.4px;
 }
 
+/* 14-3. 버전 토글 (사이드바 로고 우측) */
+.version-toggle {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ver-btn {
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  padding: 3px 9px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.ver-btn:hover:not(.active) {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.ver-btn.active {
+  background: linear-gradient(90deg, rgba(0, 242, 254, 0.18), rgba(189, 0, 255, 0.18));
+  border-color: rgba(0, 242, 254, 0.5);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.25);
+}
+
+/* 14-4. Ver 2.0 준비 중 화면 */
+.ver2-placeholder {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.ver2-hero {
+  max-width: 720px;
+  width: 100%;
+  text-align: center;
+  padding: 56px 48px;
+  background: linear-gradient(135deg, rgba(20, 22, 37, 0.7) 0%, rgba(15, 12, 30, 0.9) 100%);
+  border-color: rgba(0, 242, 254, 0.25);
+}
+
+.ver2-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: var(--neon-blue);
+  background: rgba(0, 242, 254, 0.08);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  box-shadow: 0 0 24px rgba(0, 242, 254, 0.25);
+  animation: ver2-float 3s ease-in-out infinite;
+}
+
+@keyframes ver2-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.ver2-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--neon-purple);
+  background: rgba(189, 0, 255, 0.12);
+  border: 1px solid rgba(189, 0, 255, 0.4);
+  border-radius: 999px;
+  padding: 5px 14px;
+  margin-bottom: 16px;
+}
+
+.ver2-hero h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.ver2-hero h2 strong {
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ver2-hero > p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.ver2-roadmap {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+  text-align: left;
+}
+
+.ver2-roadmap-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.25s ease;
+}
+
+.ver2-roadmap-item:hover {
+  border-color: rgba(0, 242, 254, 0.4);
+  transform: translateY(-2px);
+}
+
+.ver2-roadmap-item i {
+  font-size: 18px;
+  margin-top: 2px;
+}
+
+.ver2-roadmap-item strong {
+  display: block;
+  font-size: 12.5px;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.ver2-roadmap-item span {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
 /* Scrollbar Customization */
 ::-webkit-scrollbar {
   width: 8px;
