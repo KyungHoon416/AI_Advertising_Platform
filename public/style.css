@@ -1236,7 +1236,27 @@ select:focus {
 .ver2-placeholder {
   display: flex;
   justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px);
   padding: 40px 20px;
+}
+
+/* Ver 2.0 모드: 로고/버전 토글만 남기고 메뉴·헤더 전부 숨김 (전면 개편 대비) */
+body.ver2-mode .sidebar-nav,
+body.ver2-mode .sidebar-footer,
+body.ver2-mode .main-header {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* 모바일에서는 햄버거 메뉴가 있어야 사이드바(토글)에 접근 가능하므로 헤더 유지 */
+  body.ver2-mode .main-header {
+    display: flex;
+  }
+}
+
+.ver2-greeting {
+  font-size: 34px !important;
 }
 
 .ver2-hero {
@@ -1289,11 +1309,13 @@ select:focus {
   margin-bottom: 12px;
 }
 
-.ver2-hero h2 strong {
+.ver2-hero h2 strong,
+.ver2-hero .ver2-name {
   background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  font-weight: 800;
 }
 
 .ver2-hero > p {

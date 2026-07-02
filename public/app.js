@@ -1272,6 +1272,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const isV2 = ver === '2';
     tabContentContainer.classList.toggle('hidden', isV2);
     ver2Placeholder.classList.toggle('hidden', !isV2);
+    // Ver 2.0 모드: 사이드바 메뉴/푸터/헤더 숨김 처리용 클래스
+    document.body.classList.toggle('ver2-mode', isV2);
 
     if (isV2) {
       pageTitle.textContent = 'Ver 2.0 (준비 중)';
