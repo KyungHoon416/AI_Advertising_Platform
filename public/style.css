@@ -1113,6 +1113,90 @@ select:focus {
   100% { transform: translateX(320%); }
 }
 
+/* 14-2. ROI 성과 시각화 차트 */
+.roi-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.roi-chart-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+
+.roi-chart-card h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary, #fff);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.chart-row .chart-label {
+  flex: 0 0 92px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-align: right;
+}
+
+.chart-row .chart-track {
+  flex: 1;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.chart-row .chart-fill {
+  height: 100%;
+  border-radius: 9px;
+  width: 0;
+  transition: width 1s ease-in-out;
+}
+
+.chart-fill.fill-funnel-1 { background: linear-gradient(90deg, var(--neon-blue), #0abfff); box-shadow: 0 0 8px rgba(0, 242, 254, 0.35); }
+.chart-fill.fill-funnel-2 { background: linear-gradient(90deg, #0abfff, var(--neon-purple)); box-shadow: 0 0 8px rgba(189, 0, 255, 0.3); }
+.chart-fill.fill-funnel-3 { background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink, #ff007f)); box-shadow: 0 0 8px rgba(255, 0, 127, 0.3); }
+.chart-fill.fill-mine { background: linear-gradient(90deg, var(--neon-teal, #00f2fe), var(--neon-green, #39ff14)); box-shadow: 0 0 8px rgba(57, 255, 20, 0.3); }
+.chart-fill.fill-avg { background: rgba(255, 255, 255, 0.18); }
+
+.chart-row .chart-value {
+  flex: 0 0 96px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.chart-row .chart-value small {
+  display: block;
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.chart-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin: 12px 0 6px;
+  letter-spacing: 0.4px;
+}
+
 /* Scrollbar Customization */
 ::-webkit-scrollbar {
   width: 8px;

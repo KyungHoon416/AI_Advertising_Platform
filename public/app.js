@@ -137,6 +137,77 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // ----------------------------------------------------
+  // ROI 성과 시각화 차트 (퍼널 흐름 & 업계 평균 비교)
+  // ----------------------------------------------------
+  function renderRoiCharts({ impressions, clicks, conversions, ctr, cvr, roas }) {
+    const chartArea = document.getElementById('roi-chart-area');
+    if (!chartArea) return;
+
+    const imps = Number(impressions) || 0;
+    const clks = Number(clicks) || 0;
+    const convs = Number(conversions) || 0;
+
+    // 퍼널 막대 폭: sqrt 스케일로 작은 단계도 시각적으로 식별되게 처리 (최소 6%)
+    const funnelWidth = (v) => imps > 0 ? Math.max(Math.sqrt(v / imps) * 100, 6).toFixed(1) : 0;
+
+    const benchmarks = [
+      { label: '클릭률 (CTR)', mine: parseFloat(ctr) || 0, avg: 2.0, unit: '%' },
+      { label: '전환율 (CVR)', mine: parseFloat(cvr) || 0, avg: 5.0, unit: '%' },
+      { label: '광고 수익률 (ROAS)', mine: parseFloat(roas) || 0, avg: 250, unit: '%' }
+    ];
+
+    const funnelHTML = `
+      <div class="roi-chart-card">
+        <h4><i class="fa-solid fa-filter text-blue"></i> 광고 퍼널 흐름 (노출 → 클릭 → 전환)</h4>
+        <div class="chart-row">
+          <span class="chart-label">노출 (Imps)</span>
+          <div class="chart-track"><div class="chart-fill fill-funnel-1" data-w="100"></div></div>
+          <span class="chart-value">${imps.toLocaleString()}회<small>유입 모수 100%</small></span>
+        </div>
+        <div class="chart-row">
+          <span class="chart-label">클릭 (Clicks)</span>
+          <div class="chart-track"><div class="chart-fill fill-funnel-2" data-w="${funnelWidth(clks)}"></div></div>
+          <span class="chart-value">${clks.toLocaleString()}회<small>CTR ${ctr}%</small></span>
+        </div>
+        <div class="chart-row">
+          <span class="chart-label">전환 (Conv.)</span>
+          <div class="chart-track"><div class="chart-fill fill-funnel-3" data-w="${funnelWidth(convs)}"></div></div>
+          <span class="chart-value">${convs.toLocaleString()}회<small>CVR ${cvr}%</small></span>
+        </div>
+      </div>`;
+
+    const benchHTML = `
+      <div class="roi-chart-card">
+        <h4><i class="fa-solid fa-ranking-star text-green"></i> 업계 평균 대비 성과 비교</h4>
+        ${benchmarks.map(b => {
+          const maxV = Math.max(b.mine, b.avg) || 1;
+          return `
+          <div class="chart-group-title">${b.label}</div>
+          <div class="chart-row">
+            <span class="chart-label">내 캠페인</span>
+            <div class="chart-track"><div class="chart-fill fill-mine" data-w="${(b.mine / maxV * 100).toFixed(1)}"></div></div>
+            <span class="chart-value">${b.mine}${b.unit}</span>
+          </div>
+          <div class="chart-row">
+            <span class="chart-label">업계 평균</span>
+            <div class="chart-track"><div class="chart-fill fill-avg" data-w="${(b.avg / maxV * 100).toFixed(1)}"></div></div>
+            <span class="chart-value">${b.avg}${b.unit}</span>
+          </div>`;
+        }).join('')}
+      </div>`;
+
+    chartArea.innerHTML = funnelHTML + benchHTML;
+    chartArea.classList.remove('hidden');
+
+    // width transition 애니메이션 트리거
+    requestAnimationFrame(() => {
+      chartArea.querySelectorAll('.chart-fill').forEach(el => {
+        el.style.width = el.dataset.w + '%';
+      });
+    });
+  }
+
   function hideLoading() {
     loadingOverlay.classList.add('hidden');
   }
@@ -740,7 +811,17 @@ document.addEventListener('DOMContentLoaded', () => {
           viewCtr.textContent = `${data.calculated.ctr}%`;
           viewCvr.textContent = `${data.calculated.cvr}%`;
           viewRoas.textContent = `${data.calculated.roas}%`;
-          
+
+          // 성과 시각화 차트 렌더링 (퍼널 & 업계 평균 비교)
+          renderRoiCharts({
+            impressions: sendData.impressions,
+            clicks: sendData.clicks,
+            conversions: sendData.conversions,
+            ctr: data.calculated.ctr,
+            cvr: data.calculated.cvr,
+            roas: data.calculated.roas
+          });
+
           roiReportBody.innerHTML = parseMarkdown(data.report);
         } else {
           roiReportBody.innerHTML = `<p class="warning-text">ROI 리포트 작성 도중 오류 발생</p>`;
@@ -899,6 +980,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const recReportData = await recReportRes.json();
         agentOutputs.push({ name: 'AI 광고주 추천', report: recReportData.report });
 
+        // [크로스탭 반영] 고객 세그먼트 & 추천 탭에도 결과 적용
+        const segmentReportArea = document.getElementById('segment-report-area');
+        const segmentReportBody = document.getElementById('segment-report-body');
+        if (segmentReportArea && segmentReportBody) {
+          segmentReportBody.innerHTML = parseMarkdown(recReportData.report);
+          segmentReportArea.classList.remove('hidden');
+        }
+
         setItemComplete('deliv-1', parseMarkdown(recReportData.report));
         setItemComplete('deliv-5', `
           <h3>🎯 AI 맞춤 광고 상품 매칭</h3>
@@ -945,6 +1034,13 @@ document.addEventListener('DOMContentLoaded', () => {
         agentOutputs.push({ name: 'AI 시장조사', report: marketData.report });
         setItemComplete('deliv-2', parseMarkdown(marketData.report));
 
+        // [크로스탭 반영] 시장조사 & 경쟁사 분석 탭에도 결과 적용
+        if (researchResultArea && researchResultBody) {
+          researchResultTitle.innerHTML = `<i class="fa-solid fa-magnifying-glass-chart text-teal"></i> [시장조사] 가족 키즈카페 및 여가 액티비티 분야 AI 분석 리포트`;
+          researchResultBody.innerHTML = parseMarkdown(marketData.report);
+          researchResultArea.classList.remove('hidden');
+        }
+
         const compRes = await fetch('/api/ai/competitor-analysis', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -953,6 +1049,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const compData = await compRes.json();
         agentOutputs.push({ name: 'AI 경쟁사 분석', report: compData.report });
         setItemComplete('deliv-3', parseMarkdown(compData.report));
+
+        // [크로스탭 반영] 경쟁사 분석 결과 카드에도 적용
+        if (competitorResultArea && competitorResultBody) {
+          competitorResultTitle.innerHTML = `<i class="fa-solid fa-compress text-purple"></i> [경쟁사 분석] 한화리조트, 에버랜드, 네이버 플레이스 비교 벤치마킹표`;
+          competitorResultBody.innerHTML = parseMarkdown(compData.report);
+          competitorResultArea.classList.remove('hidden');
+        }
         activateOutcome('out-3');
         activateOutcome('out-4');
 
@@ -977,6 +1080,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         lastProposalText = propData.report;
         lastClientName = '풀무원';
+
+        // [크로스탭 반영] 맞춤 제안서 생성 탭에도 결과 적용 + PPTX 버튼 노출
+        if (proposalBody) {
+          proposalBody.innerHTML = renderProposalMarkdown(propData.report);
+          const pptBtnTab = document.getElementById('btn-download-pptx');
+          if (pptBtnTab) pptBtnTab.style.display = 'inline-block';
+          const clientNameInput = document.getElementById('proposal-client-name');
+          if (clientNameInput) clientNameInput.value = '풀무원 키즈랜드';
+        }
 
         // [산출물 6, 7, 8] 성과 분석, ROI, 재계약 및 업셀링
         setItemRunning('deliv-6');
@@ -1032,6 +1144,22 @@ document.addEventListener('DOMContentLoaded', () => {
           </table>
         `);
         setItemComplete('deliv-7', parseMarkdown(roiData.report));
+
+        // [크로스탭 반영] 성과 분석 & ROI 리포트 탭에도 지표/차트/리포트 적용
+        if (roiReportBody) {
+          viewCtr.textContent = `${roiData.calculated.ctr}%`;
+          viewCvr.textContent = `${roiData.calculated.cvr}%`;
+          viewRoas.textContent = `${roiData.calculated.roas}%`;
+          renderRoiCharts({
+            impressions: 120000,
+            clicks: 3600,
+            conversions: 450,
+            ctr: roiData.calculated.ctr,
+            cvr: roiData.calculated.cvr,
+            roas: roiData.calculated.roas
+          });
+          roiReportBody.innerHTML = parseMarkdown(roiData.report);
+        }
         setItemComplete('deliv-8', `
           <h3>💡 AI 재계약/업셀링 전략 처방안</h3>
           <ul>
