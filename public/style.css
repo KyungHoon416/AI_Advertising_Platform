@@ -1065,6 +1065,54 @@ select:focus {
   100% { transform: rotate(360deg); }
 }
 
+/* 14-1. 인라인 로딩 (탭 내부 로딩바 - 전역 오버레이 대체) */
+.inline-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 36px 0;
+}
+
+.inline-loading .inline-spinner {
+  width: 34px;
+  height: 34px;
+  border: 3px solid rgba(0, 242, 254, 0.1);
+  border-left-color: var(--neon-blue);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);
+}
+
+.inline-loading p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.inline-loading .inline-progress-track {
+  width: 60%;
+  max-width: 320px;
+  height: 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.inline-loading .inline-progress-fill {
+  width: 40%;
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+  box-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
+  animation: indeterminate 1.4s ease-in-out infinite;
+}
+
+@keyframes indeterminate {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(320%); }
+}
+
 /* Scrollbar Customization */
 ::-webkit-scrollbar {
   width: 8px;

@@ -115,6 +115,28 @@ document.addEventListener('DOMContentLoaded', () => {
     loadingOverlay.classList.remove('hidden');
   }
 
+  // 탭 내부 인라인 로딩 (전역 오버레이 대신 사용 — 로딩 중에도 다른 탭 이동/동시 실행 가능)
+  function inlineLoadingHTML(message) {
+    return `
+      <div class="inline-loading">
+        <div class="inline-spinner"></div>
+        <p>${message || 'AI가 보고서를 생성하고 있습니다...'}</p>
+        <div class="inline-progress-track"><div class="inline-progress-fill"></div></div>
+      </div>`;
+  }
+
+  function setBtnLoading(btn, loading, loadingText) {
+    if (!btn) return;
+    if (loading) {
+      btn.dataset.originalHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${loadingText || '생성 중...'}`;
+    } else {
+      btn.disabled = false;
+      if (btn.dataset.originalHtml) btn.innerHTML = btn.dataset.originalHtml;
+    }
+  }
+
   function hideLoading() {
     loadingOverlay.classList.add('hidden');
   }
@@ -306,6 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const copyBtns = [
       { btnId: 'btn-copy-segment-report', bodyId: 'segment-report-body' },
       { btnId: 'btn-copy-research-report', bodyId: 'research-result-body' },
+      { btnId: 'btn-copy-competitor-report', bodyId: 'competitor-result-body' },
       { btnId: 'btn-copy-proposal', bodyId: 'proposal-result-body' },
       { btnId: 'btn-copy-roi-report', bodyId: 'roi-result-body' }
     ];
@@ -526,14 +549,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const researchResultArea = document.getElementById('research-result-area');
   const researchResultBody = document.getElementById('research-result-body');
   const researchResultTitle = document.getElementById('research-result-title');
+  const competitorResultArea = document.getElementById('competitor-result-area');
+  const competitorResultBody = document.getElementById('competitor-result-body');
+  const competitorResultTitle = document.getElementById('competitor-result-title');
 
   if (btnResearch) {
     btnResearch.addEventListener('click', async () => {
       const industry = document.getElementById('research-industry').value;
       if (!industry.trim()) return alert('산업 업종을 입력해 주세요.');
-      
-      showLoading('AI가 국내 여가 시장 조사 및 트렌드 보고서를 집필 중입니다...');
-      researchResultArea.classList.add('hidden');
+
+      // 결과 카드를 먼저 열고 그 안에서 인라인 로딩 표시 (다른 탭 이동/경쟁사 분석 동시 실행 가능)
+      researchResultTitle.innerHTML = `<i class="fa-solid fa-magnifying-glass-chart text-teal"></i> [시장조사] ${industry} 분야 AI 분석 리포트`;
+      researchResultBody.innerHTML = inlineLoadingHTML('AI가 국내 여가 시장 조사 및 트렌드 보고서를 집필 중입니다...');
+      researchResultArea.classList.remove('hidden');
+      researchResultArea.scrollIntoView({ behavior: 'smooth' });
+      setBtnLoading(btnResearch, true, 'AI 시장조사 실행 중...');
 
       try {
         const res = await fetch('/api/ai/market-research', {
@@ -542,17 +572,15 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify({ industry })
         });
         const data = await res.json();
-        hideLoading();
         if (data.success) {
-          researchResultTitle.innerHTML = `<i class="fa-solid fa-magnifying-glass-chart text-teal"></i> [시장조사] ${industry} 분야 AI 분석 리포트`;
           researchResultBody.innerHTML = parseMarkdown(data.report);
-          researchResultArea.classList.remove('hidden');
-          // 스크롤 이동
-          researchResultArea.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          researchResultBody.innerHTML = `<p class="warning-text">시장조사 리포트 생성 중 오류가 발생했습니다.</p>`;
         }
       } catch (e) {
-        hideLoading();
-        alert('시장조사 수행 실패: 서버 연결 상태를 확인해 주세요.');
+        researchResultBody.innerHTML = `<p class="warning-text">시장조사 수행 실패: 서버 연결 상태를 확인해 주세요.</p>`;
+      } finally {
+        setBtnLoading(btnResearch, false);
       }
     });
   }
@@ -561,9 +589,13 @@ document.addEventListener('DOMContentLoaded', () => {
     btnCompetitor.addEventListener('click', async () => {
       const competitors = document.getElementById('competitor-list').value;
       if (!competitors.trim()) return alert('경쟁사 리스트를 입력해 주세요.');
-      
-      showLoading('AI가 경쟁 서비스의 광고 상품 구성을 정밀 비교 분석하고 있습니다...');
-      researchResultArea.classList.add('hidden');
+
+      // 결과 카드를 먼저 열고 그 안에서 인라인 로딩 표시 (다른 탭 이동/시장조사 동시 실행 가능)
+      competitorResultTitle.innerHTML = `<i class="fa-solid fa-compress text-purple"></i> [경쟁사 분석] ${competitors} 비교 벤치마킹표`;
+      competitorResultBody.innerHTML = inlineLoadingHTML('AI가 경쟁 서비스의 광고 상품 구성을 정밀 비교 분석하고 있습니다...');
+      competitorResultArea.classList.remove('hidden');
+      competitorResultArea.scrollIntoView({ behavior: 'smooth' });
+      setBtnLoading(btnCompetitor, true, 'AI 경쟁사 분석 중...');
 
       try {
         const res = await fetch('/api/ai/competitor-analysis', {
@@ -572,17 +604,15 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify({ competitors })
         });
         const data = await res.json();
-        hideLoading();
         if (data.success) {
-          researchResultTitle.innerHTML = `<i class="fa-solid fa-compress text-purple"></i> [경쟁사 분석] ${competitors} 비교 벤치마킹표`;
-          researchResultBody.innerHTML = parseMarkdown(data.report);
-          researchResultArea.classList.remove('hidden');
-          // 스크롤 이동
-          researchResultArea.scrollIntoView({ behavior: 'smooth' });
+          competitorResultBody.innerHTML = parseMarkdown(data.report);
+        } else {
+          competitorResultBody.innerHTML = `<p class="warning-text">경쟁사 분석 리포트 생성 중 오류가 발생했습니다.</p>`;
         }
       } catch (e) {
-        hideLoading();
-        alert('경쟁사 분석 실패: 서버 연결 상태를 확인해 주세요.');
+        competitorResultBody.innerHTML = `<p class="warning-text">경쟁사 분석 실패: 서버 연결 상태를 확인해 주세요.</p>`;
+      } finally {
+        setBtnLoading(btnCompetitor, false);
       }
     });
   }
@@ -598,8 +628,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const clientName = document.getElementById('proposal-client-name').value;
       if (!clientName.trim()) return alert('제안서 대상 업체명을 입력해 주세요.');
 
-      showLoading(`${clientName} 파트너사 맞춤형 AI 광고 기획 제안서를 생성 중입니다...`);
-      proposalBody.innerHTML = '';
+      // 인라인 로딩: 생성 중에도 다른 탭 이동 가능
+      proposalBody.innerHTML = inlineLoadingHTML(`${clientName} 파트너사 맞춤형 AI 광고 기획 제안서를 생성 중입니다...`);
+      setBtnLoading(btnProposal, true, 'AI 제안서 생성 중...');
 
       try {
         const res = await fetch('/api/ai/proposal', {
@@ -608,7 +639,6 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify({ clientName })
         });
         const data = await res.json();
-        hideLoading();
         if (data.success) {
           proposalBody.innerHTML = renderProposalMarkdown(data.report);
           // PPTX 다운로드 버튼 노출 및 캐싱
@@ -620,8 +650,9 @@ document.addEventListener('DOMContentLoaded', () => {
           proposalBody.innerHTML = `<p class="warning-text">제안서 작성 중 에러가 발생했습니다.</p>`;
         }
       } catch (e) {
-        hideLoading();
         proposalBody.innerHTML = `<p class="warning-text">서버 연결 실패.</p>`;
+      } finally {
+        setBtnLoading(btnProposal, false);
       }
     });
   }
@@ -693,8 +724,9 @@ document.addEventListener('DOMContentLoaded', () => {
         revenue: inputRevenue.value
       };
 
-      showLoading('AI가 광고 효율 데이터를 계산하고 개선 피드백을 수립 중입니다...');
-      roiReportBody.innerHTML = '';
+      // 인라인 로딩: 분석 중에도 다른 탭 이동 가능
+      roiReportBody.innerHTML = inlineLoadingHTML('AI가 광고 효율 데이터를 계산하고 개선 피드백을 수립 중입니다...');
+      setBtnLoading(btnRunRoi, true, 'AI 성과 분석 중...');
 
       try {
         const res = await fetch('/api/ai/roi-report', {
@@ -703,7 +735,6 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify(sendData)
         });
         const data = await res.json();
-        hideLoading();
         if (data.success) {
           // 계산 지표 표시
           viewCtr.textContent = `${data.calculated.ctr}%`;
@@ -715,8 +746,9 @@ document.addEventListener('DOMContentLoaded', () => {
           roiReportBody.innerHTML = `<p class="warning-text">ROI 리포트 작성 도중 오류 발생</p>`;
         }
       } catch (e) {
-        hideLoading();
         roiReportBody.innerHTML = `<p class="warning-text">서버 통신 실패.</p>`;
+      } finally {
+        setBtnLoading(btnRunRoi, false);
       }
     });
   }
@@ -1054,11 +1086,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // ----------------------------------------------------
   // PPTX 제안서 다운로드 공통 기능
   // ----------------------------------------------------
-  async function downloadPPTX() {
+  async function downloadPPTX(e) {
     if (!lastProposalText) return alert('생성된 제안서가 없습니다. 먼저 AI 제안서를 생성해 주세요.');
-    
+
+    // 클릭된 버튼에 인라인 로딩 표시 (전역 오버레이 없이 다른 탭 이동 가능)
+    const clickedBtn = e && e.currentTarget ? e.currentTarget : null;
+    setBtnLoading(clickedBtn, true, 'PPTX 생성 중...');
+
     try {
-      showLoading('PPTX 파워포인트 제안서를 생성하고 있습니다. 잠시만 기다려 주세요...');
       const res = await fetch('/api/ai/proposal/download', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1067,10 +1102,9 @@ document.addEventListener('DOMContentLoaded', () => {
           proposalText: lastProposalText
         })
       });
-      hideLoading();
-      
+
       if (!res.ok) throw new Error('PPTX 생성 API 실패');
-      
+
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -1081,9 +1115,10 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
     } catch (e) {
-      hideLoading();
       console.error('PPTX 다운로드 오류:', e);
       alert('PPTX 제안서 파일 생성 및 다운로드 도중 에러가 발생했습니다.');
+    } finally {
+      setBtnLoading(clickedBtn, false);
     }
   }
 
