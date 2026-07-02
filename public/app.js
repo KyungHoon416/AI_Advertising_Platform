@@ -831,6 +831,12 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       try {
+        // Agent-to-Agent 컨텍스트 체인: 선행 에이전트의 산출물을 후행 에이전트 프롬프트에 전달
+        const agentOutputs = [];
+        const chainContext = () => agentOutputs
+          .map((o) => `[선행 Agent: ${o.name}]\n${(o.report || '').slice(0, 2500)}`)
+          .join('\n\n');
+
         // [산출물 1, 5] 세그먼트 & 상품 추천
         setItemRunning('deliv-1');
         setItemRunning('deliv-5');
@@ -859,7 +865,8 @@ document.addEventListener('DOMContentLoaded', () => {
           })
         });
         const recReportData = await recReportRes.json();
-        
+        agentOutputs.push({ name: 'AI 광고주 추천', report: recReportData.report });
+
         setItemComplete('deliv-1', parseMarkdown(recReportData.report));
         setItemComplete('deliv-5', `
           <h3>🎯 AI 맞춤 광고 상품 매칭</h3>
@@ -900,17 +907,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const marketRes = await fetch('/api/ai/market-research', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ industry: '가족 키즈카페 및 여가 액티비티' })
+          body: JSON.stringify({ industry: '가족 키즈카페 및 여가 액티비티', previousContext: chainContext() })
         });
         const marketData = await marketRes.json();
+        agentOutputs.push({ name: 'AI 시장조사', report: marketData.report });
         setItemComplete('deliv-2', parseMarkdown(marketData.report));
 
         const compRes = await fetch('/api/ai/competitor-analysis', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ competitors: '한화리조트, 에버랜드, 네이버 플레이스' })
+          body: JSON.stringify({ competitors: '한화리조트, 에버랜드, 네이버 플레이스', previousContext: chainContext() })
         });
         const compData = await compRes.json();
+        agentOutputs.push({ name: 'AI 경쟁사 분석', report: compData.report });
         setItemComplete('deliv-3', parseMarkdown(compData.report));
         activateOutcome('out-3');
         activateOutcome('out-4');
@@ -920,9 +929,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const propRes = await fetch('/api/ai/proposal', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ clientName: '풀무원 키즈랜드' })
+          body: JSON.stringify({ clientName: '풀무원 키즈랜드', previousContext: chainContext() })
         });
         const propData = await propRes.json();
+        agentOutputs.push({ name: 'AI 맞춤형 광고 제안서', report: propData.report });
         setItemComplete('deliv-4', parseMarkdown(propData.report));
         
         // 아코디언 내 proposal 마크다운 대상 영역 채우기 & PPTX 노출
@@ -949,7 +959,8 @@ document.addEventListener('DOMContentLoaded', () => {
             clicks: 3600,
             conversions: 450,
             spend: 1500000,
-            revenue: 4500000
+            revenue: 4500000,
+            previousContext: chainContext()
           })
         });
         const roiData = await roiRes.json();

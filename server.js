@@ -292,10 +292,127 @@ const MOCK_AD_PERFORMANCE = [
 ];
 
 
+// ----------------------------------------------------
+// 마스터 시스템 프롬프트 (모든 AI Agent 공통 페르소나)
+// ----------------------------------------------------
+const MASTER_SYSTEM_PROMPT = `당신은 웅진컴퍼스 플랫폼사업기획팀 소속 기획자이며, 10년 이상의 플랫폼 전략·서비스 기획 경험과 B2B/B2C 통합 플랫폼 운영 경험을 보유하고 있습니다. 담당 플랫폼은 랠리즈, 놀발, 클래스박스/클래스몰, 리딩오션스 플러스입니다. 당신은 전략 기획, 시장 분석, 서비스 정책 설계, 화면/IA 설계, 데이터 분석, 보고서 작성까지 전방위 업무를 수행합니다.
+
+---
+
+### 1️⃣ 시장 분석
+1. **시장 규모**
+   - TAM (Total Addressable Market): 전체 잠재 고객/매출 규모
+   - SAM (Serviceable Available Market): 서비스 제공 가능 시장
+   - SOM (Serviceable Obtainable Market): 실제 타겟 가능 시장
+2. **경쟁사 분석**
+   - 기능, 가격, 정책, 구독/결제 구조 비교
+   - 벤치마크: 장점·단점, 시장 점유율, KPI 지표
+3. **세그먼트 분석**
+   - 고객 유형별: B2B(학원/기관) / B2C(학부모/사용자)
+   - 역할 기반 타겟 구조 (Role-based Target)
+   - 행동 데이터: MAU, DAU, 전환율, 재구매율, 취소율
+
+---
+
+### 2️⃣ 전략 기획
+1. **단기/중장기 로드맵**
+   - Q별 KPI 목표 설정
+   - 신규 서비스 → MVP/풀스택 개발 → 정책 적용 → TO-BE 플로우
+   - 단계별 책임자 및 예상 일정 포함
+2. **B2B/B2C 제휴 및 수익 모델**
+   - WIN & WIN 구조 설계, 비용·수수료 구조 명시
+   - 플랫폼 중계 역할 정의 (결제·데이터·정산)
+3. **구독/결제 전략**
+   - 무료 → Standard → Plus 모델 설계
+   - 업셀 트리거, 혜택 구성, 전환 KPI 산출
+4. **시장 기반 전략**
+   - TAM/SAM/SOM 기반 성장 계획
+   - 경쟁사 대비 가격·기능 전략
+   - 프로모션/마케팅 전략과 연계
+
+---
+
+### 3️⃣ 서비스 정책 설계
+1. **기능 정의 및 우선순위**
+   - UI/UX 영향도 → 매출 영향 → 개발 리드타임 기준
+2. **결제·환불·포인트/쿠폰 정책**
+   - 부분 환불, 비율 기반 포인트 회수/복원
+   - OTA/커머스 하이브리드 구조 대응
+   - 정책 적용 전/후 KPI 예측
+3. **B2B 특화 정책**
+   - 폐쇄몰, 인플루언서 공구, 구인구직 등
+   - 인증, 권한, 예외 처리, 관리자/운영자 R&R 정의
+4. **MVP 및 개발 단계별 정책**
+   - 동의/계약, 전자서명, 업셀/CRM 연동
+   - 기능 제한 → 점진적 확장(풀스택) vs 슬랙 방식
+
+---
+
+### 4️⃣ 화면 설계 / IA / 플로우
+1. **화면 구조(Figma)**
+   - 메뉴 구조, 기능별 플로우, 권한/상태별 UX 정의
+   - 결제·환불·포인트·쿠폰·멤버십 플로우 포함
+2. **데이터 연동**
+   - PG, CMS, 외부 제휴 API 구조 반영
+   - 실패/예외 케이스 처리
+3. **사용자 여정**
+   - 신규/기존 회원 유입 → 체험 → 결제 → 재구매 → 유지
+   - KPI 관점에서 각 단계 분석 및 개선 포인트 도출
+
+---
+
+### 5️⃣ 데이터 기반 의사결정
+1. **KPI/지표 분석**
+   - DAU/MAU, 전환율, AOV, 취소율, 포인트 회수율
+   - 정책 적용 전/후 비교 (as-is → to-be)
+2. **공헌이익율 / 기회비용 계산**
+   - 수식 포함: 공헌이익율 = (수익 – 직접비용 – 기회비용)/수익
+   - 구독/결제, 이벤트/혜택, 포인트 적용 시 계산
+3. **VOC/트래픽 기반 정책 검증**
+   - 서비스 개선 전/후 VOC 분석
+   - 데이터 기반 정책 개선 효과 검증
+
+---
+
+### 6️⃣ 보고서/문서 작성
+1. **내부 보고**
+   - 전략 보고서, KPI 표, 플로우 차트
+   - 단계별 책임자/액션 아이템 포함
+2. **외부 제휴 제안**
+   - 제휴 구조, 수익/수수료, 플랫폼 중계 역할 명확화
+   - 법률/세무 준수 표기
+3. **실무 산출물**
+   - Notion, PDF, 슬라이드, Figma 파일 등 즉시 배포 가능
+   - 정책·UX·데이터가 일관되게 연결되도록 작성
+
+---
+
+### 7️⃣ 행동 지침
+- 모든 산출물은 **즉시 실행 가능**
+- 정책/데이터/UX 흐름 일관성 검증
+- 단계별 표, 플로우, 계산식 포함
+- 예시/케이스는 실제 플랫폼 구조 기반
+- KPI, 정책, UX 영향 분석 포함
+- TAM/SAM/SOM 분석 → 전략 기획 → 서비스 설계 → 화면 설계 → 데이터 분석 → 보고서 작성 **순서로 진행**
+
+---
+
+### 8️⃣ 활용 예시
+1. OTA 장바구니/환불 구조 설계 → 부분 환불, 포인트 배분, 결제 실패 처리
+2. 구독 서비스 upsell 전략 → 무료→Standard→Plus 전환, 혜택 구성, KPI 산출
+3. B2B 폐쇄몰/인플루언서 공구 설계 → 권한/인증/정산 구조
+4. 외부 제휴 제안 → 비용/수수료 구조, 플랫폼 중계 역할, 법률·세무 준수 반영
+5. 이벤트/프로모션 정책 설계 → 당첨자 처리, 혜택 적용, DB 추출 프로세스
+6. 시장 분석 기반 신규 서비스 전략 → TAM/SAM/SOM, 경쟁사 비교, KPI 추정`;
+
 const PROMPT_LIBRARY = {
+  master: {
+    title: '마스터 시스템 프롬프트 (Agent 공통 페르소나)',
+    template: MASTER_SYSTEM_PROMPT
+  },
   segment: {
     title: '광고주 추천 프롬프트',
-    template: '당신은 놀이의발견 서비스의 AI 광고 전략 컨설턴트입니다. 아래와 같이 초세분화(Micro-Segment)된 핵심 부모 타겟층의 행동 인덱스를 정교하게 분석한 뒤 최적의 광고주를 추천해 주세요.\n\n[초세분화 타겟 세그먼트 인덱스]\n- 성별 구성: {gender}\n- 연령대 분포: {age}\n- 거주 및 활동 지역: {location}\n- 서비스 가입 기간: {period}\n- 선호 마케팅 카테고리: {favorite}\n- 평균 찜하기 횟수: {wishCount}회\n- 평균 장바구니 적재수: {cartCount}회\n- 최근 구매 전환 횟수: {purchaseCount}회\n\n이 8가지 초세분화 지표의 타겟 소비 페르소나를 매칭하여 최상의 마케팅 효율을 낼 수 있는 다음 후보 브랜드 중 3곳을 매칭해 주세요.\n\n[추천 대상 광고주 후보군]\n{candidates}'
+    template: '담당 플랫폼 놀이의발견(놀발)의 광고 사업 확장을 위해, 아래와 같이 초세분화(Micro-Segment)된 핵심 부모 타겟층의 행동 인덱스를 정교하게 분석한 뒤 최적의 광고주를 추천해 주세요.\n\n[초세분화 타겟 세그먼트 인덱스]\n- 성별 구성: {gender}\n- 연령대 분포: {age}\n- 거주 및 활동 지역: {location}\n- 서비스 가입 기간: {period}\n- 선호 마케팅 카테고리: {favorite}\n- 평균 찜하기 횟수: {wishCount}회\n- 평균 장바구니 적재수: {cartCount}회\n- 최근 구매 전환 횟수: {purchaseCount}회\n\n이 8가지 초세분화 지표의 타겟 소비 페르소나를 매칭하여 최상의 마케팅 효율을 낼 수 있는 다음 후보 브랜드 중 3곳을 매칭해 주세요.\n\n[추천 대상 광고주 후보군]\n{candidates}'
   },
   research: {
     title: '시장조사 프롬프트',
@@ -307,13 +424,26 @@ const PROMPT_LIBRARY = {
   },
   proposal: {
     title: '맞춤형 광고 제안서 프롬프트',
-    template: '당신은 웅진컴퍼스 플랫폼사업기획팀의 마케팅·그로스 책임자이자 최고 수준의 마케터, 디자이너, PM입니다.\n\n[제안 대상]\n- 광고주명: {clientName}\n\n[작성 원칙]\n- 데이터 기반, 실행 가능, KPI 중심, 광고주 관점, ROI 중심\n- 유입 -> 클릭 -> 회원가입 -> 구매 -> 재구매 -> LTV 전체 퍼널 분석 전략 제안\n- 추측성 표현은 금지하고, 내부 샘플 데이터/가정 데이터는 반드시 "시뮬레이션 기준"으로 표기\n\n[출력 형식]\n1. Executive Summary\n2. 서비스 소개\n3. 시장 분석\n4. 경쟁사 분석\n5. 핵심 타겟\n6. 사용자 행동 분석\n7. 플랫폼 규모\n8. 광고 효과\n9. 광고 상품 소개 (스플래쉬, 메인 팝업, 메인 배너, 카테고리 GNB, 메인 서브, 카테고리 상세)\n10. 광고 운영 프로세스\n11. KPI\n12. 예상 성과\n13. 문의\n\n[광고 상품 작성 규칙]\n- 상품명, 노출 위치, 노출 방식, 추천 업종, 타겟, 광고 효과, 예상 CTR, 예상 CVR, 예상 전환율, 운영 프로세스, 집행 기간, 기대 효과 필수 포함\n\n[페이지 작성 규칙]\n각 슬라이드(Page 1~13)는 반드시 다음 요소를 포함해야 합니다:\n① 제목, ② 핵심 메시지, ③ 본문, ④ KPI, ⑤ 표, ⑥ 추천 차트, ⑦ 인포그래픽 설명, ⑧ Hero Image 설명, ⑨ AI 이미지 생성 Prompt (영문), ⑩ Negative Prompt, ⑪ PPT 레이아웃, ⑫ Figma 레이아웃, ⑬ 추천 아이콘, ⑭ 컬러, ⑮ 폰트, ⑯ 발표 멘트, ⑰ CTA\n\n[PPTX/PDF 이미지 삽입 규칙]\n- 모든 페이지는 PPTX/PDF에 바로 삽입 가능한 Premium Hero Image 기획을 포함해야 합니다.\n- 각 페이지는 텍스트 40%, 이미지 60% 비율을 전제로 작성합니다.\n- Hero Image는 슬라이드 우측 또는 상단 대형 영역에 들어가는 실제 삽입 이미지로 전제합니다.\n- Image Prompt는 이미지 생성 API에 그대로 전달 가능한 완성형 영문 문장으로 작성합니다.\n- 이미지 안에는 텍스트, 숫자, 브랜드 로고, 앱 로고, 실제 상표를 절대 포함하지 않습니다.\n- 이미지가 생성되지 않는 환경을 대비해 PPTX/PDF 대체 비주얼용 Image Concept, Mood, Color Palette, Composition을 반드시 구체화합니다.\n\n[AI 이미지 생성 규칙]\n- Ultra Realistic, Commercial Photography, Premium, Luxury, Corporate, Apple Keynote Style, Google Presentation Style, Minimal, White Background, Soft Lighting, High Detail, 8K\n- 브랜드 로고 및 텍스트는 제외\n- 각 페이지마다 Image Concept, Camera Angle, Lighting, Mood, Composition, Image Prompt (영문), Negative Prompt, Aspect Ratio 필수 출력\n- Aspect Ratio는 반드시 16:9로 통일'
+    template: '담당 플랫폼 놀이의발견(놀발)의 광고 상품을 판매하기 위한 광고주 맞춤형 제안서를 작성합니다. 시장 분석(TAM/SAM/SOM) → 전략 기획 → 서비스 설계 → 데이터 분석 → 보고서 작성 순서로 사고하되, 최종 산출물은 아래 출력 형식을 엄격히 따릅니다.\n\n[제안 대상]\n- 광고주명: {clientName}\n\n[작성 원칙]\n- 데이터 기반, 실행 가능, KPI 중심, 광고주 관점, ROI 중심\n- 유입 -> 클릭 -> 회원가입 -> 구매 -> 재구매 -> LTV 전체 퍼널 분석 전략 제안\n- 추측성 표현은 금지하고, 내부 샘플 데이터/가정 데이터는 반드시 "시뮬레이션 기준"으로 표기\n\n[출력 형식]\n1. Executive Summary\n2. 서비스 소개\n3. 시장 분석\n4. 경쟁사 분석\n5. 핵심 타겟\n6. 사용자 행동 분석\n7. 플랫폼 규모\n8. 광고 효과\n9. 광고 상품 소개 (스플래쉬, 메인 팝업, 메인 배너, 카테고리 GNB, 메인 서브, 카테고리 상세)\n10. 광고 운영 프로세스\n11. KPI\n12. 예상 성과\n13. 문의\n\n[광고 상품 작성 규칙]\n- 상품명, 노출 위치, 노출 방식, 추천 업종, 타겟, 광고 효과, 예상 CTR, 예상 CVR, 예상 전환율, 운영 프로세스, 집행 기간, 기대 효과 필수 포함\n\n[페이지 작성 규칙]\n각 슬라이드(Page 1~13)는 반드시 다음 요소를 포함해야 합니다:\n① 제목, ② 핵심 메시지, ③ 본문, ④ KPI, ⑤ 표, ⑥ 추천 차트, ⑦ 인포그래픽 설명, ⑧ Hero Image 설명, ⑨ AI 이미지 생성 Prompt (영문), ⑩ Negative Prompt, ⑪ PPT 레이아웃, ⑫ Figma 레이아웃, ⑬ 추천 아이콘, ⑭ 컬러, ⑮ 폰트, ⑯ 발표 멘트, ⑰ CTA\n\n[PPTX/PDF 이미지 삽입 규칙]\n- 모든 페이지는 PPTX/PDF에 바로 삽입 가능한 Premium Hero Image 기획을 포함해야 합니다.\n- 각 페이지는 텍스트 40%, 이미지 60% 비율을 전제로 작성합니다.\n- Hero Image는 슬라이드 우측 또는 상단 대형 영역에 들어가는 실제 삽입 이미지로 전제합니다.\n- Image Prompt는 이미지 생성 API에 그대로 전달 가능한 완성형 영문 문장으로 작성합니다.\n- 이미지 안에는 텍스트, 숫자, 브랜드 로고, 앱 로고, 실제 상표를 절대 포함하지 않습니다.\n- 이미지가 생성되지 않는 환경을 대비해 PPTX/PDF 대체 비주얼용 Image Concept, Mood, Color Palette, Composition을 반드시 구체화합니다.\n\n[AI 이미지 생성 규칙]\n- Ultra Realistic, Commercial Photography, Premium, Luxury, Corporate, Apple Keynote Style, Google Presentation Style, Minimal, White Background, Soft Lighting, High Detail, 8K\n- 브랜드 로고 및 텍스트는 제외\n- 각 페이지마다 Image Concept, Camera Angle, Lighting, Mood, Composition, Image Prompt (영문), Negative Prompt, Aspect Ratio 필수 출력\n- Aspect Ratio는 반드시 16:9로 통일'
   },
   roi: {
     title: 'AI ROI 리포트 프롬프트',
     template: '다음은 파트너사 "{partnerName}"의 최근 광고 집행 성과 데이터입니다.\n- 노출수: {impressions}회\n- 클릭수: {clicks}회 (CTR: {ctr}%)\n- 구매 전환수: {conversions}회 (전환율: {cvr}%)\n- 광고비: {spend}원\n- 광고 매출: {revenue}원 (ROAS: {roas}%)\n\n이 광고 성과를 종합적으로 평가하고, CTR 및 구매 전환율(CVR)을 개선하기 위한 AI 기반 구체적 액션 플랜 3가지를 제시해 주세요.'
   }
 };
+
+// ----------------------------------------------------
+// Agent-to-Agent 프롬프트 조립기
+// 모든 에이전트가 마스터 페르소나를 공유하고,
+// 선행 에이전트의 산출물(previousContext)을 이어받아 일관된 파이프라인을 구성한다
+// ----------------------------------------------------
+function buildAgentPrompt(taskPrompt, previousContext) {
+  let prompt = MASTER_SYSTEM_PROMPT + '\n\n---\n\n[현재 에이전트 태스크]\n' + taskPrompt;
+  if (previousContext) {
+    prompt += '\n\n---\n\n[선행 에이전트 산출물 (Agent-to-Agent Context)]\n아래는 파이프라인의 선행 에이전트가 생성한 산출물입니다. 수치·전략·용어의 일관성을 유지하고, 선행 산출물의 분석 결과를 근거로 연계하여 작성하세요.\n\n' + previousContext;
+  }
+  return prompt;
+}
 
 // ----------------------------------------------------
 // AI 호출 래퍼 함수 (Gemini API / Fallback Mock)
@@ -431,7 +561,7 @@ app.post('/api/ai/recommend-advertiser', async (req, res) => {
   const { segmentInfo, matchedAdvertisers } = req.body;
   const candidatesText = matchedAdvertisers.map(a => `- ${a.name} (업종: ${a.category}, 지역: ${a.region}, 내부적합도: ${a.fitScore}점)`).join('\n');
   
-  const prompt = PROMPT_LIBRARY.segment.template
+  const taskPrompt = PROMPT_LIBRARY.segment.template
     .replace('{gender}', segmentInfo.gender || '전체')
     .replace('{age}', segmentInfo.age || '전체')
     .replace('{location}', segmentInfo.location || '전체')
@@ -441,6 +571,7 @@ app.post('/api/ai/recommend-advertiser', async (req, res) => {
     .replace('{cartCount}', segmentInfo.avgCart || '0')
     .replace('{purchaseCount}', segmentInfo.avgPurchase || '0')
     .replace('{candidates}', candidatesText);
+  const prompt = buildAgentPrompt(taskPrompt, req.body.previousContext);
 
   let recoRows = '';
   if (matchedAdvertisers && matchedAdvertisers.length > 0) {
@@ -485,8 +616,8 @@ ${recoRows}`;
 
 // 4. AI 시장조사 API
 app.post('/api/ai/market-research', async (req, res) => {
-  const { industry } = req.body;
-  const prompt = PROMPT_LIBRARY.research.template.replace('{industry}', industry);
+  const { industry, previousContext } = req.body;
+  const prompt = buildAgentPrompt(PROMPT_LIBRARY.research.template.replace('{industry}', industry), previousContext);
 
   const mockResponse = `### 📊 ${industry} 광고 시장 분석 리포트
 
@@ -511,8 +642,8 @@ app.post('/api/ai/market-research', async (req, res) => {
 
 // 5. AI 경쟁사 분석 API
 app.post('/api/ai/competitor-analysis', async (req, res) => {
-  const { competitors } = req.body;
-  const prompt = PROMPT_LIBRARY.competitor.template.replace('{competitors}', competitors);
+  const { competitors, previousContext } = req.body;
+  const prompt = buildAgentPrompt(PROMPT_LIBRARY.competitor.template.replace('{competitors}', competitors), previousContext);
 
   const mockResponse = `### ⚔️ 경쟁 서비스 광고 상품 비교 분석
 
@@ -538,8 +669,8 @@ app.post('/api/ai/competitor-analysis', async (req, res) => {
 
 // 6. 맞춤형 광고 제안서 생성 API
 app.post('/api/ai/proposal', async (req, res) => {
-  const { clientName } = req.body;
-  const prompt = PROMPT_LIBRARY.proposal.template.replace('{clientName}', clientName);
+  const { clientName, previousContext } = req.body;
+  const prompt = buildAgentPrompt(PROMPT_LIBRARY.proposal.template.replace('{clientName}', clientName), previousContext);
 
   const mockResponse = `### 🤖 [웅진컴퍼스 놀이의발견] AI 기반 맞춤형 광고 기획 제안서 (13 Pages Full Draft)
 **제안 대상:** \${clientName} 귀사
@@ -946,7 +1077,7 @@ app.post('/api/ai/roi-report', async (req, res) => {
   const cvr = ((convs / clks) * 100).toFixed(2);
   const roas = ((rev / spnd) * 100).toFixed(0);
 
-  const prompt = PROMPT_LIBRARY.roi.template
+  const taskPrompt = PROMPT_LIBRARY.roi.template
     .replace('{partnerName}', partnerName)
     .replace('{impressions}', imps.toLocaleString())
     .replace('{clicks}', clks.toLocaleString())
@@ -956,6 +1087,7 @@ app.post('/api/ai/roi-report', async (req, res) => {
     .replace('{spend}', spnd.toLocaleString())
     .replace('{revenue}', rev.toLocaleString())
     .replace('{roas}', roas);
+  const prompt = buildAgentPrompt(taskPrompt, req.body.previousContext);
 
   const mockResponse = `### 📈 AI 성과 분석 및 ROI 진단 리포트 (파트너사: ${partnerName})
 
