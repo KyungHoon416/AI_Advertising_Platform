@@ -138,74 +138,52 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ----------------------------------------------------
-  // ROI 성과 시각화 차트 (퍼널 흐름 & 업계 평균 비교)
+  // ROI 퍼널 차트 (광고비 → 예약 건수 → 예약 매출 → ROI)
   // ----------------------------------------------------
-  function renderRoiCharts({ impressions, clicks, conversions, ctr, cvr, roas }) {
+  const INDUSTRY_AVG_ROI = 244; // 업종 평균 ROI (%)
+
+  function renderRoiCharts({ conversions, spend, revenue, roas }) {
     const chartArea = document.getElementById('roi-chart-area');
     if (!chartArea) return;
 
-    const imps = Number(impressions) || 0;
-    const clks = Number(clicks) || 0;
     const convs = Number(conversions) || 0;
+    const spnd = Number(spend) || 0;
+    const rev = Number(revenue) || 0;
+    const roi = parseFloat(roas) || 0;
 
-    // 퍼널 막대 폭: sqrt 스케일로 작은 단계도 시각적으로 식별되게 처리 (최소 6%)
-    const funnelWidth = (v) => imps > 0 ? Math.max(Math.sqrt(v / imps) * 100, 6).toFixed(1) : 0;
+    const diff = Math.round(roi - INDUSTRY_AVG_ROI);
+    const diffUp = diff >= 0;
 
-    const benchmarks = [
-      { label: '클릭률 (CTR)', mine: parseFloat(ctr) || 0, avg: 2.0, unit: '%' },
-      { label: '전환율 (CVR)', mine: parseFloat(cvr) || 0, avg: 5.0, unit: '%' },
-      { label: '광고 수익률 (ROAS)', mine: parseFloat(roas) || 0, avg: 250, unit: '%' }
+    const rows = [
+      { label: '광고비', value: `${spnd.toLocaleString()}원`, cls: 'fseg-1' },
+      { label: '예약 건수', value: `${convs.toLocaleString()}건`, cls: 'fseg-2' },
+      { label: '예약 매출', value: `${rev.toLocaleString()}원`, cls: 'fseg-3' },
+      { label: 'ROI', value: `${roi}%`, cls: 'fseg-4' }
     ];
 
-    const funnelHTML = `
-      <div class="roi-chart-card">
-        <h4><i class="fa-solid fa-filter text-blue"></i> 광고 퍼널 흐름 (노출 → 클릭 → 전환)</h4>
-        <div class="chart-row">
-          <span class="chart-label">노출 (Imps)</span>
-          <div class="chart-track"><div class="chart-fill fill-funnel-1" data-w="100"></div></div>
-          <span class="chart-value">${imps.toLocaleString()}회<small>유입 모수 100%</small></span>
-        </div>
-        <div class="chart-row">
-          <span class="chart-label">클릭 (Clicks)</span>
-          <div class="chart-track"><div class="chart-fill fill-funnel-2" data-w="${funnelWidth(clks)}"></div></div>
-          <span class="chart-value">${clks.toLocaleString()}회<small>CTR ${ctr}%</small></span>
-        </div>
-        <div class="chart-row">
-          <span class="chart-label">전환 (Conv.)</span>
-          <div class="chart-track"><div class="chart-fill fill-funnel-3" data-w="${funnelWidth(convs)}"></div></div>
-          <span class="chart-value">${convs.toLocaleString()}회<small>CVR ${cvr}%</small></span>
+    // 퍼널 사다리꼴: 아래로 갈수록 좁아지는 형태 (다음 단 상단 폭 = 현재 단 하단 폭)
+    const widths = [100, 87, 74, 61];
+    const segsHTML = rows.map((r, i) => {
+      const w = widths[i];
+      const nextW = widths[i + 1] !== undefined ? widths[i + 1] : w - 13;
+      const inset = ((w - nextW) / (2 * w) * 100).toFixed(2);
+      return `
+        <div class="funnel-seg ${r.cls}" style="width:${w}%; --inset:${inset}%;">
+          <span class="funnel-label">${r.label}</span>
+          <span class="funnel-value">${r.value}</span>
+        </div>`;
+    }).join('');
+
+    chartArea.innerHTML = `
+      <div class="roi-funnel-card">
+        <h4>ROI 퍼널 <small>(이번달)</small></h4>
+        <div class="roi-funnel">${segsHTML}</div>
+        <div class="roi-benchmark-badge">
+          <span>업종 평균 ROI ${INDUSTRY_AVG_ROI}% 대비</span>
+          <strong class="${diffUp ? 'diff-up' : 'diff-down'}">${diffUp ? '▲' : '▼'} ${Math.abs(diff)}%p</strong>
         </div>
       </div>`;
-
-    const benchHTML = `
-      <div class="roi-chart-card">
-        <h4><i class="fa-solid fa-ranking-star text-green"></i> 업계 평균 대비 성과 비교</h4>
-        ${benchmarks.map(b => {
-          const maxV = Math.max(b.mine, b.avg) || 1;
-          return `
-          <div class="chart-group-title">${b.label}</div>
-          <div class="chart-row">
-            <span class="chart-label">내 캠페인</span>
-            <div class="chart-track"><div class="chart-fill fill-mine" data-w="${(b.mine / maxV * 100).toFixed(1)}"></div></div>
-            <span class="chart-value">${b.mine}${b.unit}</span>
-          </div>
-          <div class="chart-row">
-            <span class="chart-label">업계 평균</span>
-            <div class="chart-track"><div class="chart-fill fill-avg" data-w="${(b.avg / maxV * 100).toFixed(1)}"></div></div>
-            <span class="chart-value">${b.avg}${b.unit}</span>
-          </div>`;
-        }).join('')}
-      </div>`;
-
-    chartArea.innerHTML = funnelHTML + benchHTML;
     chartArea.classList.remove('hidden');
-
-    // width transition 애니메이션 트리거
-    requestAnimationFrame(() => {
-      chartArea.querySelectorAll('.chart-fill').forEach(el => {
-        el.style.width = el.dataset.w + '%';
-      });
-    });
   }
 
   function hideLoading() {
@@ -812,13 +790,11 @@ document.addEventListener('DOMContentLoaded', () => {
           viewCvr.textContent = `${data.calculated.cvr}%`;
           viewRoas.textContent = `${data.calculated.roas}%`;
 
-          // 성과 시각화 차트 렌더링 (퍼널 & 업계 평균 비교)
+          // ROI 퍼널 차트 렌더링
           renderRoiCharts({
-            impressions: sendData.impressions,
-            clicks: sendData.clicks,
             conversions: sendData.conversions,
-            ctr: data.calculated.ctr,
-            cvr: data.calculated.cvr,
+            spend: sendData.spend,
+            revenue: sendData.revenue,
             roas: data.calculated.roas
           });
 
@@ -1151,11 +1127,9 @@ document.addEventListener('DOMContentLoaded', () => {
           viewCvr.textContent = `${roiData.calculated.cvr}%`;
           viewRoas.textContent = `${roiData.calculated.roas}%`;
           renderRoiCharts({
-            impressions: 120000,
-            clicks: 3600,
             conversions: 450,
-            ctr: roiData.calculated.ctr,
-            cvr: roiData.calculated.cvr,
+            spend: 1500000,
+            revenue: 4500000,
             roas: roiData.calculated.roas
           });
           roiReportBody.innerHTML = parseMarkdown(roiData.report);

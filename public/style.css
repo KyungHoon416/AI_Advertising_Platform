@@ -1197,6 +1197,94 @@ select:focus {
   letter-spacing: 0.4px;
 }
 
+/* 14-2-1. ROI 퍼널 차트 (사다리꼴) */
+.roi-funnel-card {
+  max-width: 420px;
+  margin: 0 auto;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 20px 22px;
+}
+
+.roi-funnel-card h4 {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 18px;
+}
+
+.roi-funnel-card h4 small {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-left: 4px;
+}
+
+.roi-funnel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.funnel-seg {
+  height: 52px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  clip-path: polygon(0 0, 100% 0, calc(100% - var(--inset)) 100%, var(--inset) 100%);
+  animation: funnel-in 0.5s ease both;
+}
+
+.funnel-seg:nth-child(1) { animation-delay: 0s; }
+.funnel-seg:nth-child(2) { animation-delay: 0.12s; }
+.funnel-seg:nth-child(3) { animation-delay: 0.24s; }
+.funnel-seg:nth-child(4) { animation-delay: 0.36s; }
+
+@keyframes funnel-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.funnel-seg .funnel-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.funnel-seg .funnel-value {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.fseg-1 { background: linear-gradient(180deg, #9b59e8, #7c3fd4); }
+.fseg-2 { background: linear-gradient(180deg, #4c6ef5, #3b5bdb); }
+.fseg-3 { background: linear-gradient(180deg, #3d8bfd, #2f74e0); }
+.fseg-4 { background: linear-gradient(180deg, #2eb87a, #23996a); }
+
+.roi-benchmark-badge {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: rgba(10, 14, 24, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.roi-benchmark-badge strong.diff-up { color: var(--neon-green); }
+.roi-benchmark-badge strong.diff-down { color: var(--neon-pink); }
+
 /* 14-3. 버전 토글 (사이드바 로고 우측) */
 .version-toggle {
   margin-left: auto;
