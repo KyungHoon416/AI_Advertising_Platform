@@ -17,6 +17,7 @@ from app.interface.routers import (
     advertisers,
     auth,
     categories,
+    proposals,
     recommendations,
     scoring,
 )
@@ -52,6 +53,7 @@ app.include_router(advertisers.router)
 app.include_router(ad_products.router)
 app.include_router(scoring.router)
 app.include_router(recommendations.router)
+app.include_router(proposals.router)
 
 
 @app.get("/health", tags=["system"])

@@ -21,8 +21,8 @@
 |---|---|---|
 | **1. Architecture** | 요구분석·아키텍처·Agent 워크플로우·Scoring/Rec 로직·ERD·API·화면·MVP·계획 | ✅ **완료** |
 | **2. Database** | 35-table SQLAlchemy 모델 · Alembic 마이그레이션 · 멱등 Seed · FastAPI 엔트리 · docker-compose | ✅ **완료** (SQLite로 end-to-end 검증) |
-| 3. Backend | ✅ Auth/RBAC · Category/Advertiser/AdProduct API · **설정주도 Scoring 엔진+API(설명가능)** · **광고상품 추천 엔진+API(4종+조합+예상성과)** — 테스트 25건 → ⬜ Proposal API | ▶ **진행 중** |
-| 4. AI Agent | LLMGateway → 6개 MVP 에이전트 → LangGraph 그래프 → Structured Output 검증 | 대기 |
+| 3. Backend | ✅ Auth/RBAC · Category/Advertiser/AdProduct API · 설정주도 Scoring 엔진+API · 광고상품 추천 엔진+API · **Proposal API** | ✅ **완료** |
+| 4. AI Agent | ✅ **LLMGateway(멀티 프로바이더+PII 마스킹+폴백)** · **Proposal Agent(AgentExecution 로깅)** → ⬜ Category/Market/Competitor/Discovery/Scoring/Recommendation Agent · LangGraph 그래프 · Structured Output 검증 | ▶ **진행 중** |
 | 5. Frontend | Login → Dashboard → 추천/시장/경쟁 → Scoring Drawer → 상품추천 → 제안서 → Settings/Prompt | 대기 |
 | 6. Data/Test | Seed/Mock → Unit(도메인) → Integration/API → Scoring Test → AI Output Validation | 대기 |
 | 7. Infra | Docker Compose → 환경변수/Secrets → AWS IaC → CI/CD(GitHub Actions) → 운영 가이드 | 대기 |
