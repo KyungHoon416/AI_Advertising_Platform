@@ -27,12 +27,15 @@ from app.infrastructure.db.models import (
     Benchmark,
     Category,
     Permission,
+    Prompt,
+    PromptVersion,
     PurchaseAggregate,
     Role,
     ScoreFactorDef,
     ScoringVersion,
     User,
 )
+from app.domain.enums import PromptStatus
 from app.seed import data
 
 
@@ -190,6 +193,19 @@ async def seed_aggregates(db: AsyncSession) -> None:
         )
 
 
+async def seed_prompts(db: AsyncSession) -> None:
+    for category, name, desc, template, model in data.PROMPTS:
+        prompt, created = await _get_or_create(
+            db, Prompt, defaults={"category": category, "description": desc}, name=name,
+        )
+        if created:
+            await db.flush()
+            db.add(PromptVersion(
+                prompt_id=prompt.id, version=1, template=template,
+                model=model, status=PromptStatus.PUBLISHED,
+            ))
+
+
 async def run() -> None:
     async with SessionLocal() as db:
         await seed_rbac(db)
@@ -199,6 +215,7 @@ async def run() -> None:
         await seed_benchmarks(db, cats)
         await seed_aggregates(db)
         await seed_advertisers(db, cats)
+        await seed_prompts(db)
         await db.commit()
     print("[seed] done")
 

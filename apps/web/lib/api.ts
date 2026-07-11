@@ -86,6 +86,55 @@ export interface Kpis {
   competitors: number;
   campaigns: number;
 }
+export interface Category {
+  id: string;
+  name: string;
+  level: string;
+  parent_id?: string | null;
+}
+export interface MarketResearch {
+  id: string;
+  category_id: string;
+  market_size?: string | null;
+  growth_rate?: string | null;
+  trends?: { items?: string[] } | null;
+  consumer_traits?: { items?: string[] } | null;
+  opportunities?: { items?: string[] } | null;
+  risks?: { items?: string[] } | null;
+  confidence?: number | null;
+}
+export interface Competitor {
+  id: string;
+  category_id: string;
+  company: string;
+  brand?: string | null;
+  type: string;
+}
+export interface ScoringConfigFactor {
+  target: string;
+  factor_code: string;
+  label: string;
+  max_score: number;
+  weight: number;
+}
+export interface ScoringConfig {
+  version: string;
+  status: string;
+  factors: ScoringConfigFactor[];
+}
+export interface PromptVersion {
+  version: number;
+  template: string;
+  model?: string | null;
+  status: string;
+}
+export interface Prompt {
+  id: string;
+  category: string;
+  name: string;
+  description?: string | null;
+  latest?: PromptVersion | null;
+}
 
 const TOKEN_KEY = "nolbal_token";
 
@@ -143,4 +192,18 @@ export const api = {
       method: "POST",
       body: JSON.stringify({ advertiser_id, purpose, budget }),
     }),
+  categories: (params: Record<string, string> = {}) =>
+    req<Page<Category>>(`/categories?${new URLSearchParams(params)}`),
+  runMarketResearch: (category_id: string) =>
+    req<MarketResearch>("/market-research/run", {
+      method: "POST",
+      body: JSON.stringify({ category_id }),
+    }),
+  discoverCompetitors: (category_id: string) =>
+    req<Competitor[]>("/competitors/discover", {
+      method: "POST",
+      body: JSON.stringify({ category_id }),
+    }),
+  scoringConfig: () => req<ScoringConfig>("/scoring/config"),
+  prompts: () => req<Prompt[]>("/prompts"),
 };

@@ -135,6 +135,34 @@ AD_PRODUCT_FACTORS = [
     ("ad_product", "HIST", "과거 성과 적합도", 5, 1.0),
 ]
 
+# --- Prompt Library (category, name, description, template, model) ---
+PROMPTS = [
+    ("카테고리 분류", "Category Classification Agent",
+     "광고주/브랜드 텍스트 → 업종·카테고리 자동 분류",
+     "입력 텍스트를 분석해 대/중/소분류와 핵심 고객, 지역, 계절성, 광고 목적을 JSON으로 응답합니다.",
+     "gemini-2.5-flash"),
+    ("시장조사", "Market Research Agent",
+     "카테고리 시장 규모·성장·트렌드·기회·위험 분석",
+     "요청 카테고리의 시장을 분석하여 시장규모/성장률/트렌드/기회/위험을 JSON 스키마로 응답합니다.",
+     "gemini-2.5-flash"),
+    ("경쟁사 탐색", "Competitor Discovery Agent",
+     "카테고리별 경쟁 브랜드/플랫폼 유형별 탐색 (하드코딩 금지)",
+     "카테고리의 경쟁 브랜드/플랫폼을 유형별(direct/indirect/leader/media/commerce/ota/content/local)로 탐색해 JSON 배열로 응답합니다.",
+     "claude-sonnet-5"),
+    ("경쟁사 분석", "Competitor Intelligence Agent",
+     "경쟁사 상품·가격·채널·강약점·차별점 분석 (사실/추론 구분)",
+     "대상 경쟁사의 상품·가격·채널·강약점을 분석하여 JSON으로 응답하고, 사실과 추론을 구분합니다.",
+     "claude-sonnet-5"),
+    ("광고주 발굴", "Advertiser Discovery Agent",
+     "시장·경쟁 분석 기반 잠재 광고주 후보 발굴",
+     "시장·경쟁 분석 결과를 바탕으로 놀이의발견에 광고할 가능성이 높은 광고주 후보를 JSON 배열로 제안합니다.",
+     "gemini-2.5-flash"),
+    ("광고 제안서", "Proposal Agent",
+     "스코어링·추천 결과 기반 맞춤 제안서 내러티브 생성",
+     "제공된 비식별 분석 데이터에 근거하여 광고주 맞춤형 제안서 내러티브를 작성합니다. 예상 수치는 '가정(시뮬레이션)'으로 명시합니다.",
+     "claude-sonnet-5"),
+]
+
 # --- De-identified aggregates (category, view, wish, cart, search) ---
 BEHAVIOR_AGG = [
     ("워터파크", 82000, 14000, 9000, 21000),

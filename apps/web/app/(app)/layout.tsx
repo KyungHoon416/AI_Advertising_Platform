@@ -8,6 +8,9 @@ import { api, setToken, type UserMe } from "@/lib/api";
 const NAV = [
   { href: "/", label: "대시보드" },
   { href: "/advertisers", label: "AI 광고주 추천" },
+  { href: "/research", label: "시장조사 · 경쟁사" },
+  { href: "/prompts", label: "Prompt Library" },
+  { href: "/settings", label: "Settings" },
 ];
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
