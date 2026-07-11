@@ -180,6 +180,15 @@ PURCHASE_AGG = [
     ("건강식품", 6100, 200, 52000, 0.40, 0.04),
 ]
 
+# --- Sample campaigns (advertiser_name, ad_product_code, name, start, end, amount, status, perf) ---
+# perf = (impressions, clicks, conversions, revenue)
+CAMPAIGNS = [
+    ("지역 워터파크 A", "category_ad", "워터파크 여름 성수기 캠페인",
+     "2026-06-01", "2026-08-31", 15000000, "running", (120000, 3600, 450, 45000000)),
+    ("패밀리 리조트 B", "main_banner", "리조트 가을 프로모션",
+     "2026-09-01", "2026-10-31", 30000000, "ended", (200000, 4000, 300, 66000000)),
+]
+
 # --- Sample advertisers (name, brand, primary_category, region, size, budget_band, source) ---
 SAMPLE_ADVERTISERS = [
     ("지역 워터파크 A", "워터파크A", "워터파크", "경기", "large", "high", "discovery"),

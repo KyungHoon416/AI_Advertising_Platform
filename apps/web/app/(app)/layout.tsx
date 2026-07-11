@@ -9,6 +9,7 @@ const NAV = [
   { href: "/", label: "대시보드" },
   { href: "/advertisers", label: "AI 광고주 추천" },
   { href: "/research", label: "시장조사 · 경쟁사" },
+  { href: "/operations", label: "운영 · ROI · 재계약" },
   { href: "/prompts", label: "Prompt Library" },
   { href: "/settings", label: "Settings" },
 ];

@@ -19,6 +19,7 @@ from app.interface.routers import (
     auth,
     categories,
     dashboard,
+    operations,
     prompts,
     proposals,
     recommendations,
@@ -60,6 +61,7 @@ app.include_router(proposals.router)
 app.include_router(analysis.router)
 app.include_router(dashboard.router)
 app.include_router(prompts.router)
+app.include_router(operations.router)
 
 
 @app.get("/health", tags=["system"])

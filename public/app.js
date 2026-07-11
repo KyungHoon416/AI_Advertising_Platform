@@ -720,6 +720,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const viewCtr = document.getElementById('roi-calc-ctr');
   const viewCvr = document.getElementById('roi-calc-cvr');
   const viewRoas = document.getElementById('roi-calc-roas');
+  const viewContribution = document.getElementById('roi-calc-contribution');
+  const viewRenewal = document.getElementById('roi-calc-renewal');
   const roiReportBody = document.getElementById('roi-result-body');
 
   let localPerformances = [];
@@ -789,6 +791,8 @@ document.addEventListener('DOMContentLoaded', () => {
           viewCtr.textContent = `${data.calculated.ctr}%`;
           viewCvr.textContent = `${data.calculated.cvr}%`;
           viewRoas.textContent = `${data.calculated.roas}%`;
+          if (viewContribution) viewContribution.textContent = `${data.calculated.contributionMargin}%`;
+          if (viewRenewal) viewRenewal.textContent = `${data.calculated.renewalScore}점`;
 
           // ROI 퍼널 차트 렌더링
           renderRoiCharts({
@@ -1126,6 +1130,8 @@ document.addEventListener('DOMContentLoaded', () => {
           viewCtr.textContent = `${roiData.calculated.ctr}%`;
           viewCvr.textContent = `${roiData.calculated.cvr}%`;
           viewRoas.textContent = `${roiData.calculated.roas}%`;
+          if (viewContribution) viewContribution.textContent = `${roiData.calculated.contributionMargin}%`;
+          if (viewRenewal) viewRenewal.textContent = `${roiData.calculated.renewalScore}점`;
           renderRoiCharts({
             conversions: 450,
             spend: 1500000,

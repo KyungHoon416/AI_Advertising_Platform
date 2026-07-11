@@ -1,8 +1,14 @@
-node_modules/
-npm-debug.log
-.env
 .git
-.DS_Store
+.gitignore
+.env
+.env.*
+!.env.example
+node_modules
+npm-debug.log
 Dockerfile
-.dockerignore
-TalkFile_AX 과제 사전 준비 산출물.docx
+apps
+docs
+infra
+*.pdf
+*.docx
+*.pptx

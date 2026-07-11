@@ -15,6 +15,10 @@ _DB_PATH = pathlib.Path(__file__).parent / "_test.db"
 os.environ["DATABASE_URL"] = f"sqlite+aiosqlite:///{_DB_PATH}"
 os.environ["DEBUG"] = "false"  # silence SQL echo in tests
 os.environ["JWT_SECRET"] = "test-secret"
+# Tests must be deterministic & offline: never call a real LLM (use mock fallback).
+os.environ["GEMINI_API_KEY"] = ""
+os.environ["ANTHROPIC_API_KEY"] = ""
+os.environ["OPENAI_API_KEY"] = ""
 os.environ["SEED_ADMIN_EMAIL"] = "admin@nolbal.com"
 os.environ["SEED_ADMIN_PASSWORD"] = "ChangeMe!234"
 

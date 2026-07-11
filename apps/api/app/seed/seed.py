@@ -25,6 +25,8 @@ from app.infrastructure.db.models import (
     Advertiser,
     BehaviorAggregate,
     Benchmark,
+    Campaign,
+    CampaignPerformance,
     Category,
     Permission,
     Prompt,
@@ -35,7 +37,7 @@ from app.infrastructure.db.models import (
     ScoringVersion,
     User,
 )
-from app.domain.enums import PromptStatus
+from app.domain.enums import AdProductCode, CampaignStatus, PromptStatus
 from app.seed import data
 
 
@@ -206,6 +208,31 @@ async def seed_prompts(db: AsyncSession) -> None:
             ))
 
 
+async def seed_campaigns(db: AsyncSession) -> None:
+    for adv_name, prod_code, name, start, end, amount, status, perf in data.CAMPAIGNS:
+        adv = (await db.execute(select(Advertiser).where(Advertiser.name == adv_name))).scalar_one_or_none()
+        if adv is None:
+            continue
+        prod = (await db.execute(
+            select(AdProduct).where(AdProduct.code == AdProductCode(prod_code))
+        )).scalar_one_or_none()
+        campaign, created = await _get_or_create(
+            db, Campaign,
+            defaults={
+                "advertiser_id": adv.id, "ad_product_id": prod.id if prod else None,
+                "period_start": start, "period_end": end, "contract_amount": amount,
+                "status": CampaignStatus(status),
+            },
+            name=name,
+        )
+        if created:
+            imps, clicks, convs, revenue = perf
+            db.add(CampaignPerformance(
+                campaign_id=campaign.id, period=start[:7],
+                impressions=imps, clicks=clicks, conversions=convs, revenue=revenue,
+            ))
+
+
 async def run() -> None:
     async with SessionLocal() as db:
         await seed_rbac(db)
@@ -216,6 +243,7 @@ async def run() -> None:
         await seed_aggregates(db)
         await seed_advertisers(db, cats)
         await seed_prompts(db)
+        await seed_campaigns(db)
         await db.commit()
     print("[seed] done")
 

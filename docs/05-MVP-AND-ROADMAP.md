@@ -23,7 +23,7 @@
 | **2. Database** | 35-table SQLAlchemy 모델 · Alembic 마이그레이션 · 멱등 Seed · FastAPI 엔트리 · docker-compose | ✅ **완료** (SQLite로 end-to-end 검증) |
 | 3. Backend | ✅ Auth/RBAC · Category/Advertiser/AdProduct API · 설정주도 Scoring 엔진+API · 광고상품 추천 엔진+API · **Proposal API** | ✅ **완료** |
 | 4. AI Agent | ✅ LLMGateway(멀티 프로바이더+PII 마스킹+폴백) · Proposal Agent · **Category/Market/Competitor Discovery+Intelligence/Advertiser Discovery Agent(구조화 출력+폴백)** · **Sales Pipeline 오케스트레이터** · AgentExecution 로깅 → ⬜ LangGraph executor 스왑 | ✅ **MVP 완료** |
-| 5. Frontend | ✅ Next.js(App Router)+TS+Tailwind · Login · Dashboard(KPI) · 광고주 추천 · **Scoring Explainability Drawer** · 상품추천 · 제안서 (백엔드 실연동 E2E 검증) → ⬜ 시장/경쟁/Settings/Prompt 화면 | ▶ **진행 중** |
+| 5. Frontend | ✅ Next.js · Login · Dashboard · 광고주 추천(**Explainability Drawer**) · 시장/경쟁 · Settings · Prompt Library · **운영·ROI·재계약** (전 화면 백엔드 실연동 E2E) | ✅ **완료** |
 | 6. Data/Test | ✅ Seed/Mock · Unit(도메인·feature builder) · Integration/API · Scoring 재현성 · 마스킹/게이트웨이 — **57 tests** | ▶ 진행 중 |
 | **실 LLM** | ✅ **Gemini API 실연동 검증** — google-genai SDK, `generated_by=gemini`, 실 프로즈 + 가정 라벨 + PII 마스킹 (UI E2E 확인) | ✅ |
 | 7. Infra | ✅ Docker Compose(pg+pgvector·redis·api·web) · Dockerfile(api/web) · **GitHub Actions CI(pytest+build)** → ⬜ AWS IaC · Secrets Manager | ▶ **착수** |

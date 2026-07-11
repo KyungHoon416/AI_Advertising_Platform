@@ -20,9 +20,11 @@ app.use(express.json());
 // 정적 파일 서빙 (public 폴더)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Gemini API 클라이언트 초기화
+// AI API 클라이언트 초기화
 let ai = null;
 const API_KEY = process.env.GEMINI_API_KEY;
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-3-5-sonnet-latest';
 
 if (API_KEY && API_KEY.trim() !== '' && API_KEY !== 'your_gemini_api_key_here') {
   try {
@@ -33,6 +35,10 @@ if (API_KEY && API_KEY.trim() !== '' && API_KEY !== 'your_gemini_api_key_here') 
   }
 } else {
   console.log('Gemini API Key is missing. Server will run in Mock Demo Mode.');
+}
+
+if (ANTHROPIC_API_KEY && ANTHROPIC_API_KEY.trim() !== '') {
+  console.log('Anthropic Claude API key detected. Claude will be used before Gemini.');
 }
 
 // ----------------------------------------------------
@@ -446,9 +452,43 @@ function buildAgentPrompt(taskPrompt, previousContext) {
 }
 
 // ----------------------------------------------------
-// AI 호출 래퍼 함수 (Gemini API / Fallback Mock)
+// AI 호출 래퍼 함수 (Claude -> Gemini -> Fallback Mock)
 // ----------------------------------------------------
 async function generateAIResponse(prompt, mockResponse) {
+  if (ANTHROPIC_API_KEY && ANTHROPIC_API_KEY.trim() !== '') {
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'x-api-key': ANTHROPIC_API_KEY,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: ANTHROPIC_MODEL,
+          max_tokens: 4096,
+          system: MASTER_SYSTEM_PROMPT,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Anthropic API failed (${response.status}): ${errorText}`);
+      }
+
+      const data = await response.json();
+      const text = data?.content
+        ?.map((block) => (block.type === 'text' ? block.text : ''))
+        .join('\n')
+        .trim();
+      if (text) return text;
+      throw new Error('Anthropic API returned an empty response.');
+    } catch (error) {
+      console.error('Anthropic API execution failed. Falling back to Gemini/Mock:', error);
+    }
+  }
+
   if (ai) {
     try {
       const response = await ai.models.generateContent({
@@ -1076,6 +1116,14 @@ app.post('/api/ai/roi-report', async (req, res) => {
   const ctr = ((clks / imps) * 100).toFixed(2);
   const cvr = ((convs / clks) * 100).toFixed(2);
   const roas = ((rev / spnd) * 100).toFixed(0);
+  const roi = (((rev - spnd) / spnd) * 100).toFixed(0);
+  const directCost = Math.round(rev * 0.32);
+  const opportunityCost = Math.round(spnd * 0.18);
+  const contributionMargin = (((rev - directCost - opportunityCost) / rev) * 100).toFixed(1);
+  const renewalScore = Math.max(
+    0,
+    Math.min(100, Math.round(Number(roas) * 0.12 + Number(cvr) * 3 + Number(contributionMargin) * 0.45))
+  );
 
   const taskPrompt = PROMPT_LIBRARY.roi.template
     .replace('{partnerName}', partnerName)
@@ -1095,6 +1143,8 @@ app.post('/api/ai/roi-report', async (req, res) => {
 - **CTR**: **${ctr}%** (업계 평균: 2.0%) ➔ **양호**
 - **CVR**: **${cvr}%** (업계 평균: 5.0%) ➔ **개선 필요**
 - **ROAS**: **${roas}%** ➔ **매우 우수**
+- **ROI**: **${roi}%**, **공헌이익율**: **${contributionMargin}%**
+- **재계약 가능성 점수**: **${renewalScore}점 / 100점**
 
 #### 🔍 종합 진단 및 분석 의견
 1. **높은 유입 대비 낮은 전환**: CTR(${ctr}%)은 타 광고 대비 높은 편이나, 유입 대비 실제 구매 전환율(CVR: ${cvr}%)이 상대적으로 정체되어 있습니다. 이는 광고 이미지나 푸시 문구는 매력적이나, 막상 상세 페이지에 유입된 후 결제 허들이 존재하거나 혜택의 소구점이 약했음을 나타냅니다.
@@ -1110,10 +1160,19 @@ app.post('/api/ai/roi-report', async (req, res) => {
 
   try {
     const aiText = await generateAIResponse(prompt, mockResponse);
-    res.json({ success: true, report: aiText, calculated: { ctr, cvr, roas } });
+    res.json({
+      success: true,
+      report: aiText,
+      calculated: { ctr, cvr, roas, roi, contributionMargin, renewalScore, directCost, opportunityCost }
+    });
   } catch (error) {
     console.warn("AI API limit/error. Fallback to mock:", error.message);
-    res.json({ success: true, report: mockResponse, calculated: { ctr, cvr, roas }, isFallback: true });
+    res.json({
+      success: true,
+      report: mockResponse,
+      calculated: { ctr, cvr, roas, roi, contributionMargin, renewalScore, directCost, opportunityCost },
+      isFallback: true
+    });
   }
 });
 

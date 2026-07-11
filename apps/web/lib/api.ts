@@ -135,6 +135,53 @@ export interface Prompt {
   description?: string | null;
   latest?: PromptVersion | null;
 }
+export interface Performance {
+  id: string;
+  campaign_id: string;
+  period?: string | null;
+  impressions?: number | null;
+  clicks?: number | null;
+  ctr?: number | null;
+  conversions?: number | null;
+  cvr?: number | null;
+  revenue?: number | null;
+  roas?: number | null;
+  roi?: number | null;
+  analysis?: {
+    summary?: string;
+    achievement?: number;
+    high_reasons?: string[];
+    low_reasons?: string[];
+    improvements?: string[];
+  } | null;
+}
+export interface Campaign {
+  id: string;
+  advertiser_id: string;
+  name: string;
+  period_start?: string | null;
+  period_end?: string | null;
+  contract_amount?: number | null;
+  status: string;
+  performances: Performance[];
+}
+export interface RoiResult {
+  metrics: { ctr: number; cvr: number; roas: number; roi: number };
+  benchmark: { industry_avg_roi: number; diff_pp: number; above: boolean };
+  verdict?: string | null;
+  actions: string[];
+  generated_by: string;
+  is_fallback: boolean;
+}
+export interface Renewal {
+  id: string;
+  campaign_id: string;
+  likelihood: string;
+  score: number;
+  rationale?: string | null;
+  upsell_product_code?: string | null;
+  upsell_reason?: string | null;
+}
 
 const TOKEN_KEY = "nolbal_token";
 
@@ -206,4 +253,17 @@ export const api = {
     }),
   scoringConfig: () => req<ScoringConfig>("/scoring/config"),
   prompts: () => req<Prompt[]>("/prompts"),
+  campaigns: () => req<Campaign[]>("/campaigns"),
+  analyzePerformance: (perfId: string) =>
+    req<Performance>(`/performance/${perfId}/analyze`, { method: "POST" }),
+  analyzeRoi: (body: {
+    partner_name: string;
+    impressions: number;
+    clicks: number;
+    conversions: number;
+    spend: number;
+    revenue: number;
+  }) => req<RoiResult>("/roi/analyze", { method: "POST", body: JSON.stringify(body) }),
+  recommendRenewal: (campaignId: string) =>
+    req<Renewal>(`/renewal/${campaignId}`, { method: "POST" }),
 };
