@@ -25,7 +25,7 @@
 | 4. AI Agent | ✅ LLMGateway(멀티 프로바이더+PII 마스킹+폴백) · Proposal Agent · **Category/Market/Competitor Discovery+Intelligence/Advertiser Discovery Agent(구조화 출력+폴백)** · **Sales Pipeline 오케스트레이터** · AgentExecution 로깅 → ⬜ LangGraph executor 스왑 | ✅ **MVP 완료** |
 | 5. Frontend | ✅ Next.js(App Router)+TS+Tailwind · Login · Dashboard(KPI) · 광고주 추천 · **Scoring Explainability Drawer** · 상품추천 · 제안서 (백엔드 실연동 E2E 검증) → ⬜ 시장/경쟁/Settings/Prompt 화면 | ▶ **진행 중** |
 | 6. Data/Test | Seed/Mock → Unit(도메인) → Integration/API → Scoring Test → AI Output Validation | 대기 |
-| 7. Infra | Docker Compose → 환경변수/Secrets → AWS IaC → CI/CD(GitHub Actions) → 운영 가이드 | 대기 |
+| 7. Infra | ✅ Docker Compose(pg+pgvector·redis·api·web) · Dockerfile(api/web) · **GitHub Actions CI(pytest+build)** → ⬜ AWS IaC · Secrets Manager | ▶ **착수** |
 
 ## 3. Phase 2 착수 계획 (즉시 진행)
 1. `apps/api` FastAPI 스캐폴드 + `core/config`·`core/security`.

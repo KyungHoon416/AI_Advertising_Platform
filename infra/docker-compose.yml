@@ -44,5 +44,16 @@ services:
       redis:
         condition: service_healthy
 
+  web:
+    build:
+      context: ../apps/web
+    environment:
+      # Server-side rewrite proxies /api/* to the api service on the compose network.
+      API_TARGET: http://api:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
 volumes:
   pgdata:
