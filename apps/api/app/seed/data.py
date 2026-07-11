@@ -135,6 +135,23 @@ AD_PRODUCT_FACTORS = [
     ("ad_product", "HIST", "과거 성과 적합도", 5, 1.0),
 ]
 
+# --- De-identified aggregates (category, view, wish, cart, search) ---
+BEHAVIOR_AGG = [
+    ("워터파크", 82000, 14000, 9000, 21000),
+    ("키즈카페", 96000, 18000, 12000, 26000),
+    ("리조트", 54000, 8000, 5200, 15000),
+    ("에듀테크", 41000, 6200, 3800, 12000),
+    ("건강식품", 38000, 5100, 4300, 9000),
+]
+# (category, purchase, reservation, avg_order_value, repurchase_rate, cancel_rate)
+PURCHASE_AGG = [
+    ("워터파크", 5200, 6100, 45000, 0.22, 0.08),
+    ("키즈카페", 7400, 3200, 30000, 0.31, 0.06),
+    ("리조트", 2100, 2600, 220000, 0.18, 0.11),
+    ("에듀테크", 3300, 900, 90000, 0.27, 0.05),
+    ("건강식품", 6100, 200, 52000, 0.40, 0.04),
+]
+
 # --- Sample advertisers (name, brand, primary_category, region, size, budget_band, source) ---
 SAMPLE_ADVERTISERS = [
     ("지역 워터파크 A", "워터파크A", "워터파크", "경기", "large", "high", "discovery"),

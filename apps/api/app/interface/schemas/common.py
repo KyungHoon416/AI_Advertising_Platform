@@ -1,6 +1,4 @@
 """Common schemas: pagination envelope & query params."""
-from __future__ import annotations
-
 from typing import Generic, Optional, TypeVar
 
 from fastapi import Query

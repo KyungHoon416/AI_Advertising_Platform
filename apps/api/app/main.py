@@ -12,7 +12,14 @@ from sqlalchemy import text
 
 from app.core.config import get_settings
 from app.core.database import engine
-from app.interface.routers import ad_products, advertisers, auth, categories
+from app.interface.routers import (
+    ad_products,
+    advertisers,
+    auth,
+    categories,
+    recommendations,
+    scoring,
+)
 
 settings = get_settings()
 
@@ -43,6 +50,8 @@ app.include_router(auth.router)
 app.include_router(categories.router)
 app.include_router(advertisers.router)
 app.include_router(ad_products.router)
+app.include_router(scoring.router)
+app.include_router(recommendations.router)
 
 
 @app.get("/health", tags=["system"])

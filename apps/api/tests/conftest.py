@@ -13,6 +13,7 @@ import pytest
 
 _DB_PATH = pathlib.Path(__file__).parent / "_test.db"
 os.environ["DATABASE_URL"] = f"sqlite+aiosqlite:///{_DB_PATH}"
+os.environ["DEBUG"] = "false"  # silence SQL echo in tests
 os.environ["JWT_SECRET"] = "test-secret"
 os.environ["SEED_ADMIN_EMAIL"] = "admin@nolbal.com"
 os.environ["SEED_ADMIN_PASSWORD"] = "ChangeMe!234"

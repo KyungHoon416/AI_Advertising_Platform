@@ -23,9 +23,11 @@ from app.infrastructure.db.models import (
     AdProduct,
     AdProductCategoryRule,
     Advertiser,
+    BehaviorAggregate,
     Benchmark,
     Category,
     Permission,
+    PurchaseAggregate,
     Role,
     ScoreFactorDef,
     ScoringVersion,
@@ -168,6 +170,26 @@ async def seed_advertisers(db: AsyncSession, cats: dict[str, Category]) -> None:
         )
 
 
+async def seed_aggregates(db: AsyncSession) -> None:
+    for cat, view, wish, cart, search in data.BEHAVIOR_AGG:
+        obj, created = await _get_or_create(
+            db, BehaviorAggregate,
+            defaults={"dimension": {"category": cat}, "view_count": view,
+                      "wish_count": wish, "cart_count": cart, "search_count": search},
+            category=cat,
+        )
+        if not created:
+            continue
+    for cat, purchase, reservation, aov, rep, cancel in data.PURCHASE_AGG:
+        await _get_or_create(
+            db, PurchaseAggregate,
+            defaults={"dimension": {"category": cat}, "purchase_count": purchase,
+                      "reservation_count": reservation, "avg_order_value": aov,
+                      "repurchase_rate": rep, "cancel_rate": cancel},
+            category=cat,
+        )
+
+
 async def run() -> None:
     async with SessionLocal() as db:
         await seed_rbac(db)
@@ -175,6 +197,7 @@ async def run() -> None:
         await seed_ad_products(db)
         await seed_scoring(db)
         await seed_benchmarks(db, cats)
+        await seed_aggregates(db)
         await seed_advertisers(db, cats)
         await db.commit()
     print("[seed] done")
