@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #f7f8fa;
+}
+
+body {
+  background: var(--bg);
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+}
+
+.card {
+  @apply bg-white rounded-xl border border-slate-200 shadow-sm;
+}
+.btn {
+  @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition disabled:opacity-50;
+}
+.btn-primary {
+  @apply btn bg-primary text-white hover:bg-blue-600;
+}
+.btn-ghost {
+  @apply btn border border-slate-200 bg-white text-slate-700 hover:bg-slate-50;
+}
+.grade-S { @apply bg-emerald-100 text-emerald-700; }
+.grade-A { @apply bg-blue-100 text-blue-700; }
+.grade-B { @apply bg-amber-100 text-amber-700; }
+.grade-C { @apply bg-orange-100 text-orange-700; }
+.grade-D { @apply bg-slate-200 text-slate-600; }
