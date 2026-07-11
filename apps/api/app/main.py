@@ -15,6 +15,7 @@ from app.core.database import engine
 from app.interface.routers import (
     ad_products,
     advertisers,
+    analysis,
     auth,
     categories,
     proposals,
@@ -54,6 +55,7 @@ app.include_router(ad_products.router)
 app.include_router(scoring.router)
 app.include_router(recommendations.router)
 app.include_router(proposals.router)
+app.include_router(analysis.router)
 
 
 @app.get("/health", tags=["system"])
