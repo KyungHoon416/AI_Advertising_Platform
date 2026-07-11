@@ -19,9 +19,9 @@
 
 | Phase | 산출물 | 상태 |
 |---|---|---|
-| **1. Architecture** | 요구분석·아키텍처·Agent 워크플로우·Scoring/Rec 로직·ERD·API·화면·MVP·계획 | ✅ **본 문서셋 완료** |
-| **2. Database** | ERD 확정 → SQLAlchemy 모델 → Alembic 마이그레이션 → Seed | ▶ **다음 단계** |
-| 3. Backend | Auth/RBAC → Category/Advertiser/AdProduct API → Scoring API → Recommendation API → Proposal API | 대기 |
+| **1. Architecture** | 요구분석·아키텍처·Agent 워크플로우·Scoring/Rec 로직·ERD·API·화면·MVP·계획 | ✅ **완료** |
+| **2. Database** | 35-table SQLAlchemy 모델 · Alembic 마이그레이션 · 멱등 Seed · FastAPI 엔트리 · docker-compose | ✅ **완료** (SQLite로 end-to-end 검증) |
+| 3. Backend | Auth/RBAC → Category/Advertiser/AdProduct API → Scoring API → Recommendation API → Proposal API | ▶ **다음 단계** |
 | 4. AI Agent | LLMGateway → 6개 MVP 에이전트 → LangGraph 그래프 → Structured Output 검증 | 대기 |
 | 5. Frontend | Login → Dashboard → 추천/시장/경쟁 → Scoring Drawer → 상품추천 → 제안서 → Settings/Prompt | 대기 |
 | 6. Data/Test | Seed/Mock → Unit(도메인) → Integration/API → Scoring Test → AI Output Validation | 대기 |
