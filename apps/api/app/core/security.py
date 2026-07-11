@@ -11,9 +11,13 @@ import hashlib
 from datetime import datetime, timedelta, timezone
 
 import bcrypt
-from jose import jwt
+from jose import JWTError, jwt
 
 from app.core.config import get_settings
+
+
+class TokenError(Exception):
+    """Raised when a JWT cannot be decoded or is of the wrong type."""
 
 _settings = get_settings()
 
@@ -51,3 +55,13 @@ def create_refresh_token(subject: str) -> str:
         "type": "refresh",
     }
     return jwt.encode(payload, _settings.jwt_secret, algorithm=_settings.jwt_algorithm)
+
+
+def decode_token(token: str, expected_type: str = "access") -> dict:
+    try:
+        payload = jwt.decode(token, _settings.jwt_secret, algorithms=[_settings.jwt_algorithm])
+    except JWTError as exc:  # invalid signature / expired / malformed
+        raise TokenError(str(exc)) from exc
+    if payload.get("type") != expected_type:
+        raise TokenError(f"expected {expected_type} token")
+    return payload

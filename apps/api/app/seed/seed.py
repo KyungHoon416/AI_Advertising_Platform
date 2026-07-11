@@ -66,7 +66,7 @@ async def seed_rbac(db: AsyncSession) -> None:
                 role.permissions.append(p)
 
     # default super admin
-    admin_email = os.environ.get("SEED_ADMIN_EMAIL", "admin@nolbal.local")
+    admin_email = os.environ.get("SEED_ADMIN_EMAIL", "admin@nolbal.com")
     admin_pw = os.environ.get("SEED_ADMIN_PASSWORD", "ChangeMe!234")
     user, created = await _get_or_create(
         db, User,

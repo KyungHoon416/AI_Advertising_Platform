@@ -7,10 +7,12 @@ from __future__ import annotations
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
 from app.core.config import get_settings
 from app.core.database import engine
+from app.interface.routers import ad_products, advertisers, auth, categories
 
 settings = get_settings()
 
@@ -28,6 +30,19 @@ app = FastAPI(
     docs_url="/docs",
     openapi_url="/openapi.json",
 )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Next.js dev; tighten per env
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(auth.router)
+app.include_router(categories.router)
+app.include_router(advertisers.router)
+app.include_router(ad_products.router)
 
 
 @app.get("/health", tags=["system"])
