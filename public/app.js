@@ -56,6 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // 대시보드 탭 로드 시 데이터 로딩 및 차트 갱신
+    if (tabId === 'dashboard-overview') {
+      loadDashboardData();
+    }
+
     // 스크롤 상단 이동
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -1278,5 +1283,239 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+  // ----------------------------------------------------
+  // Dashboard Analytics & KPI Loader
+  // ----------------------------------------------------
+  const dashboardCharts = {};
+
+  async function loadDashboardData() {
+    try {
+      const response = await fetch('/api/dashboard/stats');
+      const resData = await response.json();
+      if (!resData.success) return;
+
+      const kpi = resData.kpi;
+      const charts = resData.charts;
+
+      // 1. KPI 카드 업데이트
+      document.getElementById('kpi-total-advertisers').textContent = kpi.totalAdvertisers.toLocaleString();
+      document.getElementById('kpi-ai-rec').textContent = kpi.aiRecommendedAdvertisers.toLocaleString();
+      document.getElementById('kpi-high-score').textContent = kpi.highScoreAdvertisers.toLocaleString();
+      document.getElementById('kpi-active-proposals').textContent = kpi.activeProposals.toLocaleString();
+      document.getElementById('kpi-contracted').textContent = kpi.contractedAdvertisers.toLocaleString();
+      document.getElementById('kpi-active-campaigns').textContent = kpi.activeCampaigns.toLocaleString();
+      document.getElementById('kpi-monthly-revenue').textContent = (kpi.monthlyRevenue / 10000).toLocaleString() + '만원';
+      document.getElementById('kpi-avg-ctr').textContent = kpi.avgCtr.toFixed(2) + '%';
+      document.getElementById('kpi-avg-cvr').textContent = kpi.avgCvr.toFixed(2) + '%';
+      document.getElementById('kpi-avg-roi').textContent = kpi.avgRoi + '%';
+      document.getElementById('kpi-ending-campaigns').textContent = kpi.endingSoonCampaigns + '개';
+      document.getElementById('kpi-renewal-rec').textContent = kpi.renewalRecommended + '개';
+      document.getElementById('kpi-upsell-rec').textContent = kpi.upsellRecommended + '개';
+
+      // 2. 차트 렌더링 헬퍼
+      const renderChart = (canvasId, type, data, options) => {
+        if (dashboardCharts[canvasId]) {
+          dashboardCharts[canvasId].destroy();
+        }
+        const canvasEl = document.getElementById(canvasId);
+        if (!canvasEl) return;
+        const ctx = canvasEl.getContext('2d');
+        dashboardCharts[canvasId] = new Chart(ctx, { type, data, options });
+      };
+
+      // Chart 1: 월별 광고 매출 추이 (Line)
+      renderChart('chart-monthly-revenue', 'line', {
+        labels: charts.monthlyRevenue.labels,
+        datasets: [{
+          label: '매출 (만원)',
+          data: charts.monthlyRevenue.data,
+          borderColor: '#00f2fe',
+          backgroundColor: 'rgba(0, 242, 254, 0.1)',
+          borderWidth: 2,
+          fill: true,
+          tension: 0.4
+        }]
+      }, {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#9aa0b9' } },
+          x: { grid: { display: false }, ticks: { color: '#9aa0b9' } }
+        }
+      });
+
+      // Chart 2: 광고상품별 매출 점유율 (Doughnut)
+      renderChart('chart-product-revenue', 'doughnut', {
+        labels: charts.productRevenue.labels,
+        datasets: [{
+          data: charts.productRevenue.data,
+          backgroundColor: ['#3b82f6', '#a855f7', '#14b8a6', '#f97316'],
+          borderWidth: 0
+        }]
+      }, {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'right', labels: { color: '#9aa0b9', font: { size: 9 } } }
+        }
+      });
+
+      // Chart 3: 광고상품별 CTR (Bar)
+      renderChart('chart-product-ctr', 'bar', {
+        labels: charts.productPerformance.labels,
+        datasets: [{
+          label: '평균 CTR (%)',
+          data: charts.productPerformance.ctr,
+          backgroundColor: 'rgba(16, 185, 129, 0.8)',
+          borderRadius: 6
+        }]
+      }, {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#9aa0b9' } },
+          x: { grid: { display: false }, ticks: { color: '#9aa0b9' } }
+        }
+      });
+
+      // Chart 4: 광고상품별 CVR (Bar)
+      renderChart('chart-product-cvr', 'bar', {
+        labels: charts.productPerformance.labels,
+        datasets: [{
+          label: '평균 CVR (%)',
+          data: charts.productPerformance.cvr,
+          backgroundColor: 'rgba(249, 115, 22, 0.8)',
+          borderRadius: 6
+        }]
+      }, {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#9aa0b9' } },
+          x: { grid: { display: false }, ticks: { color: '#9aa0b9' } }
+        }
+      });
+
+      // Chart 5: 카테고리별 광고주 분포 (Horizontal Bar)
+      renderChart('chart-category-advertisers', 'bar', {
+        labels: charts.categoryAdvertisers.labels,
+        datasets: [{
+          label: '광고주 수',
+          data: charts.categoryAdvertisers.data,
+          backgroundColor: 'rgba(234, 179, 8, 0.8)',
+          borderRadius: 6
+        }]
+      }, {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#9aa0b9' } },
+          y: { grid: { display: false }, ticks: { color: '#9aa0b9' } }
+        }
+      });
+
+      // Chart 6: 카테고리별 광고 성과 (Radar)
+      renderChart('chart-category-performance', 'radar', {
+        labels: charts.categoryPerformance.labels,
+        datasets: [
+          {
+            label: 'CTR (%)',
+            data: charts.categoryPerformance.ctr,
+            borderColor: '#14b8a6',
+            backgroundColor: 'rgba(20, 184, 166, 0.2)',
+            borderWidth: 1
+          },
+          {
+            label: 'CVR / 3 (%)',
+            data: charts.categoryPerformance.cvr.map(v => v / 3),
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+            borderWidth: 1
+          }
+        ]
+      }, {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          r: {
+            angleLines: { color: 'rgba(255, 255, 255, 0.05)' },
+            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+            pointLabels: { color: '#9aa0b9', font: { size: 9 } },
+            ticks: { display: false }
+          }
+        },
+        plugins: {
+          legend: { position: 'top', labels: { color: '#9aa0b9', font: { size: 9 } } }
+        }
+      });
+
+      // Chart 7: 광고주 추천점수 분포 (Bar)
+      renderChart('chart-score-distribution', 'bar', {
+        labels: charts.scoreDistribution.labels,
+        datasets: [{
+          label: '광고주 수',
+          data: charts.scoreDistribution.data,
+          backgroundColor: '#ec4899',
+          borderRadius: 6
+        }]
+      }, {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#9aa0b9' } },
+          x: { grid: { display: false }, ticks: { color: '#9aa0b9' } }
+        }
+      });
+
+      // Chart 8: 광고계약 전환 퍼널 (Horizontal Bar)
+      renderChart('chart-funnel-data', 'bar', {
+        labels: charts.funnelData.labels,
+        datasets: [{
+          label: '건수/브랜드수',
+          data: charts.funnelData.data,
+          backgroundColor: '#2563eb',
+          borderRadius: 6
+        }]
+      }, {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#9aa0b9' } },
+          y: { grid: { display: false }, ticks: { color: '#9aa0b9' } }
+        }
+      });
+
+      // Chart 9: 재계약 가능성 분포 (Pie)
+      renderChart('chart-renewal-distribution', 'pie', {
+        labels: charts.renewalDistribution.labels,
+        datasets: [{
+          data: charts.renewalDistribution.data,
+          backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+          borderWidth: 0
+        }]
+      }, {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'right', labels: { color: '#9aa0b9', font: { size: 9 } } }
+        }
+      });
+
+    } catch (e) {
+      console.error("Dashboard stats load error:", e);
+    }
+  }
+
+  // 최초 로드 시 실행
+  loadDashboardData();
 
 });

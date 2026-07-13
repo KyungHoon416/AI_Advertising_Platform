@@ -1645,6 +1645,64 @@ app.post('/api/ai/proposal/download', async (req, res) => {
   }
 });
 
+// 8. AI Dashboard Stats API
+app.get('/api/dashboard/stats', (req, res) => {
+  res.json({
+    success: true,
+    kpi: {
+      totalAdvertisers: 142,
+      aiRecommendedAdvertisers: 84,
+      highScoreAdvertisers: 36,
+      activeProposals: 18,
+      contractedAdvertisers: 24,
+      activeCampaigns: 12,
+      monthlyRevenue: 48500000,
+      avgCtr: 3.82,
+      avgCvr: 11.45,
+      avgRoi: 480,
+      endingSoonCampaigns: 4,
+      renewalRecommended: 8,
+      upsellRecommended: 5
+    },
+    charts: {
+      monthlyRevenue: {
+        labels: ['2월', '3월', '4월', '5월', '6월', '7월'],
+        data: [2800, 3200, 3500, 4100, 4500, 4850]
+      },
+      productRevenue: {
+        labels: ['메인배너', '서브배너', '카테고리 광고', '스플래쉬 광고'],
+        data: [1850, 950, 1250, 800]
+      },
+      productPerformance: {
+        labels: ['메인배너', '서브배너', '카테고리 광고', '스플래쉬 광고'],
+        ctr: [4.2, 2.1, 3.4, 18.5],
+        cvr: [11.2, 4.5, 9.8, 16.5]
+      },
+      categoryAdvertisers: {
+        labels: ['숙박·여행', '레저·체험', '교육·에듀', '식품·육아', '기타'],
+        data: [35, 42, 28, 22, 15]
+      },
+      categoryPerformance: {
+        labels: ['숙박·여행', '레저·체험', '교육·에듀', '식품·육아', '기타'],
+        ctr: [3.5, 4.8, 3.2, 2.9, 1.8],
+        cvr: [10.5, 12.4, 9.5, 8.8, 5.2]
+      },
+      scoreDistribution: {
+        labels: ['90점 이상(S)', '80-89점(A)', '70-79점(B)', '60-69점(C)', '60점 미만(D)'],
+        data: [8, 28, 45, 38, 23]
+      },
+      funnelData: {
+        labels: ['잠재 발굴', '제안서 발송', '2차 미팅/협상', '계약 체결'],
+        data: [142, 68, 32, 24]
+      },
+      renewalDistribution: {
+        labels: ['High', 'Medium', 'Low'],
+        data: [8, 12, 4]
+      }
+    }
+  });
+});
+
 // 서버 기동
 app.listen(PORT, () => {
   console.log(`AI Advertising Platform Dashboard Server is running at http://localhost:${PORT}`);
