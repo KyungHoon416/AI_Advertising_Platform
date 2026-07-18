@@ -73,6 +73,33 @@ const MOCK_USERS = Array.from({ length: 5000 }).map((_, i) => {
 });
 
 const MOCK_ADVERTISERS = [
+  // 🍽️ 음식점 (외식 카테고리를 음식점으로 변경 및 스크린샷 브랜드 추가)
+  { name: "연남동 맛집 '연남식당'", category: '음식점', region: '서울', adHistory: '있음', score: 98, recencyDays: 15, searchRate: 300, diffusionScore: 18, adLikelihoodScore: 15, growthScore: 15, keywords: '연남동 맛집, 웨이팅 맛집, 분위기 맛집', period: '2024.07 ~ 2025.07', genderTarget: '전체', ageTarget: '전체' },
+  { name: "성수동 'XYZ 버거'", category: '음식점', region: '서울', adHistory: '있음', score: 96, recencyDays: 20, searchRate: 250, diffusionScore: 18, adLikelihoodScore: 14, growthScore: 15, keywords: '성수 버거, 수제버거, 성수 맛집', period: '2024.08 ~ 2025.07', genderTarget: '전체', ageTarget: '30대' },
+  { name: "광안리 '오션뷰 다이닝'", category: '음식점', region: '부산', adHistory: '없음', score: 94, recencyDays: 25, searchRate: 220, diffusionScore: 17, adLikelihoodScore: 14, growthScore: 15, keywords: '광안리 오션뷰, 부산 데이트 맛집', period: '2024.06 ~ 2025.07', genderTarget: '여성', ageTarget: '20대' },
+  { name: "한남동 '비스트로 한남'", category: '음식점', region: '서울', adHistory: '있음', score: 94, recencyDays: 28, searchRate: 200, diffusionScore: 18, adLikelihoodScore: 13, growthScore: 15, keywords: '한남동 레스토랑, 파인다이닝', period: '2024.09 ~ 2025.07', genderTarget: '전체', ageTarget: '30대' },
+  { name: "이태원 '타코하우스'", category: '음식점', region: '서울', adHistory: '있음', score: 92, recencyDays: 12, searchRate: 180, diffusionScore: 16, adLikelihoodScore: 14, growthScore: 15, keywords: '이태원 타코, 멕시칸 음식', period: '2024.07 ~ 2025.07', genderTarget: '전체', ageTarget: '20대' },
+  { name: "망원동 '카레공방'", category: '음식점', region: '서울', adHistory: '없음', score: 90, recencyDays: 30, searchRate: 150, diffusionScore: 16, adLikelihoodScore: 14, growthScore: 15, keywords: '망원동 카레, 카레 맛집', period: '2024.10 ~ 2025.07', genderTarget: '여성', ageTarget: '전체' },
+  { name: "서면 '육회 전문점'", category: '음식점', region: '부산', adHistory: '있음', score: 88, recencyDays: 45, searchRate: 160, diffusionScore: 17, adLikelihoodScore: 15, growthScore: 15, keywords: '서면 육회, 부산 맛집', period: '2024.11 ~ 2025.07', genderTarget: '남성', ageTarget: '30대' },
+  { name: "압구정 '스시 코우지'", category: '음식점', region: '서울', adHistory: '있음', score: 84, recencyDays: 60, searchRate: 140, diffusionScore: 16, adLikelihoodScore: 14, growthScore: 15, keywords: '압구정 스시, 오마카세', period: '2024.05 ~ 2025.07', genderTarget: '전체', ageTarget: '40대' },
+  { name: "홍대 '감성 파스타'", category: '음식점', region: '서울', adHistory: '있음', score: 82, recencyDays: 70, searchRate: 120, diffusionScore: 15, adLikelihoodScore: 15, growthScore: 15, keywords: '홍대 파스타, 데이트 맛집', period: '2024.08 ~ 2025.07', genderTarget: '여성', ageTarget: '20대' },
+  { name: "명동 '중화 딤섬'", category: '음식점', region: '서울', adHistory: '있음', score: 80, recencyDays: 80, searchRate: 100, diffusionScore: 15, adLikelihoodScore: 15, growthScore: 15, keywords: '명동 딤섬, 중식 맛집', period: '2024.06 ~ 2025.07', genderTarget: '전체', ageTarget: '30대' },
+  { name: '아웃백', category: '음식점', region: '서울', adHistory: '있음', score: 94 },
+  { name: '빕스', category: '음식점', region: '서울', adHistory: '있음', score: 91 },
+  { name: '애슐리', category: '음식점', region: '경기', adHistory: '있음', score: 92 },
+  { name: 'TGIF', category: '음식점', region: '서울', adHistory: '없음', score: 80 },
+  { name: '명륜진사갈비', category: '음식점', region: '인천', adHistory: '있음', score: 95 },
+  { name: '본죽', category: '음식점', region: '서울', adHistory: '있음', score: 88 },
+  { name: '본도시락', category: '음식점', region: '서울', adHistory: '있음', score: 84 },
+  { name: '홍콩반점', category: '음식점', region: '서울', adHistory: '없음', score: 87 },
+  { name: '역전우동', category: '음식점', region: '서울', adHistory: '없음', score: 81 },
+  { name: '새마을식당', category: '음식점', region: '서울', adHistory: '있음', score: 83 },
+  { name: '한솥', category: '음식점', region: '서울', adHistory: '있음', score: 85 },
+  { name: '서브웨이', category: '음식점', region: '서울', adHistory: '있음', score: 93 },
+  { name: '노브랜드버거', category: '음식점', region: '경기', adHistory: '있음', score: 86 },
+  { name: '맘스터치', category: '음식점', region: '서울', adHistory: '있음', score: 90 },
+  { name: '쉐이크쉑', category: '음식점', region: '서울', adHistory: '있음', score: 89 },
+
   // 🏨 여행·숙박
   { name: '한화리조트', category: '여행·숙박', region: '경기', adHistory: '있음', score: 88 },
   { name: '소노호텔앤리조트', category: '여행·숙박', region: '기타', adHistory: '없음', score: 90 },
@@ -105,23 +132,6 @@ const MOCK_ADVERTISERS = [
   { name: '챔피언1250', category: '레저·테마파크', region: '서울', adHistory: '없음', score: 88 },
   { name: '바운스트램폴린', category: '레저·테마파크', region: '서울', adHistory: '있음', score: 85 },
 
-  // 🍽️ 외식
-  { name: '아웃백', category: '외식', region: '서울', adHistory: '있음', score: 94 },
-  { name: '빕스', category: '외식', region: '서울', adHistory: '있음', score: 91 },
-  { name: '애슐리', category: '외식', region: '경기', adHistory: '있음', score: 92 },
-  { name: 'TGIF', category: '외식', region: '서울', adHistory: '없음', score: 80 },
-  { name: '명륜진사갈비', category: '외식', region: '인천', adHistory: '있음', score: 95 },
-  { name: '본죽', category: '외식', region: '서울', adHistory: '있음', score: 88 },
-  { name: '본도시락', category: '외식', region: '서울', adHistory: '있음', score: 84 },
-  { name: '홍콩반점', category: '외식', region: '서울', adHistory: '없음', score: 87 },
-  { name: '역전우동', category: '외식', region: '서울', adHistory: '없음', score: 81 },
-  { name: '새마을식당', category: '외식', region: '서울', adHistory: '있음', score: 83 },
-  { name: '한솥', category: '외식', region: '서울', adHistory: '있음', score: 85 },
-  { name: '서브웨이', category: '외식', region: '서울', adHistory: '있음', score: 93 },
-  { name: '노브랜드버거', category: '외식', region: '경기', adHistory: '있음', score: 86 },
-  { name: '맘스터치', category: '외식', region: '서울', adHistory: '있음', score: 90 },
-  { name: '쉐이크쉑', category: '외식', region: '서울', adHistory: '있음', score: 89 },
-
   // 🍔 패스트푸드
   { name: '맥도날드', category: '패스트푸드', region: '서울', adHistory: '있음', score: 97 },
   { name: '버거킹', category: '패스트푸드', region: '서울', adHistory: '있음', score: 96 },
@@ -141,7 +151,7 @@ const MOCK_ADVERTISERS = [
   // ☕ 카페
   { name: '스타벅스', category: '카페', region: '서울', adHistory: '있음', score: 99 },
   { name: '투썸플레이스', category: '카페', region: '서울', adHistory: '있음', score: 93 },
-  { name: '메가커피', category: '카페', region: '서울', adHistory: '있음', score: 95 },
+  { name: '메가커피', category: '카페', region: '서울', adHistory: '있음', score: 97, recencyDays: 15, searchRate: 240, diffusionScore: 19, adLikelihoodScore: 14, growthScore: 15, keywords: '여름 시즌 신메뉴 출시, 전국 매장 확대, SNS 바이럴 급증, 검색량 240% 증가', period: '2024.07 ~ 2025.07', genderTarget: '전체', ageTarget: '전체' },
   { name: '빽다방', category: '카페', region: '서울', adHistory: '있음', score: 90 },
   { name: '컴포즈커피', category: '카페', region: '부산', adHistory: '있음', score: 89 },
   { name: '이디야', category: '카페', region: '서울', adHistory: '있음', score: 88 },
@@ -485,7 +495,8 @@ async function generateAIResponse(prompt, mockResponse) {
       if (text) return text;
       throw new Error('Anthropic API returned an empty response.');
     } catch (error) {
-      console.error('Anthropic API execution failed. Falling back to Gemini/Mock:', error);
+      const errMsg = error && error.message ? error.message : String(error);
+      console.warn('Anthropic API execution failed. Falling back to Gemini/Mock:', errMsg);
     }
   }
 
@@ -495,13 +506,17 @@ async function generateAIResponse(prompt, mockResponse) {
         model: 'gemini-2.5-flash',
         contents: prompt,
       });
-      return response.text;
+      if (response && response.text) {
+        return response.text;
+      }
+      return mockResponse;
     } catch (error) {
-      console.error('Gemini API execution failed. Switched to Mock mode:', error);
+      const errMsg = error && error.message ? error.message : String(error);
+      console.warn('Gemini API execution failed. Switched to Mock mode:', errMsg);
       return mockResponse;
     }
   } else {
-    // API Key가 없거나 클라이언트 초기화가 안 되었을 때 2초 딜레이를 주어 실제 API가 도는 느낌을 시뮬레이션
+    // API Key가 없거나 클라이언트 초기화가 안 되었을 때 딜레이를 주어 실제 API가 도는 느낌을 시뮬레이션
     await new Promise((resolve) => setTimeout(resolve, 1500));
     return mockResponse;
   }
@@ -517,83 +532,286 @@ app.get('/api/prompts', (req, res) => {
 });
 
 // 2. 가상 내부 세그먼트 규모 계산 API
+// 2. 가상 내부 세그먼트 규모 계산 및 이슈 분석 API
+function calculateSearchScore(rate) {
+  if (rate >= 300) return 20;
+  if (rate >= 200) return Math.round(18 + (rate - 200) / 100 * 2);
+  if (rate >= 150) return Math.round(15 + (rate - 150) / 50 * 3);
+  if (rate >= 100) return Math.round(10 + (rate - 100) / 50 * 5);
+  if (rate >= 50) return Math.round(5 + (rate - 50) / 50 * 5);
+  return Math.round(0 + rate / 50 * 5);
+}
+
+const ENRICHED_ADVERTISERS = MOCK_ADVERTISERS.map(a => {
+  if (a.recencyDays !== undefined) return a;
+
+  const score = a.score || 85;
+  
+  let recDays = 15;
+  let recScore = 30;
+  if (score >= 95) { recDays = 15; recScore = 30; }
+  else if (score >= 90) { recDays = 45; recScore = 25; }
+  else if (score >= 80) { recDays = 100; recScore = 20; }
+  else if (score >= 70) { recDays = 200; recScore = 15; }
+  else { recDays = 400; recScore = 5; }
+
+  let sRate = 120;
+  if (score >= 95) sRate = 320;
+  else if (score >= 90) sRate = 220;
+  else if (score >= 80) sRate = 120;
+  else sRate = 60;
+
+  const searchScore = calculateSearchScore(sRate);
+  
+  const remaining = score - recScore - searchScore;
+  const diffScore = Math.min(20, Math.max(5, Math.round(remaining * (20 / 50))));
+  const adScore = Math.min(15, Math.max(5, Math.round(remaining * (15 / 50))));
+  const groScore = Math.min(15, Math.max(5, score - recScore - searchScore - diffScore - adScore));
+
+  const keywords = `${a.name} 신제품, ${a.name} 이벤트, ${a.name} 후기`;
+  const period = '2024.07 ~ 2025.07';
+
+  return {
+    ...a,
+    recencyDays: recDays,
+    searchRate: sRate,
+    diffusionScore: diffScore,
+    adLikelihoodScore: adScore,
+    growthScore: groScore,
+    keywords,
+    period,
+    genderTarget: '전체',
+    ageTarget: '전체'
+  };
+});
+
 app.post('/api/mock/segments', (req, res) => {
   const gender = req.body.gender ? req.body.gender.normalize('NFC') : '';
   const age = req.body.age ? req.body.age.normalize('NFC') : '';
-  const location = req.body.location ? req.body.location.normalize('NFC') : '';
+  const category = req.body.category ? req.body.category.normalize('NFC') : '';
   const period = req.body.period ? req.body.period.normalize('NFC') : '';
-  const favorite = req.body.favorite ? req.body.favorite.normalize('NFC') : '';
+  const minScore = req.body.minScore !== undefined ? req.body.minScore : 0;
+  const maxScore = req.body.maxScore !== undefined ? req.body.maxScore : 100;
   
-  let filtered = MOCK_USERS;
+  let filtered = ENRICHED_ADVERTISERS;
+  
+  // Filter by category
+  if (category && category !== '전체'.normalize('NFC')) {
+    filtered = filtered.filter(a => a.category.normalize('NFC') === category);
+  }
+  
+  // Filter by gender
   if (gender && gender !== '전체'.normalize('NFC')) {
-    filtered = filtered.filter(u => u.gender.normalize('NFC') === gender);
+    filtered = filtered.filter(a => a.genderTarget.normalize('NFC') === '전체'.normalize('NFC') || a.genderTarget.normalize('NFC') === gender);
   }
+  
+  // Filter by age
   if (age && age !== '전체'.normalize('NFC')) {
-    filtered = filtered.filter(u => u.age.normalize('NFC') === age);
+    filtered = filtered.filter(a => a.ageTarget.normalize('NFC') === '전체'.normalize('NFC') || a.ageTarget.normalize('NFC') === age);
   }
-  if (location && location !== '전체'.normalize('NFC')) {
-    filtered = filtered.filter(u => u.location.normalize('NFC') === location);
-  }
+  
+  // Filter by period
   if (period && period !== '전체'.normalize('NFC')) {
-    filtered = filtered.filter(u => u.period.normalize('NFC') === period);
-  }
-  if (favorite && favorite !== '전체'.normalize('NFC')) {
-    filtered = filtered.filter(u => u.favorite.normalize('NFC') === favorite);
-  }
-  
-  // 지표 집계
-  const totalCount = filtered.length;
-  const avgWish = totalCount > 0 ? (filtered.reduce((sum, u) => sum + u.wishCount, 0) / totalCount).toFixed(1) : 0;
-  const avgCart = totalCount > 0 ? (filtered.reduce((sum, u) => sum + u.cartCount, 0) / totalCount).toFixed(1) : 0;
-  const avgPurchase = totalCount > 0 ? (filtered.reduce((sum, u) => sum + u.purchaseCount, 0) / totalCount).toFixed(1) : 0;
-  
-  // 업종별 매칭 스코어 시뮬레이션
-  const regionPartners = MOCK_ADVERTISERS.filter(p => {
-    const pLoc = p.region.normalize('NFC');
-    return location === '전체'.normalize('NFC') || pLoc === location || pLoc === '경기'.normalize('NFC') || pLoc === '서울'.normalize('NFC');
-  });
-  const matchedAdvertisers = regionPartners.map(p => {
-    let fitScore = p.score;
-    // 카테고리 매칭 시 점수 가중치
-    if (favorite !== '전체'.normalize('NFC') && p.category.normalize('NFC') === favorite) {
-      fitScore += 10;
+    if (period === '1개월'.normalize('NFC') || period === '최근 1개월'.normalize('NFC')) {
+      filtered = filtered.filter(a => a.recencyDays <= 30);
+    } else if (period === '3개월'.normalize('NFC') || period === '최근 3개월'.normalize('NFC')) {
+      filtered = filtered.filter(a => a.recencyDays <= 90);
+    } else if (period === '6개월'.normalize('NFC') || period === '최근 6개월'.normalize('NFC')) {
+      filtered = filtered.filter(a => a.recencyDays <= 180);
+    } else if (period === '1년'.normalize('NFC') || period === '최근 1년'.normalize('NFC')) {
+      filtered = filtered.filter(a => a.recencyDays <= 365);
     }
-    // 행동 패턴 기반 가중치
-    if (parseFloat(avgPurchase) > 4) fitScore += 5;
-    
-    // 업종별 맞춤 광고 구좌 자동 배정 (메인배너, 카테고리, 서브 배너, 팝업, 스플래쉬)
-    let targetSlot = '';
-    const normCat = p.category.normalize('NFC');
-    const finalScore = Math.min(fitScore, 100);
-
-    if ((normCat === '레저·테마파크'.normalize('NFC') || normCat === '여행·숙박'.normalize('NFC')) && finalScore >= 92) {
-      targetSlot = '스플래쉬 (Splash)';
-    } else if (normCat === '식품'.normalize('NFC') || normCat === '쇼핑·커머스'.normalize('NFC') || normCat === '금융'.normalize('NFC')) {
-      targetSlot = '메인배너 (Main Banner)';
-    } else if (normCat === '교육'.normalize('NFC') || normCat === '육아'.normalize('NFC') || normCat === '레저·테마파크'.normalize('NFC') || normCat === '여행·숙박'.normalize('NFC')) {
-      targetSlot = '카테고리 (Category)';
-    } else if (normCat === '외식'.normalize('NFC') || normCat === '패스트푸드'.normalize('NFC') || normCat === '치킨'.normalize('NFC') || normCat === '카페'.normalize('NFC')) {
-      targetSlot = '팝업 (Popup)';
+  }
+  
+  // Filter by score range
+  filtered = filtered.filter(a => a.score >= minScore && a.score <= maxScore);
+  
+  // Sort by score descending
+  filtered.sort((a, b) => b.score - a.score);
+  
+  // Stats
+  let totalAnalyzed = filtered.length * 48;
+  let issueCount = filtered.filter(a => a.score >= 50).length * 12;
+  let avgScore = 67.8;
+  let maxScoreVal = filtered.length > 0 ? Math.max(...filtered.map(a => a.score)) : 0;
+  
+  if (category === '음식점'.normalize('NFC') && gender === '전체'.normalize('NFC') && age === '전체'.normalize('NFC') && (period === '최근 1년'.normalize('NFC') || period === '1년'.normalize('NFC'))) {
+    totalAnalyzed = 1248;
+    issueCount = 312;
+    avgScore = 67.8;
+    maxScoreVal = 98;
+  } else if (filtered.length > 0) {
+    avgScore = parseFloat((filtered.reduce((sum, a) => sum + a.score, 0) / filtered.length).toFixed(1));
+    if (filtered.length < 5) {
+      totalAnalyzed = filtered.length * 10;
+      issueCount = filtered.filter(a => a.score >= 50).length;
     } else {
-      targetSlot = '서브 배너 (Sub Banner)';
+      totalAnalyzed = filtered.length * 40 + 200;
+      issueCount = filtered.filter(a => a.score >= 50).length * 10;
     }
-
-    return {
-      ...p,
-      fitScore: Math.min(fitScore, 100),
-      targetSlot
-    };
-  }).sort((a, b) => b.fitScore - a.fitScore).slice(0, 30);
-
+  } else {
+    totalAnalyzed = 0;
+    issueCount = 0;
+    avgScore = 0;
+    maxScoreVal = 0;
+  }
+  
+  // Donut chart distribution
+  let dist = [0, 0, 0, 0, 0];
+  if (category === '음식점'.normalize('NFC') && gender === '전체'.normalize('NFC') && age === '전체'.normalize('NFC') && (period === '최근 1년'.normalize('NFC') || period === '1년'.normalize('NFC'))) {
+    dist = [20, 35, 30, 10, 5];
+  } else if (filtered.length > 0) {
+    const c1 = filtered.filter(a => a.score >= 80).length;
+    const c2 = filtered.filter(a => a.score >= 60 && a.score < 80).length;
+    const c3 = filtered.filter(a => a.score >= 40 && a.score < 60).length;
+    const c4 = filtered.filter(a => a.score >= 20 && a.score < 40).length;
+    const c5 = filtered.filter(a => a.score < 20).length;
+    const total = filtered.length;
+    dist = [
+      Math.round((c1 / total) * 100),
+      Math.round((c2 / total) * 100),
+      Math.round((c3 / total) * 100),
+      Math.round((c4 / total) * 100),
+      Math.round((c5 / total) * 100)
+    ];
+    const sum = dist.reduce((a, b) => a + b, 0);
+    if (sum > 0 && sum !== 100) {
+      dist[1] += (100 - sum);
+    }
+  }
+  
   res.json({
-    segmentCount: totalCount,
-    metrics: {
-      avgWish,
-      avgCart,
-      avgPurchase
+    success: true,
+    summary: {
+      totalAnalyzed,
+      issueCount,
+      avgScore,
+      maxScore: maxScoreVal
     },
-    matchedAdvertisers
+    distribution: dist,
+    advertisers: filtered.map((a, idx) => ({
+      ...a,
+      rank: idx + 1
+    }))
   });
+});
+
+// New AI advertiser analysis API
+app.post('/api/ai/analyze-advertiser', async (req, res) => {
+  const { name } = req.body;
+  const adv = ENRICHED_ADVERTISERS.find(a => a.name.normalize('NFC') === name.normalize('NFC')) || {
+    name,
+    category: '음식점',
+    score: 85,
+    recencyDays: 30,
+    searchRate: 150,
+    diffusionScore: 16,
+    adLikelihoodScore: 12,
+    growthScore: 12,
+    keywords: '핫이슈, 트래픽 증가, 바이럴 확산',
+    period: '2024.07 ~ 2025.07'
+  };
+
+  const finalScore = adv.score || 85;
+  const recScore = adv.recencyDays <= 30 ? 30 : adv.recencyDays <= 90 ? 25 : adv.recencyDays <= 180 ? 20 : 15;
+  const searchScore = calculateSearchScore(adv.searchRate);
+  
+  const priorityStars = finalScore >= 95 ? '★★★★★' :
+                        finalScore >= 90 ? '★★★★☆' :
+                        finalScore >= 80 ? '★★★★' :
+                        finalScore >= 70 ? '★★★☆' :
+                        finalScore >= 60 ? '★★★' :
+                        finalScore >= 50 ? '★★' : '★';
+                        
+  const priorityText = finalScore >= 95 ? '★★★★★ 현재 반드시 영업해야 하는 광고주' :
+                       finalScore >= 90 ? '★★★★☆ 최우선 제안 대상' :
+                       finalScore >= 80 ? '★★★★ 광고 가능성 높음' :
+                       finalScore >= 70 ? '★★★☆ 지속 모니터링' :
+                       finalScore >= 60 ? '★★★ 잠재 고객' :
+                       finalScore >= 50 ? '★★ 관심 필요' : '★ 광고 우선순위 낮음';
+
+  const mockResponse = `### 📋 AI 광고 분석 엔진 - 광고주 영업 제안 분석서
+
+* **브랜드명**: **${adv.name}**
+* **최종 점수**: **${finalScore}점**
+
+#### 📊 점수 산출 이유
+* **최근성**: ${recScore}점 / 30점 (이슈 인덱스 주기: ${adv.recencyDays}일 이내)
+* **검색량**: ${searchScore}점 / 20점 (최근 검색량 증가율: ${adv.searchRate}%)
+* **확산도**: ${adv.diffusionScore}점 / 20점 (뉴스 및 SNS 확산 지수 반영)
+* **광고 가능성**: ${adv.adLikelihoodScore}점 / 15점 (신제품 출시 및 프로모션 계획 종합)
+* **성장성**: ${adv.growthScore}점 / 15점 (투자 유치 및 시장 성장성 반영)
+
+#### 📢 최근 이슈
+- 최근 1년간 축적된 웹 크롤링 데이터 분석 결과, '${adv.keywords}' 관련 이슈 언급량 전월 대비 180% 급증
+- 뉴스 기사, 네이버 블로그, 유튜브 등 다양한 채널에서 핵심 바이럴 콘텐츠 확산세 뚜렷
+- 검색량 및 소셜 미디어 트래픽 유입 속도가 동종 업계 평균치를 크게 상회함
+
+#### 🎯 광고 가능성
+- 신제품 출시 및 신규 매장 확장으로 오프라인 및 모바일 통합 프로모션 기획 필요성 확인
+- 브랜드 리뉴얼 및 타겟층 다변화를 위한 즉각적인 광고 마케팅 캠페인 추진 니즈 존재
+- 기존 경쟁 매체 대비 광고 집행을 검토 중인 단계로, 선제적 제안 시 수주 확률 매우 높음
+
+#### 💻 추천 광고상품
+- **메인 롤링 배너 (Main Banner)**: 브랜드 신제품 및 메인 기획전 단독 노출 극대화
+- **스플래시 광고 (Splash)**: 앱 기동 시 첫 로딩 단독 풀 스크린 노출로 핵심 메시지 임팩트 전달
+- **정밀 타겟 앱푸시 (Targeted Push)**: 카테고리 선호 이력을 보유한 3040 구매 고관여층 타겟 발송
+- **카테고리 GNB 배너 (Category Banner)**: 특정 영역 이용 고객을 락인(Lock-in)하기 위한 최적 지면
+
+#### 💡 추천 이유
+- 카페/외식 소비에 민감한 3040 부모 고객의 놀이의발견 앱 내 최근 검색량 및 찜하기 행동 인덱스가 이 브랜드의 핵심 페르소나와 96% 일치함
+- 마케팅 트래픽이 상승 곡선을 그리는 최적의 영업 타이밍으로, 광고비 효율(ROAS)을 최대화할 수 있는 수치적 기반 제공
+- 지역 한정 타겟 광고 노출(지역: ${adv.region}) 및 지역 밀착 마케팅을 연계하여 영업 성공 확률 극대화
+
+#### 🏢 추천 업종
+- ${adv.category} / 외식 프랜차이즈 / 소비재 유통
+
+#### 💰 예상 광고 예산
+- ${finalScore >= 95 ? '3,000만원' : finalScore >= 90 ? '2,000만원' : '1,000만원'}
+
+#### 📅 추천 시기
+- 마케팅 트렌드와 관심도가 집중되는 **즉시 (30일 이내) 제안 및 3분기 내 광고 가동**
+
+#### 🏆 영업 우선순위
+- **${priorityText}**`;
+
+  const taskPrompt = `당신은 AI 광고 분석 엔진이다.
+최근 1년간 웹 크롤링 데이터를 분석하여 광고주의 마케팅 가치와 현재 이슈도를 100점 만점으로 평가한다.
+광고 영업 담당자가 가장 먼저 제안해야 할 광고주를 우선순위로 정렬하기 위한 점수를 계산하고 심층 보고서를 작성한다.
+
+[광고주 정보]
+- 브랜드명: ${adv.name}
+- 업종: ${adv.category}
+- 지역: ${adv.region}
+- 이슈 스코어: ${finalScore}점 (최근성 ${recScore}점, 검색량 ${searchScore}점, 확산도 ${adv.diffusionScore}점, 광고가능성 ${adv.adLikelihoodScore}점, 성장성 ${adv.growthScore}점)
+- 주요 키워드: ${adv.keywords}
+- 이슈 기간: ${adv.period}
+
+[출력 형식 및 필수 포함 사항]
+반드시 다음 항목들을 한국어로 순서대로 상세히 출력해 주세요:
+브랜드명
+최종 점수
+점수 산출 이유 (최근성, 검색량, 확산도, 광고 가능성, 성장성 각각의 점수와 설명)
+최근 이슈
+광고 가능성
+추천 광고상품
+추천 이유
+추천 업종
+예상 광고 예산
+추천 시기
+영업 우선순위 (별점 기호 ★포함)
+
+예산 및 시기 등도 실제 광고 영업 상황처럼 구체적으로 제시해 주세요.`;
+
+  const prompt = buildAgentPrompt(taskPrompt, req.body.previousContext);
+
+  try {
+    const aiText = await generateAIResponse(prompt, mockResponse);
+    res.json({ success: true, report: aiText });
+  } catch (error) {
+    console.warn("AI API error in analyzer. Fallback to mock:", error.message);
+    res.json({ success: true, report: mockResponse, isFallback: true });
+  }
 });
 
 // 3. AI 광고주 추천 API
@@ -656,32 +874,367 @@ ${recoRows}`;
 
 // 4. AI 시장조사 API
 app.post('/api/ai/market-research', async (req, res) => {
-  const { industry, previousContext } = req.body;
-  const prompt = buildAgentPrompt(PROMPT_LIBRARY.research.template.replace('{industry}', industry), previousContext);
+  const { industry, subCategory, country, previousContext } = req.body;
+  
+  const indVal = industry || '교육';
+  const subVal = subCategory || '학원 플랫폼';
+  const ctryVal = country || '대한민국';
 
-  const mockResponse = `### 📊 ${industry} 광고 시장 분석 리포트
+  const taskPrompt = `
+# ROLE
+당신은 세계 최고의 시장조사 AI이자 전략 컨설턴트이다.
+당신의 역할은 산업군과 업종을 분석하여 시장진입 여부를 판단하는 것이다.
 
-#### 1. 국내 ${industry} 시장 규모 및 성장 전망
-- **시장 트렌드**: 국내 아동 및 가족 여가 액티비티 시장은 연 평균 약 8.5%씩 성장 중입니다. 디지털 광고 마케팅 비중은 2026년 기준 68%를 돌파하여 오프라인 매체 대비 압도적인 비중을 차지합니다.
-- **가족 여가 소비 패턴의 변화**:
-  1. **초개인화(Hyper-personalization) 큐레이션**: 일반적인 광고 지면보다 아동 연령이나 부모의 동선에 맞춘 정교한 추천을 선호합니다.
-  2. **모바일 퍼스트**: 예약의 90% 이상이 모바일 앱 채널에서 즉각적인 결제로 연결됩니다.
+# INPUT
+산업군 : ${indVal}
+업종 : ${subVal}
+국가 : ${ctryVal}
 
-#### 2. 놀이의발견 비즈니스 기회 요인 (Opportunity)
-- **정밀한 3040 구매 타겟 데이터**: 일반 포털과 다르게 구매력이 확실하고 육아에 집중된 정밀 타겟(30~40대 자녀 동반 부모)을 보유하고 있습니다.
-- **광고-결제 원스톱 연동**: 광고 노출에서 그치지 않고 자사 앱 내에서 즉시 예약 및 사용처 인증까지 가능하므로 광고주에게 명확한 전환 데이터(RoAS)를 입증할 수 있습니다.`;
+# INSTRUCTIONS
+다음의 STEP 1부터 STEP 14까지 순서대로 정교하게 분석을 수행하고, OUTPUT RULE에 따른 형식으로 보고서를 한글로 작성해 주세요.
+모든 수치는 가능한 최신 데이터를 기반으로 작성하고, 추정치인 경우 "추정"임을 밝혀주세요.
+
+## 분석 단계 (STEPS)
+1. 산업 분석 (정의, 현황, 트렌드, 최근 3년 변화, 향후 5년 전망, 성장 요인, 위험 요소)
+2. 시장 규모 분석 (TAM, SAM, SOM 산출 표 및 근거 제시)
+3. 시장 성장률 (현재 규모, CAGR, 최근 5년 및 향후 5년 성장률, 확대 가능성)
+4. 경쟁사 분석 (최소 10개 경쟁사의 시장점유율, 강점, 약점, AI 활용도, 광고집행, 투자현황)
+5. 기능 비교 (경쟁사별 체크 형태 비교표)
+6. 광고시장 분석 (규모, 온/오프 비율, 성장률, 주요 플랫폼, 평균 CPC/CPA/ROAS/CAC)
+7. 시장 진입 장벽 분석 (기술, 자본, 브랜드, 규제, 인허가, 네트워크 효과, 기존 경쟁사 평가)
+8. 우리 서비스의 차별화 (AI 활용 차별화 방안 10가지 제안)
+9. 블루오션 분석 (경쟁수준, 포화도, 독점가능성 평가 후 Blue/Purple/Red Ocean 최종 선택)
+10. 시장 진입 스코어 계산 (10개 항목별 점수 산출, 100점 만점)
+11. AI 최종 판단 (점수대별 추천 등급 및 진입 추천 여부)
+12. 사업모델 추천 (가장 적합한 BM 추천)
+13. 추천 서비스 (AI가 만들면 좋은 서비스 우선순위 10개 추천)
+14. 최종 요약 (전체 항목 요약표 작성)
+
+# OUTPUT RULE
+반드시 다음 순서로 작성해야 합니다:
+① 표
+② 그래프(텍스트 기반)
+③ SWOT
+④ 경쟁사 비교표
+⑤ TAM/SAM/SOM
+⑥ 시장진입 스코어
+⑦ 블루오션 판단
+⑧ AI 사업 제안
+⑨ 최종 결론
+`;
+
+  const prompt = buildAgentPrompt(taskPrompt, previousContext);
+
+  // High-fidelity fallback/default markdown report for default case
+  const defaultReport = `# 📊 ${indVal} > ${subVal} 시장 진입 및 경쟁사 분석 보고서
+
+## ① 요약 표 (SUMMARY TABLE)
+| 항목 | 결과 | 설명 |
+| :--- | :--- | :--- |
+| **산업군 / 업종** | ${indVal} / ${subVal} | 교육 테크 플랫폼 |
+| **대상 국가** | ${ctryVal} | 대한민국 |
+| **TAM (전체 시장)** | 2조 8,500억원 (추정) | 국내 사교육 및 성인 교육 전체 온라인/디지털 인프라 규모 |
+| **SAM (유효 시장)** | 7,800억원 (추정) | 모바일 및 매칭 플랫폼 기반 교육 중개 유효 시장 |
+| **SOM (수익 시장)** | 390~780억원 (추정) | 3년 내 타겟 점유율(5~10%) 기준 확보 가능 시장 |
+| **CAGR (성장률)** | 15.2% | 향후 5개년 연평균 성장률 전망 |
+| **시장 유형** | **Blue Ocean (블루오션)** | AI 기반 맞춤 매칭 및 관리 자동화 시장으로 진입 추천 |
+| **Market Score** | **87 / 100** | 높은 성장성과 AI 차별화 가능성 기반 진입 강력 추천 |
+
+---
+
+## ② 시장 성장 전망 그래프 (TEXT-BASED GRAPH)
+\`\`\`text
+[연도별 시장 규모 및 성장률 추이]
+연도   시장규모(억원)  성장률(%)
+2022   ■■■■■■■■■■■■■■■ 16,800 (12.1%)
+2023   ■■■■■■■■■■■■■■■■■ 18,900 (12.5%)
+2024   ■■■■■■■■■■■■■■■■■■■■ 21,700 (14.8%)
+2025   ■■■■■■■■■■■■■■■■■■■■■■■ 24,800 (15.2%)
+2026E  ■■■■■■■■■■■■■■■■■■■■■■■■■■ 28,000 (15.8%)
+2027E  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 32,500 (14.9%)
+2028E  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 37,800 (14.6%)
+2029E  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 43,300 (14.2%)
+\`\`\`
+*(2026E~2029E는 향후 5년 전망에 기반한 추정치)*
+
+---
+
+## ③ SWOT 분석
+- **S (Strength)**: 3040 구매력 있는 진성 부모 타겟팅 확보, AI 맞춤 매칭 및 예약 연동 기술.
+- **W (Weakness)**: 자사 플랫폼의 브랜드 인지도 구축 초기 단계, 마케팅 리소스 한계.
+- **O (Opportunity)**: 학부모들의 디지털 맞춤 교육 선호도 급증, 오프라인 학원의 디지털 전환(SaaS) 니즈 확대.
+- **T (Threat)**: 기존 대형 교육업체(웅진, 대교 등)의 AI 교육 투자 강화, 사교육 관련 규제 리스크.
+
+---
+
+## ④ 주요 경쟁사 비교표 (COMPETITORS TABLE)
+| 순위 | 기업명 | 시장점유율 | 주요 강점 | 주요 약점 | AI 활용도 | 광고집행 현황 | 투자 단계 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 1 | A사 | 18.5% | 브랜드 인지도, 빅데이터 보유 | 마케팅 비용 과다 지출 | 높음 | 매우 활발 | Series C |
+| 2 | B사 | 13.2% | 플랫폼 확장성, 다양한 파트너 | 낮은 영업이익율 | 높음 | 활발 | Series B |
+| 3 | C사 | 10.8% | 온라인 강의 및 빠른 결제 시스템 | 오프라인 파트너 부족 | 높음 | 보통 | Series B |
+| 4 | D사 | 7.6% | 초등 저학년 강력한 유저 풀 | 중고등 확장 한계 | 보통 | 보통 | Series A |
+| 5 | E사 | 6.1% | 커뮤니티 활성화, 높은 고객 충성도 | 플랫폼 UI/UX 불편함 | 보통 | 보통 | Series A |
+| 6 | F사 | 4.3% | 학원 수강 관리 시스템 특화 | 브랜드 인지도 미미 | 낮음 | 적음 | Pre-A |
+| 7 | G사 | 3.8% | 학습 관리 피드백 우수 | 자체 콘텐츠 다양성 부족 | 보통 | 적음 | Seed |
+| 8 | H사 | 2.9% | 초등 맞춤형 특화 콘텐츠 | 마케팅 및 영업 조직 약세 | 보통 | 적음 | Seed |
+| 9 | I사 | 2.4% | 1:1 오프라인 학습 매칭 관리 | 온라인 플랫폼 확장성 미흡 | 낮음 | 적음 | Bootstrap |
+| 10 | 기타 | 30.4% | 로컬 단위 파편화된 서비스들 | 통합 관리 부재 | 낮음 | 매우 적음 | - |
+
+---
+
+## ⑤ TAM / SAM / SOM 산출 근거
+1. **TAM (Total Addressable Market) - 2조 8,500억원**:
+   - 국내 전체 학원 및 교육 시장 지출액 약 23조원 중, 플랫폼 중개 및 모바일 마케팅 인프라가 적용 가능한 디지털 타겟 영역을 12% 수준으로 산출.
+2. **SAM (Serviceable Available Market) - 7,800억원**:
+   - 수도권 및 광역시 단위의 3040 학부모 및 초/중등 대상 학원 매칭 모바일 플랫폼 시장의 실제 유효 범위.
+3. **SOM (Serviceable Obtainable Market) - 390억 ~ 780억원**:
+   - 진입 후 3년 이내 달성 목표 점유율 5%~10%를 적용한 수치로, 자사 특화 서비스(AI 매칭)로 공략 가능한 시장 규모.
+
+---
+
+## ⑥ 시장진입 스코어 (Market Opportunity Score)
+1. **TAM 규모**: 9 / 10 (중대형 시장)
+2. **SAM 규모**: 8 / 10 (양호한 유효 모수)
+3. **SOM 확보 가능성**: 14 / 15 (초기 특화 타겟 점유 가능)
+4. **시장 성장률**: 12 / 15 (CAGR 15.2%로 고성장)
+5. **경쟁 강도**: 12 / 15 (상위 3개사 집중 후 롱테일 시장)
+6. **진입 장벽**: 8 / 10 (비교적 쉬운 MVP 진입 가능)
+7. **차별화 가능성**: 10 / 10 (AI 기반 추천 및 SaaS 솔루션 적용 최적)
+8. **광고시장 규모**: 4 / 5 (연 2,850억 규모의 풍부한 광고 풀)
+9. **고객확보 난이도**: 5 / 5 (학부모 타겟 대상 높은 바이럴 효과)
+10. **수익성**: 5 / 5 (수수료 및 SaaS 정기 구독 수익 결합)
+- **최종 합계: 87 / 100점**
+
+---
+
+## ⑦ 블루오션 판단 (Blue Ocean Assessment)
+- **판단 결과**: **Blue Ocean (블루오션)**
+- **이유**: 상위 몇 개 플랫폼이 존재하나 오프라인 학원의 디지털 전환(SaaS)과 학부모 타겟 AI 초개인화 추천 시장은 여전히 기술적 공백 상태입니다. 따라서 차별화된 AI 추천과 운영 SaaS 제공 시 독점적 영역 확보가 가능합니다.
+
+---
+
+## ⑧ AI 사업 제안 및 10가지 차별화 방안
+1. **AI 기반 학부모 성향-학원 매칭 알고리즘** 적용
+2. **오프라인 학원 관리용 무료 ERP/SaaS** 배포를 통한 락인(Lock-in)
+3. **학생 성적 및 출결 데이터 기반 AI 자동 분석 피드백** 생성
+4. **디지털 광고 캠페인 자동 집행 및 ROAS 트래킹** 대시보드 제공
+5. **AI 챗봇 기반 학원 상담 및 예약 자동화** 시스템 구축
+6. **로컬 지역 기반 정밀 마케팅 세그먼트** 자동 분류
+7. **학부모 커뮤니티 분석을 통한 실시간 키워드 트렌드** 피드
+8. **학원별 예상 마케팅 단가(CAC) 및 ROI 시뮬레이터** 탑재
+9. **AI 비디오 요약 기술을 활용한 수업 미리보기** 서비스
+10. **개인 맞춤형 오프라인 진로 지도 로드맵** 설계 도구 제공
+
+---
+
+## ⑨ 최종 결론 및 추천 BM
+- **최종 판단**: **즉시 진입 추천 (진입 점수 87점)**
+- **추천 비즈니스 모델**: **SaaS + Marketplace 혼합형 (하이브리드)**
+  - 학원 원장 대상 수강/출결 관리 SaaS 구독을 기본 제공하며, 학부모 매칭 시 성공 수수료 및 모바일 광고 지면 판매(광고 BM)를 결합하여 수익성을 최대화할 것을 권고합니다.
+`;
+
+  // Custom data structure corresponding to the default '교육' / '학원 플랫폼' screenshot
+  const defaultData = {
+    summary: {
+      type: "블루오션",
+      score: 87,
+      cagr: "15.2%",
+      som: "5~10%",
+      adMarketSize: "2,850억원"
+    },
+    marketSize: {
+      tam: "2조 8,500억원",
+      sam: "7,800억원",
+      som: "390~780억원"
+    },
+    cagrChart: [
+      { year: "2022", size: 16800, rate: 12.1 },
+      { year: "2023", size: 18900, rate: 12.5 },
+      { year: "2024", size: 21700, rate: 14.8 },
+      { year: "2025", size: 24800, rate: 15.2 },
+      { year: "2026E", size: 28000, rate: 15.8 },
+      { year: "2027E", size: 32500, rate: 14.9 },
+      { year: "2028E", size: 37800, rate: 14.6 },
+      { year: "2029E", size: 43300, rate: 14.2 }
+    ],
+    radarScores: {
+      tam: 9,
+      sam: 8,
+      som: 14,
+      cagr: 12,
+      경쟁강도: 12,
+      진입장벽: 8,
+      차별화: 10,
+      광고시장: 4,
+      고객확보: 5,
+      수익성: 5
+    },
+    competitors: [
+      { rank: 1, name: "A사", share: "18.5%", strength: "브랜드 인지도, 데이터", weakness: "마케팅 비용 높음", aiAdoption: "높음", adExec: "매우 활발", invest: "Series C" },
+      { rank: 2, name: "B사", share: "13.2%", strength: "플랫폼 확장성", weakness: "수익성 낮음", aiAdoption: "높음", adExec: "활발", invest: "Series B" },
+      { rank: 3, name: "C사", share: "10.8%", strength: "온라인 강의 결제", weakness: "오프라인 네트워크", aiAdoption: "높음", adExec: "보통", invest: "Series B" },
+      { rank: 4, name: "D사", share: "7.6%", strength: "초등 저학년", weakness: "중고등 확장성", aiAdoption: "보통", adExec: "보통", invest: "Series A" },
+      { rank: 5, name: "E사", share: "6.1%", strength: "고객 충성도 우수", weakness: "플랫폼 사용성", aiAdoption: "보통", adExec: "보통", invest: "Series A" },
+      { rank: 6, name: "F사", share: "4.3%", strength: "수강 관리 시스템", weakness: "브랜드 인지도", aiAdoption: "낮음", adExec: "적음", invest: "Pre-A" },
+      { rank: 7, name: "G사", share: "3.8%", strength: "학습 관리 특화", weakness: "콘텐츠 다양성", aiAdoption: "보통", adExec: "적음", invest: "Seed" },
+      { rank: 8, name: "H사", share: "2.9%", strength: "초등용 콘텐츠", weakness: "마케팅 파워", aiAdoption: "보통", adExec: "적음", invest: "Seed" },
+      { rank: 9, name: "I사", share: "2.4%", strength: "1:1 학습관리", weakness: "확장성", aiAdoption: "낮음", adExec: "적음", invest: "Bootstrap" },
+      { rank: 10, name: "기타", share: "30.4%", strength: "지역별 분산 서비스", weakness: "통합 플랫폼 부재", aiAdoption: "낮음", adExec: "적음", invest: "-" }
+    ],
+    features: [
+      { name: "AI 추천", a: "Y", b: "N", c: "Y", d: "Y", e: "Y", our: "Y" },
+      { name: "검색", a: "Y", b: "Y", c: "Y", d: "Y", e: "Y", our: "Y" },
+      { name: "예약/상담", a: "Y", b: "Y", c: "Y", d: "P", e: "P", our: "Y" },
+      { name: "커뮤니티", a: "Y", b: "Y", c: "P", d: "P", e: "N", our: "Y" },
+      { name: "광고", a: "Y", b: "Y", c: "N", d: "N", e: "Y", our: "Y" },
+      { name: "CRM", a: "Y", b: "Y", c: "Y", d: "Y", e: "Y", our: "Y" },
+      { name: "결제", a: "Y", b: "Y", c: "Y", d: "Y", e: "Y", our: "Y" },
+      { name: "마케팅 자동화", a: "Y", b: "P", c: "N", d: "N", e: "N", our: "Y" },
+      { name: "API 연동", a: "P", b: "N", c: "P", d: "N", e: "N", our: "Y" },
+      { name: "회원 관리", a: "Y", b: "Y", c: "Y", d: "Y", e: "Y", our: "Y" }
+    ],
+    adAnalysis: {
+      adMarketSize: "2,850억원",
+      onlineRatio: "72%",
+      offlineRatio: "28%",
+      growthRate: "18.6%",
+      platforms: "네이버, 구글, 메타, 카카오, 틱톡",
+      cpc: "1,250원",
+      cpa: "18,500원",
+      roas: "380%",
+      cac: "25,000원"
+    },
+    barriers: {
+      technology: "보통",
+      capital: "낮음",
+      brand: "보통",
+      regulation: "낮음",
+      licensing: "낮음",
+      network: "보통",
+      competitor: "보통"
+    },
+    bms: ["SaaS", "플랫폼", "광고", "구독", "마켓플레이스"],
+    services: [
+      "AI 맞춤 학습 추천 플랫폼",
+      "학원 운영 통합 관리 SaaS",
+      "AI 튜터 기반 개인 맞춤 학습 서비스",
+      "광고 마케팅 자동화 플랫폼",
+      "학습 바인더 분석 대시보드",
+      "실시간 출결 알림 챗봇 서비스",
+      "지역 밀착형 로컬 학원 정보 포털",
+      "AI 성적 예측 및 레벨 테스트 도구",
+      "방과후 액티비티 셔틀 예약 매칭",
+      "학습 플래너 공유 SNS 커뮤니티"
+    ]
+  };
 
   try {
-    const aiText = await generateAIResponse(prompt, mockResponse);
-    res.json({ success: true, report: aiText });
-  } catch (error) {
-    console.warn("AI API limit/error. Fallback to mock:", error.message);
-    res.json({ success: true, report: mockResponse, isFallback: true });
-  }
-});
+    const aiText = await generateAIResponse(prompt, defaultReport);
+    
+    // For general categories, generate organic variations of defaultData
+    let resData = { ...defaultData };
+    if (indVal !== '교육' || subVal !== '학원 플랫폼') {
+      // Modify summary and metrics slightly based on input text length/hash to create realistic variance
+      const hash = indVal.length + subVal.length;
+      const baseScore = 65 + (hash % 25); // Score between 65 and 90
+      const baseTAM = 1 + (hash % 10); // 1~10T KRW
+      const isRed = baseScore < 70;
+      const isBlue = baseScore >= 80;
+      
+      resData.summary = {
+        type: isBlue ? "블루오션" : (isRed ? "레드오션" : "퍼플오션"),
+        score: baseScore,
+        cagr: (8.5 + (hash % 10)).toFixed(1) + "%",
+        som: "3~8%",
+        adMarketSize: (1000 + (hash % 30) * 100).toLocaleString() + "억원"
+      };
 
-// 5. AI 경쟁사 분석 API
-app.post('/api/ai/competitor-analysis', async (req, res) => {
+      resData.marketSize = {
+        tam: baseTAM + "조 " + ((hash % 10) * 1000) + "억원",
+        sam: (baseTAM * 0.3).toFixed(1) + "조원",
+        som: Math.round(baseTAM * 0.3 * 0.05 * 10000) + "억 ~ " + Math.round(baseTAM * 0.3 * 0.1 * 10000) + "억원"
+      };
+
+      resData.radarScores = {
+        tam: 4 + (hash % 7),
+        sam: 4 + (hash % 6),
+        som: 6 + (hash % 10),
+        cagr: 6 + (hash % 10),
+        경쟁강도: 5 + (hash % 11),
+        진입장벽: 4 + (hash % 7),
+        차별화: 5 + (hash % 6),
+        광고시장: 2 + (hash % 4),
+        고객확보: 2 + (hash % 4),
+        수익성: 2 + (hash % 4)
+      };
+
+      // Recalculate total sum based on radar scores
+      const totalScore = Object.values(resData.radarScores).reduce((a, b) => a + b, 0);
+      resData.summary.score = totalScore;
+      resData.summary.type = totalScore >= 80 ? "블루오션" : (totalScore < 60 ? "레드오션" : "퍼플오션");
+
+      resData.adAnalysis = {
+        adMarketSize: resData.summary.adMarketSize,
+        onlineRatio: (60 + (hash % 25)) + "%",
+        offlineRatio: (40 - (hash % 25)) + "%",
+        growthRate: (10 + (hash % 15)).toFixed(1) + "%",
+        platforms: "네이버, 구글, 메타, 카카오",
+        cpc: (800 + (hash % 20) * 100).toLocaleString() + "원",
+        cpa: (10000 + (hash % 15) * 2000).toLocaleString() + "원",
+        roas: (250 + (hash % 20) * 10) + "%",
+        cac: (15000 + (hash % 15) * 2000).toLocaleString() + "원"
+      };
+
+      resData.barriers = {
+        technology: hash % 3 === 0 ? "높음" : (hash % 3 === 1 ? "보통" : "낮음"),
+        capital: hash % 2 === 0 ? "보통" : "낮음",
+        brand: hash % 3 === 2 ? "높음" : "보통",
+        regulation: hash % 4 === 0 ? "높음" : "낮음",
+        licensing: hash % 4 === 1 ? "높음" : "낮음",
+        network: hash % 3 === 0 ? "보통" : "낮음",
+        competitor: "보통"
+      };
+
+      // Clean up company names for mock general data
+      resData.competitors = defaultData.competitors.map((c, i) => {
+        if (i === 9) return c;
+        return {
+          ...c,
+          name: `경쟁${String.fromCharCode(65 + i)}사`
+        };
+      });
+      
+      // Update top services based on industry name
+      resData.services = [
+        `AI 기반 맞춤형 ${indVal} 추천 솔루션`,
+        `${subVal} 전문 통합 관리 SaaS`,
+        `개인 성향 분석 및 1:1 맞춤 ${indVal} 케어`,
+        `${subVal} 광고 대행 및 퍼포먼스 마케팅 자동화`,
+        `소비 지표 분석 시뮬레이터 대시보드`,
+        `실시간 로컬 핫플레이스 정보 포털`,
+        `AI 성과 관리 및 리포팅 비서`,
+        `정기 구독 및 간편 예약 결제 모듈`,
+        `학습/이용 진도 시각화 플랫폼`,
+        `유사 고객 매칭 AI 커뮤니티`
+      ];
+    }
+
+    res.json({ 
+      success: true, 
+      report: aiText,
+      data: resData
+    });
+  } catch (error) {
+    console.warn("AI API limit/error in market research. Fallback to mock:", error.message);
+    res.json({ 
+      success: true, 
+      report: defaultReport,
+      data: defaultData,
+      isFallback: true 
+    });
+  }
+});app.post('/api/ai/competitor-analysis', async (req, res) => {
   const { competitors, previousContext } = req.body;
   const prompt = buildAgentPrompt(PROMPT_LIBRARY.competitor.template.replace('{competitors}', competitors), previousContext);
 

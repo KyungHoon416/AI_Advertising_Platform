@@ -45,8 +45,8 @@
             <span>대시보드 개요</span>
           </li>
           <li class="nav-item" data-tab="target-segment" id="nav-segment">
-            <i class="fa-solid fa-users-gear"></i>
-            <span>고객 세그먼트 & 추천</span>
+            <i class="fa-solid fa-robot"></i>
+            <span>AI광고주 센터</span>
           </li>
           <li class="nav-item" data-tab="market-research" id="nav-research">
             <i class="fa-solid fa-magnifying-glass-chart"></i>
@@ -538,68 +538,45 @@
 
         <!-- Tab 2: Target Segment & Recommendation -->
         <section id="target-segment" class="tab-pane">
-          <div class="grid-layout">
-            <!-- 필터 패널 -->
-            <div class="glass-card flex-1">
+          <div class="advertiser-center-layout">
+            <!-- Left Sidebar: Filter Panel -->
+            <div class="glass-card filter-sidebar">
               <div class="card-header">
-                <h3><i class="fa-solid fa-filter"></i> 내부 회원 행동 데이터 필터</h3>
+                <h3><i class="fa-solid fa-filter"></i> 데이터셋 필터</h3>
               </div>
-              <form id="segment-filter-form" class="filter-form">
+              <form id="advertiser-filter-form" class="filter-form">
                 <div class="form-group">
-                  <label for="filter-gender">성별</label>
-                  <select id="filter-gender">
-                    <option value="전체">전체</option>
-                    <option value="남성">남성</option>
-                    <option value="여성">여성</option>
-                  </select>
+                  <label>성별</label>
+                  <div class="btn-group-toggle" id="filter-gender-group">
+                    <button type="button" class="btn-toggle active" data-value="전체">전체</button>
+                    <button type="button" class="btn-toggle" data-value="남성">남성</button>
+                    <button type="button" class="btn-toggle" data-value="여성">여성</button>
+                  </div>
+                  <input type="hidden" id="filter-gender" value="전체">
                 </div>
+                
                 <div class="form-group">
                   <label for="filter-age">연령대</label>
                   <select id="filter-age">
-                    <option value="전체">전체</option>
+                    <option value="전체" selected>전체</option>
                     <option value="20대">20대</option>
-                    <option value="30대" selected>30대</option>
+                    <option value="30대">30대</option>
                     <option value="40대">40대</option>
                     <option value="50대이상">50대이상</option>
                   </select>
                 </div>
+
                 <div class="form-group">
-                  <label for="filter-location">활동 지역</label>
-                  <select id="filter-location">
+                  <label for="filter-category">카테고리</label>
+                  <select id="filter-category">
                     <option value="전체">전체</option>
-                    <option value="서울">서울</option>
-                    <option value="경기" selected>경기</option>
-                    <option value="부산">부산</option>
-                    <option value="대구">대구</option>
-                    <option value="광주">광주</option>
-                    <option value="인천">인천</option>
-                    <option value="기타">기타 (제주 등)</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="filter-period">가입 기간</label>
-                  <select id="filter-period">
-                    <option value="전체">전체</option>
-                    <option value="1개월미만">1개월 미만</option>
-                    <option value="1-6개월">1~6개월</option>
-                    <option value="6개월-1년">6개월~1년</option>
-                    <option value="1년이상" selected>1년 이상</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="filter-favorite">선호 카테고리</label>
-                  <select id="filter-favorite">
-                    <option value="전체">전체</option>
-                    <option value="여행·숙박">🏨 여행·숙박</option>
-                    <option value="레저·테마파크">🎡 레저·테마파크</option>
-                    <option value="외식">🍽️ 외식</option>
-                    <option value="패스트푸드">🍔 패스트푸드</option>
-                    <option value="치킨">🍗 치킨</option>
+                    <option value="음식점" selected>🍽️ 음식점</option>
                     <option value="카페">☕ 카페</option>
-                    <option value="식품">🥗 식품</option>
                     <option value="패션">👕 패션</option>
                     <option value="뷰티">💄 뷰티</option>
                     <option value="쇼핑·커머스">🛒 쇼핑·커머스</option>
+                    <option value="여행·숙박">🏨 여행·숙박</option>
+                    <option value="레저·테마파크">🎡 레저·테마파크</option>
                     <option value="금융">💳 금융</option>
                     <option value="자동차">🚗 자동차</option>
                     <option value="IT·전자">📱 IT·전자</option>
@@ -610,141 +587,588 @@
                     <option value="캠핑·아웃도어">🏕️ 캠핑·아웃도어</option>
                   </select>
                 </div>
-                <button type="submit" class="btn btn-primary btn-full mt-10" id="btn-apply-filter">
-                  <i class="fa-solid fa-calculator"></i> 세그먼트 집계 및 분석
+
+                <div class="form-group">
+                  <label>기간 설정 (크롤링 기준)</label>
+                  <div class="btn-group-toggle" id="filter-period-group">
+                    <button type="button" class="btn-toggle active" data-value="최근 1년">최근 1년</button>
+                    <button type="button" class="btn-toggle" data-value="6개월">6개월</button>
+                    <button type="button" class="btn-toggle" data-value="3개월">3개월</button>
+                    <button type="button" class="btn-toggle" data-value="1개월">1개월</button>
+                  </div>
+                  <input type="hidden" id="filter-period" value="최근 1년">
+                </div>
+
+                <div class="form-group">
+                  <label>이슈 스코어 범위: <span id="view-score-range-label" style="color: var(--neon-blue); font-weight:bold;">0 - 100</span></label>
+                  <div class="range-slider-wrapper">
+                    <div class="range-slider-track"></div>
+                    <input type="range" id="filter-score-min" min="0" max="100" value="0" class="score-range-slider-min">
+                    <input type="range" id="filter-score-max" min="0" max="100" value="100" class="score-range-slider-max">
+                  </div>
+                  <div class="range-values-ticks" style="display:flex; justify-content:space-between; font-size:10px; color:var(--text-muted); margin-top: 5px;">
+                    <span>0</span>
+                    <span>50</span>
+                    <span>100</span>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full mt-10" id="btn-run-analysis" style="font-weight: 700;">
+                  <i class="fa-solid fa-arrows-spin"></i> 데이터 분석 실행
                 </button>
               </form>
+
+              <!-- 이슈 스코어란? 안내 박스 -->
+              <div class="info-box mt-20" style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); border-radius: var(--border-radius-md); padding: 14px;">
+                <h4 style="font-size:12px; font-weight:700; color:#fff; display:flex; align-items:center; gap:6px; margin-bottom:8px;"><i class="fa-solid fa-circle-question text-blue"></i> 이슈 스코어란?</h4>
+                <p style="font-size:11px; color:var(--text-secondary); line-height:1.5;">최근 1년간 뉴스, 블로그, SNS, 검색량, 브랜드 상태 이벤트를 분석하여 산출한 광고 제안 우선순위 지표입니다.</p>
+                <p style="font-size:11px; color:var(--text-secondary); line-height:1.5; margin-top:5px;">점수가 높을수록 광고 집행 가능성이 높고 마케팅 이슈가 활발한 브랜드입니다.</p>
+                <button type="button" class="btn btn-link btn-sm mt-10" id="btn-show-score-criteria" style="padding: 0; color: var(--neon-blue); font-size: 11px; border:none; background:none; cursor:pointer; display:flex; align-items:center; gap:4px; font-weight:600;">
+                  스코어 산출 기준 보기 <i class="fa-solid fa-chevron-right" style="font-size: 8px;"></i>
+                </button>
+              </div>
             </div>
 
-            <!-- 세그먼트 집계 지표 -->
-            <div class="glass-card flex-2">
-              <div class="card-header">
-                <h3><i class="fa-solid fa-chart-simple"></i> 세그먼트 집계 지표</h3>
-              </div>
-              <div class="segment-metrics-view">
-                <div class="segment-size-box">
-                  <span class="label">대상 고객 규모 (모수)</span>
-                  <h2 id="view-segment-count">0명</h2>
-                  <p class="desc">전체 모수 5,000명 중 필터링된 진성 회원 수</p>
+            <!-- Right Area: Dashboard Grid -->
+            <div class="advertiser-center-main">
+              <!-- Top Row: Summary & Distribution Chart -->
+              <div class="main-top-row">
+                <!-- 이슈 광고주 요약 -->
+                <div class="glass-card summary-card-panel">
+                  <div class="card-header">
+                    <h3>이슈 광고주 요약</h3>
+                  </div>
+                  <div class="summary-cards-container">
+                    <div class="summary-stat-box">
+                      <span class="box-label">분석 대상 광고주</span>
+                      <h2 id="summary-total-analyzed" class="box-value text-blue">1,248명</h2>
+                      <span class="box-subtext">최근 1년 크롤링 데이터 기준</span>
+                    </div>
+                    <div class="summary-stat-box">
+                      <span class="box-label">이슈 광고주 수</span>
+                      <h2 id="summary-issue-count" class="box-value text-orange">312명</h2>
+                      <span class="box-subtext">이슈 스코어 50점 이상 <i class="fa-solid fa-fire text-orange"></i></span>
+                    </div>
+                    <div class="summary-stat-box">
+                      <span class="box-label">평균 이슈 스코어</span>
+                      <h2 id="summary-avg-score" class="box-value text-purple">67.8점</h2>
+                      <span class="box-subtext">전체 평균</span>
+                    </div>
+                    <div class="summary-stat-box">
+                      <span class="box-label">최고 이슈 스코어</span>
+                      <h2 id="summary-max-score" class="box-value text-green">98점</h2>
+                      <span class="box-subtext">최근 1년 내 이슈 광고주 <i class="fa-solid fa-trophy text-yellow"></i></span>
+                    </div>
+                  </div>
                 </div>
-                <div class="segment-detail-stats">
-                  <div class="stat-row">
-                    <span class="stat-label">평균 찜 수 (최근 30일)</span>
-                    <span class="stat-val" id="view-avg-wish">0회</span>
+
+                <!-- 이슈 스코어 분포 -->
+                <div class="glass-card donut-chart-panel" style="display:flex; flex-direction:column;">
+                  <div class="card-header">
+                    <h3>이슈 스코어 분포</h3>
                   </div>
-                  <div class="stat-row">
-                    <span class="stat-label">평균 장바구니 등록 수</span>
-                    <span class="stat-val" id="view-avg-cart">0회</span>
-                  </div>
-                  <div class="stat-row">
-                    <span class="stat-label">평균 예약/구매 횟수</span>
-                    <span class="stat-val" id="view-avg-purchase">0회</span>
+                  <div style="flex:1; display:flex; align-items:center; justify-content:center; padding: 10px; position:relative; min-height: 150px;">
+                    <canvas id="chart-issue-score-distribution" style="max-width: 140px; max-height: 140px; z-index: 1;"></canvas>
                   </div>
                 </div>
               </div>
 
-              <!-- AI 광고주 정밀 추천 리스트 -->
-              <div class="mt-20">
-                <h4 class="sub-section-title"><i class="fa-solid fa-star text-yellow"></i> 내부 데이터 기반 광고 적합도 매칭 브랜드</h4>
-                <div class="table-container">
-                  <table class="data-table" id="table-matched-advertisers">
+              <!-- Bottom Row: Table & Guide Card -->
+              <div class="main-bottom-row">
+                <!-- 이슈 광고주 리스트 -->
+                <div class="glass-card table-panel">
+                  <div class="card-header" style="display:flex; align-items:center; gap:8px;">
+                    <h3>이슈 광고주 리스트 <i class="fa-solid fa-circle-info text-muted" style="font-size:11px; cursor:pointer;" title="이슈 스코어 기준 정렬"></i></h3>
+                  </div>
+                  <div class="table-container">
+                    <table class="data-table" id="table-issue-advertisers">
+                      <thead>
+                        <tr>
+                          <th style="width: 50px;">순위</th>
+                          <th>광고주명</th>
+                          <th>카테고리</th>
+                          <th style="width: 140px;">이슈 스코어</th>
+                          <th>주요 이슈 키워드</th>
+                          <th>이슈 기간</th>
+                          <th style="width: 90px; text-align:center;">액션</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- Injected by JS -->
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="table-footer-controls" style="display:flex; justify-content:space-between; align-items:center; margin-top:15px; border-top:1px solid rgba(255,255,255,0.05); padding-top:12px;">
+                    <div class="pagination-btns" style="display:flex; gap:5px;" id="table-pagination">
+                      <!-- JS dynamically pagination -->
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px; font-size:11px; color:var(--text-secondary);">
+                      <span id="pagination-info-text">전체 312건 중 1-10 표시</span>
+                      <select id="pagination-page-size" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:2px 6px; color:#fff; font-size:11px; outline:none; cursor:pointer;">
+                        <option value="10" selected>10개씩 보기</option>
+                        <option value="20">20개씩 보기</option>
+                        <option value="50">50개씩 보기</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 이슈 스코어 가이드 -->
+                <div class="glass-card guide-panel-box" style="display:flex; flex-direction:column;">
+                  <div class="card-header">
+                    <h3>이슈 스코어 가이드</h3>
+                  </div>
+                  <div class="guide-scroll-body" style="flex:1; overflow-y:auto; padding-right:4px;">
+                    <div style="background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.08); border-radius: 8px; padding: 10px; margin-bottom: 12px; text-align:center;">
+                      <h4 style="font-size:12px; color:#fff; font-weight:700;">총점 100점 만점</h4>
+                      <p style="font-size:10px; color:var(--text-muted); margin-top:2px;">최근성, 확산도, 검색량, 광고가능성, 성장성 종합 평가</p>
+                    </div>
+                    <div class="guide-rating-list" style="display:flex; flex-direction:column; gap:8px;">
+                      <div class="guide-rating-item" style="display:flex; align-items:center; gap:8px; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:6px;">
+                        <span class="range" style="font-size:11px; color:#fff; font-weight:700; width:55px;">95 ~ 100</span>
+                        <div style="flex:1;">
+                          <div class="stars" style="color:var(--neon-orange); font-size:11px; letter-spacing:1px;">★★★★★</div>
+                          <div class="desc" style="font-size:9px; color:var(--text-secondary);">현재 반드시 영업해야 하는 광고주</div>
+                        </div>
+                      </div>
+                      <div class="guide-rating-item" style="display:flex; align-items:center; gap:8px; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:6px;">
+                        <span class="range" style="font-size:11px; color:#fff; font-weight:700; width:55px;">90 ~ 94</span>
+                        <div style="flex:1;">
+                          <div class="stars" style="color:var(--neon-orange); font-size:11px; letter-spacing:1px;">★★★★☆</div>
+                          <div class="desc" style="font-size:9px; color:var(--text-secondary);">최우선 제안 대상</div>
+                        </div>
+                      </div>
+                      <div class="guide-rating-item" style="display:flex; align-items:center; gap:8px; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:6px;">
+                        <span class="range" style="font-size:11px; color:#fff; font-weight:700; width:55px;">80 ~ 89</span>
+                        <div style="flex:1;">
+                          <div class="stars" style="color:var(--neon-orange); font-size:11px; letter-spacing:1px;">★★★★</div>
+                          <div class="desc" style="font-size:9px; color:var(--text-secondary);">광고 가능성 높음</div>
+                        </div>
+                      </div>
+                      <div class="guide-rating-item" style="display:flex; align-items:center; gap:8px; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:6px;">
+                        <span class="range" style="font-size:11px; color:#fff; font-weight:700; width:55px;">70 ~ 79</span>
+                        <div style="flex:1;">
+                          <div class="stars" style="color:var(--neon-orange); font-size:11px; letter-spacing:1px;">★★★☆</div>
+                          <div class="desc" style="font-size:9px; color:var(--text-secondary);">지속 모니터링</div>
+                        </div>
+                      </div>
+                      <div class="guide-rating-item" style="display:flex; align-items:center; gap:8px; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:6px;">
+                        <span class="range" style="font-size:11px; color:#fff; font-weight:700; width:55px;">60 ~ 69</span>
+                        <div style="flex:1;">
+                          <div class="stars" style="color:var(--neon-orange); font-size:11px; letter-spacing:1px;">★★★</div>
+                          <div class="desc" style="font-size:9px; color:var(--text-secondary);">잠재 고객</div>
+                        </div>
+                      </div>
+                      <div class="guide-rating-item" style="display:flex; align-items:center; gap:8px; border-bottom:1px solid rgba(255,255,255,0.03); padding-bottom:6px;">
+                        <span class="range" style="font-size:11px; color:#fff; font-weight:700; width:55px;">50 ~ 59</span>
+                        <div style="flex:1;">
+                          <div class="stars" style="color:var(--neon-orange); font-size:11px; letter-spacing:1px;">★★</div>
+                          <div class="desc" style="font-size:9px; color:var(--text-secondary);">관심 필요</div>
+                        </div>
+                      </div>
+                      <div class="guide-rating-item" style="display:flex; align-items:center; gap:8px; padding-bottom:4px;">
+                        <span class="range" style="font-size:11px; color:#fff; font-weight:700; width:55px;">50 미만</span>
+                        <div style="flex:1;">
+                          <div class="stars" style="color:var(--text-muted); font-size:11px; letter-spacing:1px;">★</div>
+                          <div class="desc" style="font-size:9px; color:var(--text-secondary);">광고 우선순위 낮음</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn btn-primary btn-full mt-15" id="btn-create-proposal-from-guide" style="font-weight:700;">
+                    <i class="fa-solid fa-file-signature"></i> 제안서 작성
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section><!-- Tab 3: Market Research & Competitor Analysis -->
+        <section id="market-research" class="tab-pane">
+          <!-- Top Filter Bar -->
+          <div class="glass-card filter-top-bar" style="margin-bottom: 20px; padding: 15px 20px;">
+            <form id="market-filter-form" style="display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap;">
+              <div class="form-group" style="margin: 0; flex: 1; min-width: 150px;">
+                <label style="font-size: 11px; margin-bottom: 4px;">산업군 선택</label>
+                <select id="market-filter-industry" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; color: #fff; padding: 8px 12px; outline: none; width: 100%; cursor: pointer;">
+                  <option value="F&B">🍔 F&B</option>
+                  <option value="헬스케어">🏥 헬스케어</option>
+                  <option value="교육" selected>🎓 교육</option>
+                  <option value="여행">✈️ 여행</option>
+                  <option value="뷰티">💄 뷰티</option>
+                  <option value="부동산">🏢 부동산</option>
+                  <option value="물류">🚚 물류</option>
+                  <option value="엔터테인먼트">🍿 엔터테인먼트</option>
+                  <option value="SaaS">💻 SaaS</option>
+                  <option value="이커머스">🛒 이커머스</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin: 0; flex: 1; min-width: 150px;">
+                <label style="font-size: 11px; margin-bottom: 4px;">업종 선택</label>
+                <select id="market-filter-subcategory" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; color: #fff; padding: 8px 12px; outline: none; width: 100%; cursor: pointer;">
+                  <option value="학원 플랫폼" selected>학원 플랫폼</option>
+                  <option value="밀키트 배송">밀키트 배송</option>
+                  <option value="비대면 진료">비대면 진료</option>
+                  <option value="공유 오피스">공유 오피스</option>
+                  <option value="숙박 예약">숙박 예약</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin: 0; flex: 1; min-width: 150px;">
+                <label style="font-size: 11px; margin-bottom: 4px;">국가 선택</label>
+                <select id="market-filter-country" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; color: #fff; padding: 8px 12px; outline: none; width: 100%; cursor: pointer;">
+                  <option value="대한민국" selected>🇰🇷 대한민국</option>
+                  <option value="미국">🇺🇸 미국</option>
+                  <option value="일본">🇯🇵 일본</option>
+                  <option value="베트남">🇻🇳 베트남</option>
+                  <option value="인도네시아">🇮🇩 인도네시아</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary" id="btn-market-analysis" style="padding: 10px 24px; font-weight: 700; height: 38px; display: flex; align-items: center; gap: 6px;">
+                <i class="fa-solid fa-chart-pie"></i> 분석 실행
+              </button>
+            </form>
+            <div style="font-size: 10px; color: var(--text-muted); margin-top: 8px;">
+              추천 검색어: F&B, 헬스케어, 교육, 여행, 뷰티, 부동산, 물류, 엔터테인먼트, SaaS, 이커머스
+            </div>
+          </div>
+
+          <!-- Summary Row (5 Cards) -->
+          <div class="market-summary-row" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 20px;">
+            <!-- 시장 유형 (AI 판단) -->
+            <div class="glass-card" style="padding: 15px; display: flex; align-items: center; gap: 12px;">
+              <div style="background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.2); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-water" style="color: var(--neon-blue); font-size: 18px;" id="market-sum-type-icon"></i>
+              </div>
+              <div>
+                <span style="font-size: 10px; color: var(--text-secondary); font-weight: 600;">시장 유형 (AI 판단)</span>
+                <h3 style="font-size: 16px; font-weight: 800; color: #fff; margin: 2px 0;" id="market-sum-type">블루오션</h3>
+                <span style="font-size: 9px; color: var(--text-muted); display: block; line-height: 1.2;" id="market-sum-type-desc">경쟁이 낮고 성장 가능성이 높은 시장</span>
+              </div>
+            </div>
+
+            <!-- Market Opportunity Score -->
+            <div class="glass-card" style="padding: 15px; display: flex; align-items: center; gap: 12px;">
+              <div style="background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.2); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-circle-nodes" style="color: #a855f7; font-size: 18px;"></i>
+              </div>
+              <div style="flex:1;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size: 10px; color: var(--text-secondary); font-weight: 600;">Market Opportunity Score</span>
+                  <span class="badge" style="font-size: 8px; padding: 1px 4px; background: rgba(0, 242, 254, 0.15); color: var(--neon-blue); border-radius: 3px;" id="market-sum-score-badge">진입 추천</span>
+                </div>
+                <h3 style="font-size: 16px; font-weight: 800; color: #fff; margin: 2px 0;" id="market-sum-score">87 <span style="font-size: 10px; color: var(--text-muted);">/ 100</span></h3>
+                <div class="stars" style="color: var(--neon-orange); font-size: 9px; letter-spacing: 1px;" id="market-sum-stars">★★★★☆</div>
+              </div>
+            </div>
+
+            <!-- 시장 성장률 (CAGR) -->
+            <div class="glass-card" style="padding: 12px 15px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                  <span style="font-size: 10px; color: var(--text-secondary); font-weight: 600; display: block;">시장 성장률 (CAGR)</span>
+                  <h3 style="font-size: 18px; font-weight: 800; color: var(--neon-blue); margin: 2px 0;" id="market-sum-cagr">15.2%</h3>
+                </div>
+                <span style="font-size: 8px; color: var(--text-muted);">향후 5년</span>
+              </div>
+              <div style="height: 24px; position: relative;">
+                <canvas id="chart-cagr-sparkline" style="width: 100%; height: 100%;"></canvas>
+              </div>
+            </div>
+
+            <!-- SOM 확보 가능성 -->
+            <div class="glass-card" style="padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+              <div style="flex:1;">
+                <span style="font-size: 10px; color: var(--text-secondary); font-weight: 600; display: block;">SOM 확보 가능성</span>
+                <h3 style="font-size: 16px; font-weight: 800; color: #fff; margin: 2px 0;" id="market-sum-som">5 ~ 10%</h3>
+                <span style="font-size: 8px; color: var(--text-muted); display: block;">3년 내 목표 점유율</span>
+              </div>
+              <div style="width: 40px; height: 40px; position: relative;">
+                <canvas id="chart-som-sparkline"></canvas>
+              </div>
+            </div>
+
+            <!-- 광고 시장 규모 -->
+            <div class="glass-card" style="padding: 12px 15px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                  <span style="font-size: 10px; color: var(--text-secondary); font-weight: 600; display: block;">광고 시장 규모</span>
+                  <h3 style="font-size: 16px; font-weight: 800; color: var(--neon-orange); margin: 2px 0;" id="market-sum-adsize">2,850억원</h3>
+                </div>
+                <span style="font-size: 8px; color: var(--text-muted);">연간 디지털</span>
+              </div>
+              <div style="height: 24px; position: relative;">
+                <canvas id="chart-ad-sparkline" style="width: 100%; height: 100%;"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Grid (4 Cards Row) -->
+          <div class="market-main-row" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px;">
+            <!-- 1. 시장 규모 분석 -->
+            <div class="glass-card" style="padding: 15px; display: flex; flex-direction: column;">
+              <div class="card-header" style="margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                <h3 style="font-size: 13px; font-weight: 800;"><i class="fa-solid fa-magnifying-glass-chart text-blue" style="margin-right: 6px;"></i>1. 시장 규모 분석</h3>
+                <span style="font-size: 10px; color: var(--text-muted);">단위: 억원</span>
+              </div>
+              <div style="flex:1; display:flex; flex-direction:column; gap:12px; justify-content: center;">
+                <div style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 6px; padding: 8px 12px;">
+                  <div style="background: rgba(0, 242, 254, 0.1); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: var(--neon-blue);">TAM</div>
+                  <div>
+                    <span style="font-size: 9px; color: var(--text-secondary); display:block;">TAM (전체 시장 규모)</span>
+                    <strong style="font-size: 13px; color:#fff;" id="market-detail-tam">2조 8,500억원</strong>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 6px; padding: 8px 12px;">
+                  <div style="background: rgba(168, 85, 247, 0.1); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: #a855f7;">SAM</div>
+                  <div>
+                    <span style="font-size: 9px; color: var(--text-secondary); display:block;">SAM (유효 시장 규모)</span>
+                    <strong style="font-size: 13px; color:#fff;" id="market-detail-sam">7,800억원</strong>
+                  </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 6px; padding: 8px 12px;">
+                  <div style="background: rgba(34, 197, 94, 0.1); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: #22c55e;">SOM</div>
+                  <div>
+                    <span style="font-size: 9px; color: var(--text-secondary); display:block;">SOM (수익 시장 규모)</span>
+                    <strong style="font-size: 13px; color:#fff;" id="market-detail-som">390 ~ 780억원</strong>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-link btn-sm btn-show-market-detail" style="margin-top:15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; text-align: center; width: 100%; display: block; color: var(--neon-blue); font-size:11px; font-weight:600;">상세 분석 보기 <i class="fa-solid fa-chevron-right" style="font-size:8px;"></i></button>
+            </div>
+
+            <!-- 2. 시장 성장률 분석 -->
+            <div class="glass-card" style="padding: 15px; display: flex; flex-direction: column;">
+              <div class="card-header" style="margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                <h3 style="font-size: 13px; font-weight: 800;"><i class="fa-solid fa-chart-line text-blue" style="margin-right: 6px;"></i>2. 시장 성장률 분석</h3>
+              </div>
+              <div style="flex:1; position: relative; min-height: 140px; display:flex; align-items:center; justify-content:center;">
+                <canvas id="chart-market-growth" style="width: 100%; height: 100%; max-height: 140px;"></canvas>
+              </div>
+              <button class="btn btn-link btn-sm btn-show-market-detail" style="margin-top:15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; text-align: center; width: 100%; display: block; color: var(--neon-blue); font-size:11px; font-weight:600;">상세 분석 보기 <i class="fa-solid fa-chevron-right" style="font-size:8px;"></i></button>
+            </div>
+
+            <!-- 3. 시장 진입 스코어 -->
+            <div class="glass-card" style="padding: 15px; display: flex; flex-direction: column;">
+              <div class="card-header" style="margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                <h3 style="font-size: 13px; font-weight: 800;"><i class="fa-solid fa-chart-gantt text-blue" style="margin-right: 6px;"></i>3. 시장 진입 스코어</h3>
+              </div>
+              <div style="flex:1; position: relative; min-height: 140px; display:flex; align-items:center; justify-content:center;">
+                <canvas id="chart-market-radar" style="width: 100%; height: 100%; max-height: 140px;"></canvas>
+              </div>
+              <button class="btn btn-link btn-sm btn-show-market-detail" style="margin-top:15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; text-align: center; width: 100%; display: block; color: var(--neon-blue); font-size:11px; font-weight:600;">스코어 상세 보기 <i class="fa-solid fa-chevron-right" style="font-size:8px;"></i></button>
+            </div>
+
+            <!-- 4. 시장 유형 판단 -->
+            <div class="glass-card" style="padding: 15px; display: flex; flex-direction: column;">
+              <div class="card-header" style="margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                <h3 style="font-size: 13px; font-weight: 800;"><i class="fa-solid fa-compass text-blue" style="margin-right: 6px;"></i>4. 시장 유형 판단</h3>
+              </div>
+              <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding: 10px 0;">
+                <div style="width: 110px; height: 60px; position: relative; overflow: hidden; margin-bottom: 8px;">
+                  <canvas id="chart-market-gauge" style="width: 100%; height: 120px;"></canvas>
+                  <div style="position: absolute; bottom: 0; left: 0; width: 100%; text-align: center;" id="market-gauge-value-text">
+                    <strong style="font-size: 14px; color: var(--neon-blue);" id="market-gauge-type">블루오션</strong>
+                  </div>
+                </div>
+                <p style="font-size: 10px; color: var(--text-secondary); line-height: 1.4; text-align: center; margin: 0 0 5px 0; min-height: 28px;" id="market-gauge-summary-desc">
+                  경쟁 강도가 낮고 시장 성장률이 높으며, AI 기반 차별화 및 광고 수요가 높은 매력적인 시장입니다.
+                </p>
+                <div style="display: flex; gap: 8px; font-size: 9px; color: var(--text-muted); justify-content: center; flex-wrap: wrap;">
+                  <span><i class="fa-solid fa-circle" style="color: #00f2fe; margin-right: 3px; font-size: 7px;"></i>블루오션 (80점 이상)</span>
+                  <span><i class="fa-solid fa-circle" style="color: #a855f7; margin-right: 3px; font-size: 7px;"></i>퍼플오션 (60~79)</span>
+                  <span><i class="fa-solid fa-circle" style="color: #ef4444; margin-right: 3px; font-size: 7px;"></i>레드오션 (60미만)</span>
+                </div>
+              </div>
+              <button class="btn btn-link btn-sm btn-show-market-detail" style="margin-top:15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; text-align: center; width: 100%; display: block; color: var(--neon-blue); font-size:11px; font-weight:600;">상세 분석 보기 <i class="fa-solid fa-chevron-right" style="font-size:8px;"></i></button>
+            </div>
+          </div>
+
+          <!-- Secondary Grid (Competitors & Ad Analysis) -->
+          <div class="market-sec-row" style="display: grid; grid-template-columns: 2.3fr 1.7fr; gap: 15px; margin-bottom: 20px;">
+            <!-- Left Side: Competitor analysis & checklist -->
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+              <!-- 5. 주요 경쟁사 분석 (TOP 10) -->
+              <div class="glass-card" style="padding: 15px;">
+                <div class="card-header" style="margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                  <h3 style="font-size: 13px; font-weight: 800;"><i class="fa-solid fa-users-viewfinder text-blue" style="margin-right: 6px;"></i>5. 주요 경쟁사 분석 (TOP 10)</h3>
+                </div>
+                <div class="table-container" style="max-height: 250px; overflow-y: auto;">
+                  <table class="data-table" id="table-market-competitors" style="font-size: 11px;">
                     <thead>
                       <tr>
-                        <th>브랜드명</th>
-                        <th>카테고리</th>
-                        <th>지역</th>
-                        <th>과거 광고 이력</th>
-                        <th>적합 스코어</th>
-                        <th>액션</th>
+                        <th style="width: 45px; text-align:center;">순위</th>
+                        <th>기업명</th>
+                        <th>시장점유율</th>
+                        <th>강점</th>
+                        <th>약점</th>
+                        <th style="width: 80px; text-align:center;">AI 활용도</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <!-- JS 동적 주입 -->
+                      <!-- Injected by JS -->
                     </tbody>
                   </table>
                 </div>
+                <button class="btn btn-link btn-sm btn-show-market-detail" style="margin-top:10px; text-align: center; width: 100%; display: block; color: var(--neon-blue); font-size:11px; font-weight:600;">전체 경쟁사 보기 <i class="fa-solid fa-chevron-right" style="font-size:8px;"></i></button>
               </div>
-            </div>
-          </div>
 
-          <!-- AI 추천 리포트 결과 영역 -->
-          <div class="grid-layout mt-20 hidden" id="segment-report-area">
-            <div class="glass-card flex-1">
-              <div class="card-header justify-between">
-                <h3><i class="fa-solid fa-robot text-purple"></i> AI 심층 추천 분석 의견</h3>
-                <button class="btn btn-secondary btn-sm" id="btn-copy-segment-report"><i class="fa-solid fa-copy"></i> 복사</button>
-              </div>
-              <div class="report-content markdown-body" id="segment-report-body">
-                <!-- AI 추천 리포트 결과물 -->
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Tab 3: Market Research & Competitor Analysis -->
-        <section id="market-research" class="tab-pane">
-          <div class="grid-layout">
-            <!-- 시장조사 입력창 -->
-            <div class="glass-card flex-1">
-              <div class="card-header">
-                <h3><i class="fa-solid fa-chart-line"></i> AI 시장조사 (Phase 2)</h3>
-              </div>
-              <div class="card-body">
-                <div class="form-group">
-                  <label for="research-industry">조사 대상 산업/업종</label>
-                  <input type="text" id="research-industry" placeholder="예: 키즈카페, 가족 글램핑, 어린이 미술체험" value="가족 여가 키즈카페">
+              <!-- 6. 경쟁사 기능 비교 -->
+              <div class="glass-card" style="padding: 15px;">
+                <div class="card-header" style="margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                  <h3 style="font-size: 13px; font-weight: 800;"><i class="fa-solid fa-table-list text-blue" style="margin-right: 6px;"></i>6. 경쟁사 기능 비교</h3>
                 </div>
-                <button class="btn btn-primary btn-full mt-10" id="btn-run-research">
-                  <i class="fa-solid fa-wand-magic-sparkles"></i> AI 시장 트렌드 조사 실행
-                </button>
-              </div>
-            </div>
-
-            <!-- 경쟁사 분석 입력창 -->
-            <div class="glass-card flex-1">
-              <div class="card-header">
-                <h3><i class="fa-solid fa-building-columns"></i> 경쟁사 비교 분석 (Phase 2)</h3>
-              </div>
-              <div class="card-body">
-                <div class="form-group">
-                  <label for="competitor-list">비교 대상 경쟁 서비스들 (쉼표 구분)</label>
-                  <input type="text" id="competitor-list" placeholder="예: 야놀자, 여기어때, 네이버플레이스" value="야놀자, 여기어때, 네이버 플레이스">
+                <div class="table-container" style="max-height: 220px; overflow-y: auto;">
+                  <table class="data-table" id="table-market-features" style="font-size: 11px; text-align: center;">
+                    <thead>
+                      <tr>
+                        <th style="text-align:left;">기능</th>
+                        <th>A사</th>
+                        <th>B사</th>
+                        <th>C사</th>
+                        <th>D사</th>
+                        <th>E사</th>
+                        <th style="color: var(--neon-blue); font-weight: 800;">우리 서비스</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Injected by JS -->
+                    </tbody>
+                  </table>
                 </div>
-                <button class="btn btn-secondary-neon btn-full mt-10" id="btn-run-competitor">
-                  <i class="fa-solid fa-compress"></i> AI 경쟁사 비교표 생성
-                </button>
+                <div style="display: flex; gap: 15px; font-size: 10px; color: var(--text-muted); margin-top: 10px; justify-content: flex-end;">
+                  <span><i class="fa-solid fa-check-circle" style="color: #22c55e; margin-right: 3px;"></i> 지원</span>
+                  <span><i class="fa-solid fa-warning" style="color: #ff9f1c; margin-right: 3px;"></i> 부분 지원</span>
+                  <span><i class="fa-solid fa-times-circle" style="color: #ef4444; margin-right: 3px;"></i> 미지원</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Side: Ad Analysis & Barriers -->
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+              <!-- 7. 광고 시장 분석 -->
+              <div class="glass-card" style="padding: 15px; display: flex; flex-direction: column;">
+                <div class="card-header" style="margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                  <h3 style="font-size: 13px; font-weight: 800;"><i class="fa-solid fa-rectangle-ad text-blue" style="margin-right: 6px;"></i>7. 광고 시장 분석</h3>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; gap:8px; font-size: 11px; color: var(--text-secondary);">
+                  <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 4px;">
+                    <span>연간 광고 시장 규모</span>
+                    <strong style="color:#fff;" id="ad-detail-size">2,850억원</strong>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 4px;">
+                    <span>온라인 광고 비율</span>
+                    <strong style="color:#fff;" id="ad-detail-online">72%</strong>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 4px;">
+                    <span>오프라인 광고 비율</span>
+                    <strong style="color:#fff;" id="ad-detail-offline">28%</strong>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 4px;">
+                    <span>디지털 광고 성장률</span>
+                    <strong style="color:var(--neon-blue);" id="ad-detail-growth">18.6%</strong>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 4px;">
+                    <span>주요 광고 플랫폼</span>
+                    <strong style="color:#fff; font-size: 10px; max-width: 140px; text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" id="ad-detail-platforms" title="네이버, 구글, 메타, 카카오, 틱톡">네이버, 구글, 메타, 카카오, 틱톡</strong>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 4px;">
+                    <span>평균 CPC (클릭당비용)</span>
+                    <strong style="color:#fff;" id="ad-detail-cpc">1,250원</strong>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 4px;">
+                    <span>평균 CPA (획득당비용)</span>
+                    <strong style="color:#fff;" id="ad-detail-cpa">18,500원</strong>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 4px;">
+                    <span>평균 ROAS (광고수익률)</span>
+                    <strong style="color:#fff;" id="ad-detail-roas">380%</strong>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; padding-bottom: 4px;">
+                    <span>평균 CAC (고객획득비용)</span>
+                    <strong style="color:#fff;" id="ad-detail-cac">25,000원</strong>
+                  </div>
+                </div>
+                <button class="btn btn-link btn-sm btn-show-market-detail" style="margin-top:12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; text-align: center; width: 100%; display: block; color: var(--neon-blue); font-size:11px; font-weight:600;">상세 분석 보기 <i class="fa-solid fa-chevron-right" style="font-size:8px;"></i></button>
+              </div>
+
+              <!-- 8. 시장 진입 장벽 -->
+              <div class="glass-card" style="padding: 15px; display: flex; flex-direction: column;">
+                <div class="card-header" style="margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                  <h3 style="font-size: 13px; font-weight: 800;"><i class="fa-solid fa-shield-halved text-blue" style="margin-right: 6px;"></i>8. 시장 진입 장벽</h3>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; gap:9px; font-size: 11px; color: var(--text-secondary);" id="market-barriers-list">
+                  <!-- Injected by JS -->
+                </div>
+                <button class="btn btn-link btn-sm btn-show-market-detail" style="margin-top:12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; text-align: center; width: 100%; display: block; color: var(--neon-blue); font-size:11px; font-weight:600;">상세 분석 보기 <i class="fa-solid fa-chevron-right" style="font-size:8px;"></i></button>
               </div>
             </div>
           </div>
 
-          <!-- AI 시장조사 리포트 결과 창 -->
-          <div class="grid-layout mt-20 hidden" id="research-result-area">
-            <div class="glass-card flex-1">
-              <div class="card-header justify-between">
-                <h3 id="research-result-title"><i class="fa-solid fa-square-poll-horizontal"></i> AI 시장 분석 결과물</h3>
-                <button class="btn btn-secondary btn-sm" id="btn-copy-research-report"><i class="fa-solid fa-copy"></i> 복사</button>
+          <!-- Bottom Summary & Service Layout (3 Cards) -->
+          <div class="market-bottom-row" style="display: grid; grid-template-columns: 1fr 1.3fr 1.7fr; gap: 15px;">
+            <!-- 9. 사업 모델 추천 -->
+            <div class="glass-card" style="padding: 15px; display: flex; flex-direction: column;">
+              <div class="card-header" style="margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                <h3 style="font-size: 13px; font-weight: 800;"><i class="fa-solid fa-store text-blue" style="margin-right: 6px;"></i>9. 사업 모델 추천</h3>
               </div>
-              <div class="report-content markdown-body" id="research-result-body">
-                <!-- 결과 렌더링 -->
+              <div style="flex:1; display:flex; flex-direction:column; gap:10px; justify-content:center;" id="market-bm-container">
+                <!-- Injected by JS -->
+              </div>
+            </div>
+
+            <!-- 10. 추천 서비스 (우선순위 TOP 5) -->
+            <div class="glass-card" style="padding: 15px; display: flex; flex-direction: column;">
+              <div class="card-header" style="margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                <h3 style="font-size: 13px; font-weight: 800;"><i class="fa-solid fa-wand-magic-sparkles text-blue" style="margin-right: 6px;"></i>10. 추천 서비스 (우선순위 TOP 5)</h3>
+              </div>
+              <div style="flex:1; display:flex; flex-direction:column; gap:8px;" id="market-services-list">
+                <!-- Injected by JS -->
+              </div>
+            </div>
+
+            <!-- 11. 최종 요약 & 기동 배지 -->
+            <div class="glass-card" style="padding: 15px; display: flex; gap: 15px; align-items: stretch;">
+              <!-- Left: 요약표 -->
+              <div style="flex: 1.2; display: flex; flex-direction: column; justify-content: space-between;">
+                <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px; margin-bottom: 8px;">
+                  <h3 style="font-size: 13px; font-weight: 800;"><i class="fa-solid fa-list-check text-blue" style="margin-right: 6px;"></i>11. 최종 요약</h3>
+                </div>
+                <div style="font-size: 10px; color: var(--text-secondary); display:flex; flex-direction:column; gap:5px;">
+                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.02); padding-bottom:3px;">
+                    <span>TAM</span>
+                    <strong style="color:#fff;" id="summary-lbl-tam">2조 8,500억</strong>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.02); padding-bottom:3px;">
+                    <span>SAM</span>
+                    <strong style="color:#fff;" id="summary-lbl-sam">7,800억</strong>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.02); padding-bottom:3px;">
+                    <span>SOM</span>
+                    <strong style="color:#fff;" id="summary-lbl-som">390~780억</strong>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.02); padding-bottom:3px;">
+                    <span>CAGR</span>
+                    <strong style="color:#fff;" id="summary-lbl-cagr">15.2%</strong>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; padding-bottom:2px;">
+                    <span>시장 유형</span>
+                    <strong style="color:var(--neon-blue);" id="summary-lbl-type">블루오션</strong>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: 스코어 및 컵 배지 -->
+              <div style="flex: 1; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 12px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+                <span style="font-size: 9px; color: var(--text-secondary); font-weight:bold;">Market Opportunity Score</span>
+                <h2 style="font-size: 26px; font-weight:850; color:#fff; margin: 4px 0;" id="final-summary-score">87 <span style="font-size:12px; color:var(--text-muted);">/ 100</span></h2>
+                <div class="stars" style="color: var(--neon-orange); font-size: 11px; margin-bottom: 8px; letter-spacing:1px;" id="final-summary-stars">★★★★☆</div>
+                <div style="display:flex; align-items:center; gap:6px; background:rgba(0,242,254,0.1); border:1px solid rgba(0,242,254,0.25); border-radius:15px; padding: 4px 12px; font-size:10px; color:var(--neon-blue); font-weight:700;">
+                  <i class="fa-solid fa-trophy" style="color:#ffd700;"></i> <span id="final-summary-decision">진입 추천</span>
+                </div>
+                <span style="font-size:8px; color:var(--text-muted); margin-top:4px;">전략적 진입 시 높은 성장성</span>
               </div>
             </div>
           </div>
-
-          <!-- AI 경쟁사 분석 리포트 결과 창 -->
-          <div class="grid-layout mt-20 hidden" id="competitor-result-area">
-            <div class="glass-card flex-1">
-              <div class="card-header justify-between">
-                <h3 id="competitor-result-title"><i class="fa-solid fa-building-columns"></i> AI 경쟁사 비교 분석 결과물</h3>
-                <button class="btn btn-secondary btn-sm" id="btn-copy-competitor-report"><i class="fa-solid fa-copy"></i> 복사</button>
-              </div>
-              <div class="report-content markdown-body" id="competitor-result-body">
-                <!-- 결과 렌더링 -->
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Tab 4: AI 맞춤 제안서 생성 -->
+        </section><!-- Tab 4: AI 맞춤 제안서 생성 -->
         <section id="proposal-generator" class="tab-pane">
           <div class="grid-layout">
             <div class="glass-card flex-1">
@@ -949,6 +1373,37 @@
       <p id="loading-message">AI가 보고서를 정교하게 조율 중입니다...</p>
     </div>
   </div>
+
+    <!-- AI 광고주 심층 영업 분석 보고서 모달 (Modal) -->
+  <div id="advertiser-analysis-modal" class="modal-overlay hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5,6,11,0.85); backdrop-filter:blur(10px); display:flex; align-items:center; justify-content:center; z-index:9999; transition:var(--transition-smooth);">
+    <div class="modal-content glass-card" style="width:90%; max-width:800px; max-height:85vh; display:flex; flex-direction:column; border:1px solid rgba(0, 242, 254, 0.25); box-shadow:0 0 30px rgba(0,242,254,0.15); animation:modalSlideUp 0.3s ease-out; padding: 24px; background: rgba(15, 17, 28, 0.95);">
+      <div class="modal-header justify-between" style="display:flex; justify-content:between; align-items:center; margin-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:12px;">
+        <h3 style="font-size:18px; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-robot text-purple"></i> AI 광고주 심층 영업 분석 보고서</h3>
+        <button class="btn-close-modal" id="btn-close-analysis-modal" style="background:none; border:none; color:var(--text-secondary); font-size:24px; cursor:pointer; line-height:1; transition:var(--transition-smooth);">&times;</button>
+      </div>
+      <div class="modal-body" style="flex:1; overflow-y:auto; padding-right:8px; margin-bottom:20px;">
+        <div class="analysis-loading-container" id="modal-loading-container" style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:200px; text-align:center; color:var(--text-secondary);">
+          <div class="loader-spinner"></div>
+          <p class="mt-15" style="max-width:500px; font-size:12px; line-height:1.6;">AI 광고 분석 엔진이 최근 1년 크롤링 데이터를 기반으로 광고주의 마케팅 가치와 이슈 점수를 100점 만점으로 계산하여 심층 보고서를 작성하는 중입니다...</p>
+        </div>
+        <div class="analysis-result-content markdown-body hidden" id="modal-analysis-content" style="font-size:13px; line-height:1.6; color:var(--text-primary);">
+          <!-- Dynamic Content -->
+        </div>
+      </div>
+      <div class="modal-footer" style="display:flex; justify-content:flex-end; gap:12px; border-top:1px solid rgba(255,255,255,0.06); padding-top:15px;">
+        <button class="btn btn-secondary" id="btn-modal-close-action" style="padding: 10px 20px;">닫기</button>
+        <button class="btn btn-primary" id="btn-modal-proposal-action" style="padding: 10px 24px; font-weight:700;"><i class="fa-solid fa-file-signature"></i> 이 분석으로 맞춤 제안서 작성하기</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes modalSlideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .btn-close-modal:hover { color:#fff !important; transform: scale(1.1); }
+  </style>
 
   <script src="app.js"></script>
 </body>

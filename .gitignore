@@ -13,3 +13,7 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 *.egg-info/
+
+# GCP SDK
+gcloud-sdk/
+gcloud-sdk-bundled/

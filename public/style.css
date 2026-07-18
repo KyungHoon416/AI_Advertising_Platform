@@ -1734,3 +1734,352 @@ body.ver2-mode .main-header {
   }
 }
 
+
+
+/* ----------------------------------------------------
+   AI Advertiser Center Layout Styles
+   ---------------------------------------------------- */
+.advertiser-center-layout {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+  margin-top: 15px;
+}
+
+.filter-sidebar {
+  flex: 0 0 300px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.advertiser-center-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.main-top-row {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.summary-card-panel {
+  flex: 2.3;
+  padding: 20px;
+}
+
+.donut-chart-panel {
+  flex: 1;
+  padding: 20px;
+}
+
+.main-bottom-row {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+}
+
+.table-panel {
+  flex: 2.3;
+  padding: 20px;
+}
+
+.guide-panel-box {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Button Group Toggle */
+.btn-group-toggle {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.btn-toggle {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--border-radius-sm);
+  color: var(--text-secondary);
+  padding: 8px 0;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  transition: var(--transition-smooth);
+}
+
+.btn-toggle:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-toggle.active {
+  color: #fff;
+  border-color: var(--neon-blue);
+  background: rgba(0, 242, 254, 0.12);
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.25);
+  font-weight: 700;
+}
+
+/* Range Slider Styling */
+.range-slider-wrapper {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  margin: 15px 0 8px 0;
+}
+
+.range-slider-track {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  z-index: 1;
+}
+
+.score-range-slider-min, .score-range-slider-max {
+  position: absolute;
+  width: 100%;
+  height: 6px;
+  top: 0;
+  background: none;
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
+  z-index: 2;
+  margin: 0;
+}
+
+.score-range-slider-min::-webkit-slider-thumb, .score-range-slider-max::-webkit-slider-thumb {
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  background: var(--neon-blue);
+  cursor: pointer;
+  pointer-events: auto;
+  -webkit-appearance: none;
+  box-shadow: 0 0 6px var(--neon-blue);
+  border: 1px solid #fff;
+  transition: var(--transition-smooth);
+}
+
+.score-range-slider-min::-webkit-slider-thumb:hover, .score-range-slider-max::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 10px var(--neon-blue);
+}
+
+/* Summary Cards Container */
+.summary-cards-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  height: calc(100% - 30px);
+}
+
+.summary-stat-box {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: var(--border-radius-md);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: var(--transition-smooth);
+}
+
+.summary-stat-box:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.summary-stat-box .box-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.summary-stat-box .box-value {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 6px 0;
+  letter-spacing: -0.5px;
+}
+
+.summary-stat-box .box-subtext {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+/* Rank Circle Badge */
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.rank-badge.rank-1 {
+  background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+}
+
+.rank-badge.rank-2 {
+  background: linear-gradient(135deg, #c0c0c0 0%, #808080 100%);
+  box-shadow: 0 0 8px rgba(192, 192, 192, 0.3);
+}
+
+.rank-badge.rank-3 {
+  background: linear-gradient(135deg, #cd7f32 0%, #8b4513 100%);
+  box-shadow: 0 0 8px rgba(205, 127, 50, 0.3);
+}
+
+.rank-badge.rank-other {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+}
+
+/* Modal Styling */
+.modal-overlay {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-overlay:not(.hidden) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  transform: scale(0.95);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-overlay:not(.hidden) .modal-content {
+  transform: scale(1);
+}
+
+/* Responsive Styles for Advertiser Center */
+@media (max-width: 1024px) {
+  .advertiser-center-layout {
+    flex-direction: column;
+  }
+  .filter-sidebar {
+    flex: none;
+    width: 100%;
+  }
+  .main-top-row, .main-bottom-row {
+    flex-direction: column;
+  }
+  .summary-card-panel, .donut-chart-panel, .table-panel, .guide-panel-box {
+    flex: none;
+    width: 100%;
+  }
+  .summary-cards-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .summary-cards-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ----------------------------------------------------
+   Market Research & Competitor Analysis Dashboard Styles
+   ---------------------------------------------------- */
+.filter-top-bar {
+  background: rgba(15, 17, 28, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(10px);
+}
+
+.market-summary-row {
+  margin-bottom: 20px;
+}
+
+.market-main-row {
+  margin-bottom: 20px;
+}
+
+.market-sec-row {
+  margin-bottom: 20px;
+}
+
+.market-bottom-row {
+  margin-bottom: 20px;
+}
+
+/* Responsive market dashboard */
+@media (max-width: 1200px) {
+  .market-summary-row {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .market-main-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .market-summary-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .market-sec-row {
+    grid-template-columns: 1fr !important;
+  }
+  .market-bottom-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .market-summary-row {
+    grid-template-columns: 1fr !important;
+  }
+  .market-main-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.dot-status {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+  box-shadow: 0 0 5px currentColor;
+}
+
+.dot-status.green {
+  background-color: #22c55e;
+  color: rgba(34, 197, 94, 0.4);
+}
+
+.dot-status.yellow {
+  background-color: #ff9f1c;
+  color: rgba(255, 159, 28, 0.4);
+}
+
+.dot-status.red {
+  background-color: #ef4444;
+  color: rgba(239, 68, 68, 0.4);
+}
