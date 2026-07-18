@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/kimkyunghoon/Desktop/수익화/AI_Advertising_Platform log --oneline -5)",
+      "Bash(node --check server.js)",
+      "Bash(node --check public/app.js)",
+      "Bash(PORT=8899 node server.js)",
+      "Bash(curl -s http://localhost:8899/api/prompts)",
+      "Bash(node -e \"let d='';process.stdin.on\\('data',c=>d+=c\\).on\\('end',\\(\\)=>{const j=JSON.parse\\(d\\);console.log\\(Object.keys\\(j\\)\\);console.log\\(j.master.title\\);console.log\\(j.master.template.slice\\(0,120\\)\\)}\\)\")",
+      "Bash(curl -s -X POST http://localhost:8899/api/ai/market-research -H \"Content-Type: application/json\" -d '{\"industry\":\"키즈 액티비티\",\"previousContext\":\"[선행 Agent: AI 광고주 추천]\\\\n테스트 컨텍스트\"}')",
+      "Bash(curl -s -X POST http://localhost:8899/api/ai/roi-report -H \"Content-Type: application/json\" -d '{\"partnerName\":\"테스트\",\"impressions\":100000,\"clicks\":3000,\"conversions\":300,\"spend\":1000000,\"revenue\":3500000,\"previousContext\":\"test\"}')",
+      "Bash(kill %1)",
+      "Bash(pkill -f \"PORT=8899\")",
+      "Bash(lsof -ti:8899)",
+      "Bash(xargs kill)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'feat: replace master system prompt with platform planning team persona and chain agents *)",
+      "Bash(gcloud config *)",
+      "Bash(gcloud run *)",
+      "Bash(gcloud projects *)",
+      "Bash(curl -s https://ai-advertising-platform-663513237336.asia-northeast3.run.app/api/prompts)",
+      "Bash(node -e \"let d='';process.stdin.on\\('data',c=>d+=c\\).on\\('end',\\(\\)=>{const j=JSON.parse\\(d\\);console.log\\('keys:',Object.keys\\(j\\).join\\(', '\\)\\);console.log\\('master:',j.master.template.slice\\(0,80\\)\\)}\\)\")",
+      "Bash(curl -s -X POST https://ai-advertising-platform-663513237336.asia-northeast3.run.app/api/ai/market-research -H \"Content-Type: application/json\" -d '{\"industry\":\"키즈 액티비티\",\"previousContext\":\"[선행 Agent: AI 광고주 추천]\\\\n경기권 3040 여성 세그먼트에 키즈카페 브랜드 매칭 완료\"}')",
+      "Bash(curl -s -X POST https://ai-advertising-platform-663513237336.asia-northeast3.run.app/api/ai/roi-report -H \"Content-Type: application/json\" -d '{\"partnerName\":\"검증테스트\",\"impressions\":100000,\"clicks\":3000,\"conversions\":300,\"spend\":1000000,\"revenue\":3500000,\"previousContext\":\"test\"}')",
+      "Bash(grep -rn \"GEMINI_API_KEY\" ~/.zshrc ~/.zprofile ~/.zshenv 2>/dev/null | sed 's/=.*/=<hidden>/'; echo \"---\"; cat .env.example)",
+      "Bash(curl -s -X POST https://ai-advertising-platform-663513237336.asia-northeast3.run.app/api/ai/market-research -H \"Content-Type: application/json\" -d '{\"industry\":\"키즈 액티비티\",\"previousContext\":\"[선행 Agent: AI 광고주 추천]\\\\n경기권 3040 여성 세그먼트 매칭 완료\"}')",
+      "Bash(git commit -m 'feat: replace global loading overlay with per-card inline loading for concurrent AI runs *)",
+      "Bash(curl -s https://ai-advertising-platform-663513237336.asia-northeast3.run.app/)",
+      "Bash(curl -s https://ai-advertising-platform-663513237336.asia-northeast3.run.app/app.js)",
+      "Bash(curl -s http://localhost:3000/api/prompts)",
+      "Bash(jobs)",
+      "Bash(git commit -m 'feat: add ROI funnel/benchmark charts and sync unified engine results across tabs *)",
+      "Bash(sed -n '/^\\\\.sidebar {/,/}/p' /Users/kimkyunghoon/Desktop/수익화/AI_Advertising_Platform/public/style.css)",
+      "Bash(sed -n '/^\\\\.logo-area {/,/}/p' /Users/kimkyunghoon/Desktop/수익화/AI_Advertising_Platform/public/style.css)",
+      "Bash(git commit -m 'feat: add ver 1.0 / ver 2.0 toggle beside logo with coming-soon screen for v2 *)",
+      "Bash(git commit -m 'feat: hide all nav and header in ver 2.0 mode, show only logo toggle with greeting *)",
+      "Bash(curl -s https://ai-advertising-platform-663513237336.asia-northeast3.run.app/style.css)",
+      "Bash(git commit -m 'feat: redesign ROI chart as trapezoid funnel \\(spend/bookings/revenue/ROI\\) with industry benchmark badge *)",
+      "Bash(docker --version)"
+    ]
+  }
+}

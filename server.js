@@ -542,6 +542,102 @@ function calculateSearchScore(rate) {
   return Math.round(0 + rate / 50 * 5);
 }
 
+
+// ----------------------------------------------------
+// Dynamic Mock Generator (Enriching dataset for category 음식점 to 1,248 items)
+// ----------------------------------------------------
+(function() {
+  const foodPrefixes = ['마포', '홍대', '이태원', '강남', '종로', '신촌', '혜화', '건대', '잠실', '여의도', '신도림', '가산', '구로', '성수', '한남', '압구정', '청담', '신사', '양재', '논현'];
+  const foodSuffixes = ['갈비', '돈까스', '스시', '피자', '파스타', '포차', '라멘', '족발', '삼겹살', '국밥', '닭발', '치킨', '곱창', '떡볶이', '부대찌개', '보쌈', '냉면', '칼국수', '설렁탕', '꼼장어'];
+  const regions = ['서울', '경기', '부산', '대구', '인천', '대전', '광주', '울산', '제주', '기타'];
+  const genders = ['전체', '남성', '여성'];
+  const ages = ['전체', '20대', '30대', '40대', '50대이상'];
+  const adHistOptions = ['있음', '없음'];
+
+  // Current count of 음식점 in MOCK_ADVERTISERS
+  const existingRestaurants = MOCK_ADVERTISERS.filter(a => a.category === '음식점');
+  const existingCount = existingRestaurants.length;
+  
+  // Target totals to match screenshot: 1248 total restaurants, 312 with score >= 50
+  // Distribution targets for score >= 50 matching [20, 35, 30, 10, 5] percent:
+  // 80+ : 20% -> ~62 items
+  // 60-79: 35% -> ~109 items
+  // 40-59 (where >=50): 30% -> ~94 items (we make scores 50-59)
+  // 20-39: 10%? Wait! If the distribution segments are:
+  // Segment 1 (80점 이상): 20%
+  // Segment 2 (60~79점): 35%
+  // Segment 3 (40~59점): 30%
+  // Segment 4 (20~39점): 10%
+  // Segment 5 (20점 미만): 5%
+  // If total analyzed = 1248:
+  // - 80점 이상: 1,248 * 20% = 250 items
+  // - 60~79점: 1,248 * 35% = 437 items
+  // - 40~59점: 1,248 * 30% = 374 items
+  // - 20~39점: 1,248 * 10% = 125 items
+  // - 20점 미만: 1,248 * 5% = 62 items
+  // Total = 250 + 437 + 374 + 125 + 62 = 1,248 items.
+  // And the issue count (score >= 50) would be:
+  // - all of 80+ (250)
+  // - all of 60-79 (437)
+  // - half of 40-59 (say, 50-59 range, which is 10/20 of 374 = 187 items)
+  // Total issue count = 250 + 437 + 187 = 874 items.
+  // But wait! If the user wants the default issueCount card to say exactly '312명', then the number of items with score >= 50 must be exactly 312!
+  // And the distribution chart for the default case should say [20, 35, 30, 10, 5]%!
+  // If the distribution chart is calculated dynamically from the filtered list (which is 0~100 score range, so it is the entire 1248 list!),
+  // and we want:
+  // - 80점 이상: 20% (250 items)
+  // - 60~79점: 35% (437 items)
+  // - 40~59점: 30% (374 items)
+  // - 20~39점: 10% (125 items)
+  // - 20점 미만: 5% (62 items)
+  // then the number of items with score >= 50 will naturally be 250 + 437 + (half of 374) = 874 items.
+  // If so, the issueCount card should show 874명.
+  // Wait, let's look at what the user wants. The user wants the score distribution chart to match the actual scores of the list.
+  // Yes! If we have exactly 1,248 restaurants, and we divide them as:
+  // - 80점 이상: 250 items (scores 80-100)
+  // - 60-79점: 437 items (scores 60-79)
+  // - 40-59점: 374 items (scores 40-59)
+  // - 20-39점: 125 items (scores 20-39)
+  // - 20점 미만: 62 items (scores 0-19)
+  // then the distribution chart (0~100) will be exactly 20%, 35%, 30%, 10%, 5%!
+  // And the table will have exactly 1,248 restaurants!
+  // Let's generate exactly these quantities!
+  
+  let target80 = 250 - existingCount; // since all existing restaurants have score >= 80
+  let target60 = 437;
+  let target40 = 374;
+  let target20 = 125;
+  let target0 = 62;
+
+  // Let's generate them
+  const generateBatch = (count, minScore, maxScore) => {
+    for (let j = 0; j < count; j++) {
+      const pfx = foodPrefixes[Math.floor(Math.random() * foodPrefixes.length)];
+      const sfx = foodSuffixes[Math.floor(Math.random() * foodSuffixes.length)];
+      const name = pfx + ' ' + sfx + ' ' + (j + 100) + '호점';
+      const score = minScore + Math.floor(Math.random() * (maxScore - minScore + 1));
+      
+      MOCK_ADVERTISERS.push({
+        name,
+        category: '음식점',
+        region: regions[Math.floor(Math.random() * regions.length)],
+        adHistory: adHistOptions[Math.floor(Math.random() * adHistOptions.length)],
+        score,
+        genderTarget: genders[Math.floor(Math.random() * genders.length)],
+        ageTarget: ages[Math.floor(Math.random() * ages.length)],
+        recencyDays: 5 + Math.floor(Math.random() * 360),
+        searchRate: 50 + Math.floor(Math.random() * 250)
+      });
+    }
+  };
+
+  generateBatch(target80, 80, 100);
+  generateBatch(target60, 60, 79);
+  generateBatch(target40, 40, 59);
+  generateBatch(target20, 20, 39);
+  generateBatch(target0, 5, 19);
+})();
+
 const ENRICHED_ADVERTISERS = MOCK_ADVERTISERS.map(a => {
   if (a.recencyDays !== undefined) return a;
 
@@ -593,80 +689,57 @@ app.post('/api/mock/segments', (req, res) => {
   const minScore = req.body.minScore !== undefined ? req.body.minScore : 0;
   const maxScore = req.body.maxScore !== undefined ? req.body.maxScore : 100;
   
-  let filtered = ENRICHED_ADVERTISERS;
+  // 1. Apply demographic and period filters first (without score limits) to get total analyzed and issue counts
+  let baseFiltered = ENRICHED_ADVERTISERS;
   
-  // Filter by category
   if (category && category !== '전체'.normalize('NFC')) {
-    filtered = filtered.filter(a => a.category.normalize('NFC') === category);
+    baseFiltered = baseFiltered.filter(a => a.category.normalize('NFC') === category);
   }
   
-  // Filter by gender
   if (gender && gender !== '전체'.normalize('NFC')) {
-    filtered = filtered.filter(a => a.genderTarget.normalize('NFC') === '전체'.normalize('NFC') || a.genderTarget.normalize('NFC') === gender);
+    baseFiltered = baseFiltered.filter(a => a.genderTarget.normalize('NFC') === '전체'.normalize('NFC') || a.genderTarget.normalize('NFC') === gender);
   }
   
-  // Filter by age
   if (age && age !== '전체'.normalize('NFC')) {
-    filtered = filtered.filter(a => a.ageTarget.normalize('NFC') === '전체'.normalize('NFC') || a.ageTarget.normalize('NFC') === age);
+    baseFiltered = baseFiltered.filter(a => a.ageTarget.normalize('NFC') === '전체'.normalize('NFC') || a.ageTarget.normalize('NFC') === age);
   }
   
-  // Filter by period
   if (period && period !== '전체'.normalize('NFC')) {
-    if (period === '1개월'.normalize('NFC') || period === '최근 1개월'.normalize('NFC')) {
-      filtered = filtered.filter(a => a.recencyDays <= 30);
+    if (period === '1개월'.normalize('NFC') || period === '최근 1개'.normalize('NFC') || period === '최근 1개월'.normalize('NFC') || period === '1개월'.normalize('NFC')) {
+      baseFiltered = baseFiltered.filter(a => a.recencyDays <= 30);
     } else if (period === '3개월'.normalize('NFC') || period === '최근 3개월'.normalize('NFC')) {
-      filtered = filtered.filter(a => a.recencyDays <= 90);
+      baseFiltered = baseFiltered.filter(a => a.recencyDays <= 90);
     } else if (period === '6개월'.normalize('NFC') || period === '최근 6개월'.normalize('NFC')) {
-      filtered = filtered.filter(a => a.recencyDays <= 180);
+      baseFiltered = baseFiltered.filter(a => a.recencyDays <= 180);
     } else if (period === '1년'.normalize('NFC') || period === '최근 1년'.normalize('NFC')) {
-      filtered = filtered.filter(a => a.recencyDays <= 365);
+      baseFiltered = baseFiltered.filter(a => a.recencyDays <= 365);
     }
   }
   
-  // Filter by score range
-  filtered = filtered.filter(a => a.score >= minScore && a.score <= maxScore);
+  // 2. Apply score range filters to get the active table list
+  let filtered = baseFiltered.filter(a => a.score >= minScore && a.score <= maxScore);
   
   // Sort by score descending
   filtered.sort((a, b) => b.score - a.score);
   
-  // Stats
-  let totalAnalyzed = filtered.length * 48;
-  let issueCount = filtered.filter(a => a.score >= 50).length * 12;
-  let avgScore = 67.8;
-  let maxScoreVal = filtered.length > 0 ? Math.max(...filtered.map(a => a.score)) : 0;
+  // 3. Calculate statistics dynamically
+  const totalAnalyzed = baseFiltered.length;
+  const issueCount = baseFiltered.filter(a => a.score >= 50).length;
+  const avgScore = totalAnalyzed > 0 
+    ? parseFloat((baseFiltered.reduce((sum, a) => sum + a.score, 0) / totalAnalyzed).toFixed(1))
+    : 0;
+  const maxScoreVal = filtered.length > 0 ? Math.max(...filtered.map(a => a.score)) : 0;
   
-  if (category === '음식점'.normalize('NFC') && gender === '전체'.normalize('NFC') && age === '전체'.normalize('NFC') && (period === '최근 1년'.normalize('NFC') || period === '1년'.normalize('NFC'))) {
-    totalAnalyzed = 1248;
-    issueCount = 312;
-    avgScore = 67.8;
-    maxScoreVal = 98;
-  } else if (filtered.length > 0) {
-    avgScore = parseFloat((filtered.reduce((sum, a) => sum + a.score, 0) / filtered.length).toFixed(1));
-    if (filtered.length < 5) {
-      totalAnalyzed = filtered.length * 10;
-      issueCount = filtered.filter(a => a.score >= 50).length;
-    } else {
-      totalAnalyzed = filtered.length * 40 + 200;
-      issueCount = filtered.filter(a => a.score >= 50).length * 10;
-    }
-  } else {
-    totalAnalyzed = 0;
-    issueCount = 0;
-    avgScore = 0;
-    maxScoreVal = 0;
-  }
-  
-  // Donut chart distribution
+  // 4. Calculate score distribution dynamically from the filtered list
   let dist = [0, 0, 0, 0, 0];
-  if (category === '음식점'.normalize('NFC') && gender === '전체'.normalize('NFC') && age === '전체'.normalize('NFC') && (period === '최근 1년'.normalize('NFC') || period === '1년'.normalize('NFC'))) {
-    dist = [20, 35, 30, 10, 5];
-  } else if (filtered.length > 0) {
+  if (filtered.length > 0) {
     const c1 = filtered.filter(a => a.score >= 80).length;
     const c2 = filtered.filter(a => a.score >= 60 && a.score < 80).length;
     const c3 = filtered.filter(a => a.score >= 40 && a.score < 60).length;
     const c4 = filtered.filter(a => a.score >= 20 && a.score < 40).length;
     const c5 = filtered.filter(a => a.score < 20).length;
     const total = filtered.length;
+    
     dist = [
       Math.round((c1 / total) * 100),
       Math.round((c2 / total) * 100),
@@ -674,9 +747,11 @@ app.post('/api/mock/segments', (req, res) => {
       Math.round((c4 / total) * 100),
       Math.round((c5 / total) * 100)
     ];
-    const sum = dist.reduce((a, b) => a + b, 0);
+    
+    const sum = dist.reduce((sumVal, val) => sumVal + val, 0);
     if (sum > 0 && sum !== 100) {
-      dist[1] += (100 - sum);
+      const maxIdx = dist.indexOf(Math.max(...dist));
+      dist[maxIdx] += (100 - sum);
     }
   }
   
@@ -689,14 +764,10 @@ app.post('/api/mock/segments', (req, res) => {
       maxScore: maxScoreVal
     },
     distribution: dist,
-    advertisers: filtered.map((a, idx) => ({
-      ...a,
-      rank: idx + 1
-    }))
+    advertisers: filtered
   });
 });
 
-// New AI advertiser analysis API
 app.post('/api/ai/analyze-advertiser', async (req, res) => {
   const { name } = req.body;
   const adv = ENRICHED_ADVERTISERS.find(a => a.name.normalize('NFC') === name.normalize('NFC')) || {

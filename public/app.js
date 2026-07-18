@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         item.classList.add('active');
         // 페이지 제목 및 소제목 변경
         if (tabId === 'target-segment') {
-          pageTitle.innerHTML = '<i class="fa-solid fa-robot text-blue" style="margin-right: 8px; color: var(--neon-blue);"></i>AI광고주 센터 <span class="badge" style="font-size: 10px; padding: 2px 6px; background: rgba(0, 242, 254, 0.15); color: var(--neon-blue); border: 1px solid rgba(0, 242, 254, 0.3); border-radius: 4px; margin-left: 6px; vertical-align: middle; font-weight: bold; text-shadow: 0 0 5px rgba(0,242,254,0.3);">BETA</span>';
+          pageTitle.innerHTML = '<i class="fa-solid fa-robot text-blue" style="margin-right: 8px; color: var(--neon-blue);"></i>AI광고주 센터';
         } else {
           pageTitle.textContent = item.querySelector('span').textContent;
         }
@@ -842,21 +842,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Bind guide card button
-  const btnCreateProposalFromGuide = document.getElementById('btn-create-proposal-from-guide');
-  if (btnCreateProposalFromGuide) {
-    btnCreateProposalFromGuide.addEventListener('click', () => {
-      // Find top advertiser or open proposal tab directly
-      if (allAdvertisers.length > 0) {
-        const topAdv = allAdvertisers[0];
-        const clientInput = document.getElementById('proposal-client-name');
-        const segmentInput = document.getElementById('proposal-target-segment');
-        if (clientInput) clientInput.value = topAdv.name;
-        if (segmentInput) segmentInput.value = '최근 크롤링 기반 이슈 광고주 센터 분석 연계';
-      }
-      switchTab('proposal-generator');
-    });
-  }
+
 
   // Bind info box criteria button
   const btnShowScoreCriteria = document.getElementById('btn-show-score-criteria');
