@@ -65,6 +65,16 @@ document.addEventListener('DOMContentLoaded', () => {
       loadDashboardData();
     }
 
+    // 숨겨진 탭에서 먼저 생성된 Chart.js 캔버스는 크기가 0으로 계산될 수 있다.
+    // 시장 분석 탭이 실제로 보인 다음 모든 차트의 크기를 다시 계산한다.
+    if (tabId === 'market-research') {
+      window.setTimeout(() => {
+        if (window.Chart && Chart.instances) {
+          Object.values(Chart.instances).forEach(chart => chart.resize());
+        }
+      }, 80);
+    }
+
     // 스크롤 상단 이동
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -466,7 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
   checkServerStatus();
 
   // ----------------------------------------------------
-  // Phase 1: AI광고주 센터 로직
+  // Phase 1: AI광고주 찾기 로직
   // ----------------------------------------------------
   const advertiserForm = document.getElementById('advertiser-filter-form');
   const summaryTotal = document.getElementById('summary-total-analyzed');
@@ -538,6 +548,43 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentPage = 1;
   let pageSize = 10;
   let allAdvertisers = [];
+  let issueScoreSort = 'score-desc';
+
+  function compareAdvertisers(a, b) {
+    const scoreDiff = Number(a.score || 0) - Number(b.score || 0);
+    if (scoreDiff !== 0) {
+      return issueScoreSort === 'score-asc' ? scoreDiff : -scoreDiff;
+    }
+
+    // Stable, explicit tie-breakers: newest issue -> search growth -> Korean name.
+    const recencyDiff = Number(a.recencyDays ?? Number.MAX_SAFE_INTEGER) - Number(b.recencyDays ?? Number.MAX_SAFE_INTEGER);
+    if (recencyDiff !== 0) return recencyDiff;
+
+    const searchRateDiff = Number(b.searchRate || 0) - Number(a.searchRate || 0);
+    if (searchRateDiff !== 0) return searchRateDiff;
+
+    return String(a.name || '').localeCompare(String(b.name || ''), 'ko');
+  }
+
+  function applyIssueScoreSort() {
+    allAdvertisers.sort(compareAdvertisers);
+    allAdvertisers.forEach((advertiser, index) => {
+      advertiser.displayRank = index + 1;
+    });
+  }
+
+  function updateIssueSortUI() {
+    const descending = issueScoreSort === 'score-desc';
+    const summary = document.getElementById('issue-sort-summary');
+    const primaryDescription = document.getElementById('sort-primary-description');
+    const directionIcon = document.getElementById('score-sort-direction-icon');
+
+    if (summary) {
+      summary.innerHTML = `<i class="fa-solid fa-arrow-${descending ? 'down' : 'up'}-wide-short"></i> 이슈 스코어 ${descending ? '높은' : '낮은'} 순 · 동점 시 최근 이슈 우선`;
+    }
+    if (primaryDescription) primaryDescription.textContent = descending ? '100점에 가까울수록 먼저' : '0점에 가까울수록 먼저';
+    if (directionIcon) directionIcon.className = `fa-solid fa-arrow-${descending ? 'down' : 'up'}`;
+  }
 
   // Donut chart reference
   let distributionChart = null;
@@ -550,14 +597,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (distributionChart) {
       distributionChart.destroy();
     }
+
+    document.querySelectorAll('[data-distribution-index]').forEach((valueEl) => {
+      const value = Number(dataDist[Number(valueEl.dataset.distributionIndex)] || 0);
+      valueEl.textContent = `${value}%`;
+    });
     
     distributionChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
-        labels: ['80점 이상', '60 ~ 79점', '40 ~ 59점', '20 ~ 39점', '20점 미만'],
+        labels: ['90점 이상', '80 ~ 89점', '60 ~ 79점', '40 ~ 59점', '20 ~ 39점', '20점 미만'],
         datasets: [{
           data: dataDist,
-          backgroundColor: ['#00f2fe', '#3b82f6', '#a855f7', '#ff9f1c', '#626880'],
+          backgroundColor: ['#00f2fe', '#3b82f6', '#8b5cf6', '#a855f7', '#ff9f1c', '#626880'],
           borderWidth: 0
         }]
       },
@@ -590,13 +642,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     visibleData.forEach((adv, idx) => {
       const tr = document.createElement('tr');
+      const displayRank = Number.isFinite(adv.displayRank) ? adv.displayRank : startIdx + idx + 1;
       
       let rankClass = 'rank-other';
-      if (adv.rank === 1) rankClass = 'rank-1';
-      else if (adv.rank === 2) rankClass = 'rank-2';
-      else if (adv.rank === 3) rankClass = 'rank-3';
+      if (displayRank === 1) rankClass = 'rank-1';
+      else if (displayRank === 2) rankClass = 'rank-2';
+      else if (displayRank === 3) rankClass = 'rank-3';
       
-      const rankBadge = `<span class="rank-badge ${rankClass}">${adv.rank}</span>`;
+      const rankBadge = `<span class="rank-badge ${rankClass}" title="현재 정렬 기준 전체 ${displayRank}위">${displayRank}</span>`;
       
       tr.innerHTML = `
         <td style="text-align:center; vertical-align:middle;">${rankBadge}</td>
@@ -722,7 +775,8 @@ document.addEventListener('DOMContentLoaded', () => {
       renderDistributionChart(data.distribution);
       
       // Store list and reset page
-      allAdvertisers = data.advertisers;
+      allAdvertisers = Array.isArray(data.advertisers) ? [...data.advertisers] : [];
+      applyIssueScoreSort();
       currentPage = 1;
       
       // Render first page of table
@@ -741,6 +795,18 @@ document.addEventListener('DOMContentLoaded', () => {
       currentPage = 1;
       renderTablePage(currentPage);
     });
+  }
+
+  const issueScoreSortSelect = document.getElementById('issue-score-sort');
+  if (issueScoreSortSelect) {
+    issueScoreSortSelect.addEventListener('change', (ev) => {
+      issueScoreSort = ev.target.value === 'score-asc' ? 'score-asc' : 'score-desc';
+      applyIssueScoreSort();
+      updateIssueSortUI();
+      currentPage = 1;
+      renderTablePage(currentPage);
+    });
+    updateIssueSortUI();
   }
 
   if (advertiserForm) {
@@ -832,7 +898,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const segmentInput = document.getElementById('proposal-target-segment');
       
       if (clientInput) clientInput.value = activeModalBrandName;
-      if (segmentInput) segmentInput.value = '최근 크롤링 기반 이슈 광고주 센터 분석 연계';
+      if (segmentInput) segmentInput.value = '최근 크롤링 기반 AI광고주 찾기 분석 연계';
       
       // Close modal
       closeAnalysisModal();
@@ -842,7 +908,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-
+  // Bind guide card button
+  const btnCreateProposalFromGuide = document.getElementById('btn-create-proposal-from-guide');
+  if (btnCreateProposalFromGuide) {
+    btnCreateProposalFromGuide.addEventListener('click', () => {
+      // Find top advertiser or open proposal tab directly
+      if (allAdvertisers.length > 0) {
+        const topAdv = allAdvertisers[0];
+        const clientInput = document.getElementById('proposal-client-name');
+        const segmentInput = document.getElementById('proposal-target-segment');
+        if (clientInput) clientInput.value = topAdv.name;
+        if (segmentInput) segmentInput.value = '최근 크롤링 기반 AI광고주 찾기 분석 연계';
+      }
+      switchTab('proposal-generator');
+    });
+  }
 
   // Bind info box criteria button
   const btnShowScoreCriteria = document.getElementById('btn-show-score-criteria');
@@ -920,6 +1000,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // Phase 2: 시장조사 & 경쟁사 분석 로직
   // ----------------------------------------------------
   const marketFilterForm = document.getElementById('market-filter-form');
+  const advertiserCategorySelect = document.getElementById('filter-category');
+  const marketIndustrySelect = document.getElementById('market-filter-industry');
+
+  // Keep market research industries in one source of truth with AI광고주 찾기.
+  if (advertiserCategorySelect && marketIndustrySelect) {
+    const categoryOptions = Array.from(advertiserCategorySelect.options)
+      .filter(option => option.value !== '전체');
+    marketIndustrySelect.innerHTML = '';
+    categoryOptions.forEach(option => {
+      marketIndustrySelect.add(new Option(option.textContent.trim(), option.value));
+    });
+    marketIndustrySelect.value = advertiserCategorySelect.value === '전체'
+      ? categoryOptions[0]?.value || ''
+      : advertiserCategorySelect.value;
+  }
   const marketTypeIcon = document.getElementById('market-sum-type-icon');
   const marketTypeTitle = document.getElementById('market-sum-type');
   const marketTypeDesc = document.getElementById('market-sum-type-desc');
@@ -929,6 +1024,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const marketCagrVal = document.getElementById('market-sum-cagr');
   const marketSomVal = document.getElementById('market-sum-som');
   const marketAdSizeVal = document.getElementById('market-sum-adsize');
+  const marketGaugeType = document.getElementById('market-gauge-type');
+  const marketGaugeSummaryDesc = document.getElementById('market-gauge-summary-desc');
 
   const detailTam = document.getElementById('market-detail-tam');
   const detailSam = document.getElementById('market-detail-sam');
@@ -1080,17 +1177,17 @@ document.addEventListener('DOMContentLoaded', () => {
           scales: {
             x: {
               grid: { display: false },
-              ticks: { color: 'var(--text-muted)', font: { size: 9 } }
+              ticks: { color: '#ffffff', font: { size: 9 } }
             },
             y: {
               position: 'left',
-              grid: { color: 'rgba(255,255,255,0.03)' },
-              ticks: { color: 'var(--text-muted)', font: { size: 9 } }
+              grid: { color: 'rgba(255,255,255,0.12)' },
+              ticks: { color: '#ffffff', font: { size: 9 } }
             },
             y1: {
               position: 'right',
               grid: { display: false },
-              ticks: { color: 'var(--text-muted)', font: { size: 9 } }
+              ticks: { color: '#ffffff', font: { size: 9 } }
             }
           }
         }
@@ -1111,10 +1208,12 @@ document.addEventListener('DOMContentLoaded', () => {
           datasets: [{
             data: [rScores.tam, rScores.sam, rScores.som, rScores.cagr, rScores.경쟁강도, rScores.진입장벽, rScores.차별화, rScores.광고시장, rScores.고객확보, rScores.수익성],
             backgroundColor: 'rgba(0, 242, 254, 0.1)',
-            borderColor: 'var(--neon-blue)',
-            borderWidth: 1.5,
-            pointBackgroundColor: 'var(--neon-blue)',
-            pointRadius: 2
+            borderColor: '#00f2fe',
+            borderWidth: 2,
+            pointBackgroundColor: '#00f2fe',
+            pointBorderColor: '#071018',
+            pointBorderWidth: 1,
+            pointRadius: 3
           }]
         },
         options: {
@@ -1123,10 +1222,10 @@ document.addEventListener('DOMContentLoaded', () => {
           plugins: { legend: { display: false } },
           scales: {
             r: {
-              grid: { color: 'rgba(255,255,255,0.04)' },
-              angleLines: { color: 'rgba(255,255,255,0.04)' },
+              grid: { color: 'rgba(255,255,255,0.14)' },
+              angleLines: { color: 'rgba(255,255,255,0.12)' },
               ticks: { display: false },
-              pointLabels: { color: 'var(--text-muted)', font: { size: 8 } },
+              pointLabels: { color: '#ffffff', font: { size: 9, weight: '600' }, padding: 4 },
               suggestedMin: 0,
               suggestedMax: 15
             }
@@ -1169,6 +1268,20 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderMarketData(data) {
     // 1. Text & Summary Card values
     if (marketTypeTitle) marketTypeTitle.textContent = data.summary.type;
+    if (marketGaugeType) {
+      marketGaugeType.textContent = data.summary.type;
+      marketGaugeType.style.color = data.summary.type === '블루오션'
+        ? '#00f2fe'
+        : (data.summary.type === '퍼플오션' ? '#a855f7' : '#ef4444');
+    }
+    if (marketGaugeSummaryDesc) {
+      const typeDescriptions = {
+        '블루오션': '경쟁 강도가 낮고 시장 성장률이 높아 적극적인 시장 진입이 유리합니다.',
+        '퍼플오션': '시장 기회와 경쟁이 공존하므로 차별화 전략을 전제로 선별적인 진입이 필요합니다.',
+        '레드오션': '경쟁 강도와 진입 부담이 높아 명확한 우위가 없다면 신중한 접근이 필요합니다.'
+      };
+      marketGaugeSummaryDesc.textContent = typeDescriptions[data.summary.type] || '시장 지표를 종합해 진입 가능성을 판단한 결과입니다.';
+    }
     
     if (marketTypeIcon) {
       if (data.summary.type === '블루오션') {
@@ -1259,7 +1372,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const compTableBody = document.querySelector('#table-market-competitors tbody');
     if (compTableBody) {
       compTableBody.innerHTML = '';
-      data.competitors.forEach(comp => {
+      const competitors = Array.isArray(data.competitors) ? data.competitors : [];
+      if (competitors.length === 0) {
+        compTableBody.innerHTML = '<tr><td colspan="6" class="market-table-empty"><i class="fa-solid fa-building-circle-exclamation"></i><strong>경쟁사 데이터가 없습니다.</strong><span>분석 실행을 눌러 최신 데이터를 불러와 주세요.</span></td></tr>';
+      }
+      competitors.forEach(comp => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td style="text-align:center; vertical-align:middle;">
@@ -1390,9 +1507,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const payload = {
-      industry: document.getElementById('market-filter-industry').value,
-      subCategory: document.getElementById('market-filter-subcategory').value,
-      country: document.getElementById('market-filter-country').value
+      industry: marketIndustrySelect ? marketIndustrySelect.value : ''
     };
 
     try {
@@ -2773,6 +2888,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 최초 로드 시 실행
-  loadDashboardData();
+  // 일반 대시보드는 임시 비노출 상태이므로 초기 데이터 요청을 생략한다.
 
 });

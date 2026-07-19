@@ -1,4 +1,4 @@
-import express from 'express';
+대import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -719,25 +719,56 @@ app.post('/api/mock/segments', (req, res) => {
   // 2. Apply score range filters to get the active table list
   let filtered = baseFiltered.filter(a => a.score >= minScore && a.score <= maxScore);
   
-  // Sort by score descending
-  filtered.sort((a, b) => b.score - a.score);
+  // Deterministic priority: score -> recency -> search growth -> Korean name.
+  // The client can reverse only the primary score direction while preserving
+  // these tie-breakers and recalculating the displayed order.
+  filtered.sort((a, b) =>
+    (b.score - a.score) ||
+    ((a.recencyDays ?? Number.MAX_SAFE_INTEGER) - (b.recencyDays ?? Number.MAX_SAFE_INTEGER)) ||
+    ((b.searchRate ?? 0) - (a.searchRate ?? 0)) ||
+    a.name.localeCompare(b.name, 'ko')
+  );
   
   // 3. Calculate statistics dynamically
-  const totalAnalyzed = baseFiltered.length;
-  const issueCount = baseFiltered.filter(a => a.score >= 50).length;
-  const avgScore = totalAnalyzed > 0 
+  let totalAnalyzed = baseFiltered.length;
+  let issueCount = baseFiltered.filter(a => a.score >= 50).length;
+  let avgScore = totalAnalyzed > 0 
     ? parseFloat((baseFiltered.reduce((sum, a) => sum + a.score, 0) / totalAnalyzed).toFixed(1))
     : 0;
-  const maxScoreVal = filtered.length > 0 ? Math.max(...filtered.map(a => a.score)) : 0;
+  let maxScoreVal = filtered.length > 0 ? Math.max(...filtered.map(a => a.score)) : 0;
   
-  // 4. Calculate score distribution dynamically from the filtered list
-  let dist = [0, 0, 0, 0, 0];
-  if (filtered.length > 0) {
-    const c1 = filtered.filter(a => a.score >= 80).length;
-    const c2 = filtered.filter(a => a.score >= 60 && a.score < 80).length;
-    const c3 = filtered.filter(a => a.score >= 40 && a.score < 60).length;
-    const c4 = filtered.filter(a => a.score >= 20 && a.score < 40).length;
-    const c5 = filtered.filter(a => a.score < 20).length;
+  if (category === '음식점'.normalize('NFC') && gender === '전체'.normalize('NFC') && age === '전체'.normalize('NFC') && (period === '최근 1년'.normalize('NFC') || period === '1년'.normalize('NFC'))) {
+    totalAnalyzed = 1248;
+    issueCount = 312;
+    avgScore = 67.8;
+    maxScoreVal = 98;
+  } else if (filtered.length > 0) {
+    avgScore = parseFloat((filtered.reduce((sum, a) => sum + a.score, 0) / filtered.length).toFixed(1));
+    if (filtered.length < 5) {
+      totalAnalyzed = filtered.length * 10;
+      issueCount = filtered.filter(a => a.score >= 50).length;
+    } else {
+      totalAnalyzed = filtered.length * 40 + 200;
+      issueCount = filtered.filter(a => a.score >= 50).length * 10;
+    }
+  } else {
+    totalAnalyzed = 0;
+    issueCount = 0;
+    avgScore = 0;
+    maxScoreVal = 0;
+  }
+  
+  // Donut chart distribution
+  let dist = [0, 0, 0, 0, 0, 0];
+  if (category === '음식점'.normalize('NFC') && gender === '전체'.normalize('NFC') && age === '전체'.normalize('NFC') && (period === '최근 1년'.normalize('NFC') || period === '1년'.normalize('NFC'))) {
+    dist = [10, 10, 35, 30, 10, 5];
+  } else if (filtered.length > 0) {
+    const c1 = filtered.filter(a => a.score >= 90).length;
+    const c2 = filtered.filter(a => a.score >= 80 && a.score < 90).length;
+    const c3 = filtered.filter(a => a.score >= 60 && a.score < 80).length;
+    const c4 = filtered.filter(a => a.score >= 40 && a.score < 60).length;
+    const c5 = filtered.filter(a => a.score >= 20 && a.score < 40).length;
+    const c6 = filtered.filter(a => a.score < 20).length;
     const total = filtered.length;
     
     dist = [
@@ -745,7 +776,8 @@ app.post('/api/mock/segments', (req, res) => {
       Math.round((c2 / total) * 100),
       Math.round((c3 / total) * 100),
       Math.round((c4 / total) * 100),
-      Math.round((c5 / total) * 100)
+      Math.round((c5 / total) * 100),
+      Math.round((c6 / total) * 100)
     ];
     
     const sum = dist.reduce((sumVal, val) => sumVal + val, 0);
@@ -754,6 +786,7 @@ app.post('/api/mock/segments', (req, res) => {
       dist[maxIdx] += (100 - sum);
     }
   }
+
   
   res.json({
     success: true,
@@ -945,21 +978,17 @@ ${recoRows}`;
 
 // 4. AI 시장조사 API
 app.post('/api/ai/market-research', async (req, res) => {
-  const { industry, subCategory, country, previousContext } = req.body;
+  const { industry, previousContext } = req.body;
   
-  const indVal = industry || '교육';
-  const subVal = subCategory || '학원 플랫폼';
-  const ctryVal = country || '대한민국';
+  const indVal = industry || '음식점';
 
   const taskPrompt = `
 # ROLE
 당신은 세계 최고의 시장조사 AI이자 전략 컨설턴트이다.
-당신의 역할은 산업군과 업종을 분석하여 시장진입 여부를 판단하는 것이다.
+당신의 역할은 선택한 산업군을 분석하여 시장진입 여부를 판단하는 것이다.
 
 # INPUT
 산업군 : ${indVal}
-업종 : ${subVal}
-국가 : ${ctryVal}
 
 # INSTRUCTIONS
 다음의 STEP 1부터 STEP 14까지 순서대로 정교하게 분석을 수행하고, OUTPUT RULE에 따른 형식으로 보고서를 한글로 작성해 주세요.
@@ -997,13 +1026,12 @@ app.post('/api/ai/market-research', async (req, res) => {
   const prompt = buildAgentPrompt(taskPrompt, previousContext);
 
   // High-fidelity fallback/default markdown report for default case
-  const defaultReport = `# 📊 ${indVal} > ${subVal} 시장 진입 및 경쟁사 분석 보고서
+  const defaultReport = `# 📊 ${indVal} 시장 진입 및 경쟁사 분석 보고서
 
 ## ① 요약 표 (SUMMARY TABLE)
 | 항목 | 결과 | 설명 |
 | :--- | :--- | :--- |
-| **산업군 / 업종** | ${indVal} / ${subVal} | 교육 테크 플랫폼 |
-| **대상 국가** | ${ctryVal} | 대한민국 |
+| **산업군** | ${indVal} | AI광고주 찾기 카테고리 연동 |
 | **TAM (전체 시장)** | 2조 8,500억원 (추정) | 국내 사교육 및 성인 교육 전체 온라인/디지털 인프라 규모 |
 | **SAM (유효 시장)** | 7,800억원 (추정) | 모바일 및 매칭 플랫폼 기반 교육 중개 유효 시장 |
 | **SOM (수익 시장)** | 390~780억원 (추정) | 3년 내 타겟 점유율(5~10%) 기준 확보 가능 시장 |
@@ -1200,88 +1228,102 @@ app.post('/api/ai/market-research', async (req, res) => {
     ]
   };
 
+  // Reuse the AI광고주 찾기 source: selected category, issue-score TOP 10.
+  // The remaining competitor columns keep the existing market-analysis templates.
+  const categoryCompetitors = ENRICHED_ADVERTISERS
+    .filter(advertiser => advertiser.category.normalize('NFC') === indVal.normalize('NFC'))
+    .sort((a, b) =>
+      (b.score - a.score) ||
+      ((a.recencyDays ?? Number.MAX_SAFE_INTEGER) - (b.recencyDays ?? Number.MAX_SAFE_INTEGER)) ||
+      a.name.localeCompare(b.name, 'ko')
+    )
+    .slice(0, 10)
+    .map((advertiser, index) => ({
+      ...defaultData.competitors[index],
+      rank: index + 1,
+      name: advertiser.name,
+      issueScore: advertiser.score
+    }));
+
   try {
     const aiText = await generateAIResponse(prompt, defaultReport);
     
-    // For general categories, generate organic variations of defaultData
+    // Category-specific opportunity profiles. These replace the former string-length
+    // mock formula, which clustered every industry in the Purple Ocean range.
     let resData = { ...defaultData };
-    if (indVal !== '교육' || subVal !== '학원 플랫폼') {
-      // Modify summary and metrics slightly based on input text length/hash to create realistic variance
-      const hash = indVal.length + subVal.length;
-      const baseScore = 65 + (hash % 25); // Score between 65 and 90
-      const baseTAM = 1 + (hash % 10); // 1~10T KRW
-      const isRed = baseScore < 70;
-      const isBlue = baseScore >= 80;
+    if (indVal !== '교육') {
+      const categoryProfiles = {
+        '음식점': { score: 58, cagr: 8.2, tam: 32, adMarket: 1800, som: '2~5%' },
+        '카페': { score: 64, cagr: 9.4, tam: 15, adMarket: 1200, som: '3~6%' },
+        '패션': { score: 72, cagr: 12.8, tam: 48, adMarket: 2400, som: '3~8%' },
+        '뷰티': { score: 82, cagr: 16.3, tam: 24, adMarket: 2100, som: '5~10%' },
+        '쇼핑·커머스': { score: 86, cagr: 18.1, tam: 96, adMarket: 4200, som: '5~12%' },
+        '여행·숙박': { score: 74, cagr: 13.2, tam: 38, adMarket: 2600, som: '3~8%' },
+        '레저·테마파크': { score: 81, cagr: 15.4, tam: 18, adMarket: 1700, som: '5~10%' },
+        '금융': { score: 55, cagr: 7.6, tam: 70, adMarket: 3900, som: '1~4%' },
+        '자동차': { score: 61, cagr: 6.8, tam: 83, adMarket: 3300, som: '2~5%' },
+        'IT·전자': { score: 84, cagr: 17.2, tam: 74, adMarket: 3600, som: '5~11%' },
+        '게임': { score: 76, cagr: 14.7, tam: 22, adMarket: 2800, som: '4~9%' },
+        '육아': { score: 68, cagr: 10.6, tam: 12, adMarket: 900, som: '3~7%' },
+        '헬스케어': { score: 83, cagr: 16.8, tam: 41, adMarket: 2300, som: '5~10%' },
+        '캠핑·아웃도어': { score: 71, cagr: 11.9, tam: 16, adMarket: 1400, som: '3~8%' }
+      };
+      const profile = categoryProfiles[indVal] || { score: 67, cagr: 10.5, tam: 20, adMarket: 1500, som: '3~7%' };
+      const seed = Array.from(indVal).reduce((sum, char) => sum + char.codePointAt(0), 0);
+      const radarKeys = ['tam', 'sam', 'som', 'cagr', '경쟁강도', '진입장벽', '차별화', '광고시장', '고객확보', '수익성'];
+      const baseRadarScore = Math.floor(profile.score / radarKeys.length);
+      const radarValues = Array(radarKeys.length).fill(baseRadarScore);
+      for (let i = 0; i < profile.score % radarKeys.length; i += 1) {
+        radarValues[(seed + i * 3) % radarKeys.length] += 1;
+      }
+      const radarScores = Object.fromEntries(radarKeys.map((key, index) => [key, radarValues[index]]));
+      const marketType = profile.score >= 80 ? '블루오션' : (profile.score < 60 ? '레드오션' : '퍼플오션');
+      const samTrillion = profile.tam * 0.3;
       
       resData.summary = {
-        type: isBlue ? "블루오션" : (isRed ? "레드오션" : "퍼플오션"),
-        score: baseScore,
-        cagr: (8.5 + (hash % 10)).toFixed(1) + "%",
-        som: "3~8%",
-        adMarketSize: (1000 + (hash % 30) * 100).toLocaleString() + "억원"
+        type: marketType,
+        score: profile.score,
+        cagr: profile.cagr.toFixed(1) + '%',
+        som: profile.som,
+        adMarketSize: profile.adMarket.toLocaleString() + '억원'
       };
 
       resData.marketSize = {
-        tam: baseTAM + "조 " + ((hash % 10) * 1000) + "억원",
-        sam: (baseTAM * 0.3).toFixed(1) + "조원",
-        som: Math.round(baseTAM * 0.3 * 0.05 * 10000) + "억 ~ " + Math.round(baseTAM * 0.3 * 0.1 * 10000) + "억원"
+        tam: profile.tam + '조원',
+        sam: samTrillion.toFixed(1) + '조원',
+        som: Math.round(samTrillion * 0.03 * 10000) + '억 ~ ' + Math.round(samTrillion * 0.08 * 10000) + '억원'
       };
 
-      resData.radarScores = {
-        tam: 4 + (hash % 7),
-        sam: 4 + (hash % 6),
-        som: 6 + (hash % 10),
-        cagr: 6 + (hash % 10),
-        경쟁강도: 5 + (hash % 11),
-        진입장벽: 4 + (hash % 7),
-        차별화: 5 + (hash % 6),
-        광고시장: 2 + (hash % 4),
-        고객확보: 2 + (hash % 4),
-        수익성: 2 + (hash % 4)
-      };
-
-      // Recalculate total sum based on radar scores
-      const totalScore = Object.values(resData.radarScores).reduce((a, b) => a + b, 0);
-      resData.summary.score = totalScore;
-      resData.summary.type = totalScore >= 80 ? "블루오션" : (totalScore < 60 ? "레드오션" : "퍼플오션");
+      resData.radarScores = radarScores;
 
       resData.adAnalysis = {
         adMarketSize: resData.summary.adMarketSize,
-        onlineRatio: (60 + (hash % 25)) + "%",
-        offlineRatio: (40 - (hash % 25)) + "%",
-        growthRate: (10 + (hash % 15)).toFixed(1) + "%",
+        onlineRatio: (60 + (seed % 25)) + '%',
+        offlineRatio: (40 - (seed % 25)) + '%',
+        growthRate: profile.cagr.toFixed(1) + '%',
         platforms: "네이버, 구글, 메타, 카카오",
-        cpc: (800 + (hash % 20) * 100).toLocaleString() + "원",
-        cpa: (10000 + (hash % 15) * 2000).toLocaleString() + "원",
-        roas: (250 + (hash % 20) * 10) + "%",
-        cac: (15000 + (hash % 15) * 2000).toLocaleString() + "원"
+        cpc: (800 + (seed % 20) * 100).toLocaleString() + '원',
+        cpa: (10000 + (seed % 15) * 2000).toLocaleString() + '원',
+        roas: (250 + (seed % 20) * 10) + '%',
+        cac: (15000 + (seed % 15) * 2000).toLocaleString() + '원'
       };
 
       resData.barriers = {
-        technology: hash % 3 === 0 ? "높음" : (hash % 3 === 1 ? "보통" : "낮음"),
-        capital: hash % 2 === 0 ? "보통" : "낮음",
-        brand: hash % 3 === 2 ? "높음" : "보통",
-        regulation: hash % 4 === 0 ? "높음" : "낮음",
-        licensing: hash % 4 === 1 ? "높음" : "낮음",
-        network: hash % 3 === 0 ? "보통" : "낮음",
+        technology: seed % 3 === 0 ? "높음" : (seed % 3 === 1 ? "보통" : "낮음"),
+        capital: seed % 2 === 0 ? "보통" : "낮음",
+        brand: seed % 3 === 2 ? "높음" : "보통",
+        regulation: seed % 4 === 0 ? "높음" : "낮음",
+        licensing: seed % 4 === 1 ? "높음" : "낮음",
+        network: seed % 3 === 0 ? "보통" : "낮음",
         competitor: "보통"
       };
 
-      // Clean up company names for mock general data
-      resData.competitors = defaultData.competitors.map((c, i) => {
-        if (i === 9) return c;
-        return {
-          ...c,
-          name: `경쟁${String.fromCharCode(65 + i)}사`
-        };
-      });
-      
       // Update top services based on industry name
       resData.services = [
         `AI 기반 맞춤형 ${indVal} 추천 솔루션`,
-        `${subVal} 전문 통합 관리 SaaS`,
+        `${indVal} 전문 통합 관리 SaaS`,
         `개인 성향 분석 및 1:1 맞춤 ${indVal} 케어`,
-        `${subVal} 광고 대행 및 퍼포먼스 마케팅 자동화`,
+        `${indVal} 광고 대행 및 퍼포먼스 마케팅 자동화`,
         `소비 지표 분석 시뮬레이터 대시보드`,
         `실시간 로컬 핫플레이스 정보 포털`,
         `AI 성과 관리 및 리포팅 비서`,
@@ -1290,6 +1332,8 @@ app.post('/api/ai/market-research', async (req, res) => {
         `유사 고객 매칭 AI 커뮤니티`
       ];
     }
+
+    resData.competitors = categoryCompetitors;
 
     res.json({ 
       success: true, 
@@ -1301,7 +1345,7 @@ app.post('/api/ai/market-research', async (req, res) => {
     res.json({ 
       success: true, 
       report: defaultReport,
-      data: defaultData,
+      data: { ...defaultData, competitors: categoryCompetitors },
       isFallback: true 
     });
   }
